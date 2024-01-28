@@ -2,14 +2,15 @@
 import { reactive, ref } from 'vue';
 
 const landingPageCardFlipState = reactive([false, false, false, false])
-let routerId = reactive({
+let router = reactive({
   id:100
 })
 // Start Page ID:100
 // Selecmode page ID:101
-let setRouterId = (id) =>{
-  routerId.id = id
+function setRouterId(id){
+  router.id = id
 }
+
 
 
 /**
@@ -27,7 +28,7 @@ function gotoUrl(url, newTap) {
  
 <template>
   <!-- * LandingPage start --------------------------------------------------------- -->
-  <div v-if="routerId.id === 100" id="landing-page" class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32" >
+  <div v-if="router.id === 100" id="landing-page" class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32" >
     <div id="game-title" class="flex gap-2 sm:gap-6">
       <div class="-rotate-12 text-[0.5rem] sm:text-[1rem]">
         <div class="absolute bg-white w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 origin-bottom -rotate-45">
@@ -100,7 +101,7 @@ function gotoUrl(url, newTap) {
   <!-- * LandingPage end --------------------------------------------------------- -->
 
   <!-- * Mode select screen start --------------------------------------------------------- -->
-  <div v-if="routerId.id ===  101" >
+  <div v-if="router.id ===  101" >
     <h1>Mode Select Page !!!</h1>
     <!-- TODO: Mode select screen -->
   </div>
