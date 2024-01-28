@@ -10,7 +10,7 @@ let routerId = reactive({
 let setRouterId = (id) =>{
   routerId.id = id
 }
-console.log(routerId.id);
+
 
 /**
  * This function is used to navigate to url.
@@ -27,7 +27,7 @@ function gotoUrl(url, newTap) {
  
 <template>
   <!-- * LandingPage start --------------------------------------------------------- -->
-  <div id="landing-page" class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32" v-if="routerId.id === 100">
+  <div v-if="routerId.id === 100" id="landing-page" class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32" >
     <div id="game-title" class="flex gap-2 sm:gap-6">
       <div class="-rotate-12 text-[0.5rem] sm:text-[1rem]">
         <div class="absolute bg-white w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 origin-bottom -rotate-45">
