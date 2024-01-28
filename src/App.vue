@@ -2,6 +2,17 @@
 import { reactive } from 'vue';
 
 const landingPageCardFlipState = reactive([false, false, false, false])
+let router= reactive({
+  titlePage:true,
+  selectModePage:false,
+  
+
+})
+let setRouterSelectMode = () =>{
+  router.titlePage = !router.titlePage
+  router.selectModePage = !router.selectModePage
+
+}
 
 /**
  * This function is used to navigate to url.
@@ -18,7 +29,7 @@ function gotoUrl(url, newTap) {
  
 <template>
   <!-- * LandingPage start --------------------------------------------------------- -->
-  <div id="landing-page" class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32">
+  <div id="landing-page" class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32" v-if="router.titlePage">
     <div id="game-title" class="flex gap-2 sm:gap-6">
       <div class="-rotate-12 text-[0.5rem] sm:text-[1rem]">
         <div class="absolute bg-white w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 origin-bottom -rotate-45">
@@ -70,7 +81,7 @@ function gotoUrl(url, newTap) {
           </div>
       </div>
     </div>
-    <button id="play-btn" type="button" class="btn btn-lg btn-success w-52 text-2xl text-white font-bold">Play</button>
+    <button id="play-btn" type="button" class="btn btn-lg btn-success w-52 text-2xl text-white font-bold" @click = "setRouterSelectMode">Play</button>
     <div id="corner-btn-group" class="absolute flex xs:flex-col gap-2 right-4 bottom-4">
       <div class="tooltip hover:tooltip-open tooltip-left tooltip-info" data-tip="How to play?">
         <button type="button" class="btn btn-circle btn-neutral btn-lg">
@@ -91,7 +102,8 @@ function gotoUrl(url, newTap) {
   <!-- * LandingPage end --------------------------------------------------------- -->
 
   <!-- * Mode select screen start --------------------------------------------------------- -->
-  <div>
+  <div >
+    <h1>Mode Select Page !!!</h1>
     <!-- TODO: Mode select screen -->
   </div>
   <!-- * Mode select screen end --------------------------------------------------------- -->
