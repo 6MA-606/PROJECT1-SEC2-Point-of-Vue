@@ -112,7 +112,7 @@ const modes = [
 
   <!-- * Mode select screen start --------------------------------------------------------- -->
   <div v-if="router.id === 101" class="grid place-items-center select-none">
-    <button @click="router.id = 100" type="button" class="btn btn-warning absolute left-4 top-4">
+    <button @click="setRouterId(100)" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Back</div>
     </button>
