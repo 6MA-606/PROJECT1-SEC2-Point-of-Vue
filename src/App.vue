@@ -1,16 +1,16 @@
 <script setup>
-import { reactive, ref } from 'vue';
-import GitHubIcon from './assets/github.svg?raw'
-import BookIcon from './assets/book.svg?raw'
+import { reactive, ref } from "vue"
+import GitHubIcon from "./assets/github.svg?raw"
+import BookIcon from "./assets/book.svg?raw"
 
 const landingPageCardFlipState = reactive([false, false, false, false])
 const router = reactive({
-  id:100
+  id: 101
 })
 
 // Start Page ID:100
 // Selecmode page ID:101
-function setRouterId(id){
+function setRouterId(id) {
   router.id = id
 }
 
@@ -20,14 +20,20 @@ function setRouterId(id){
  * @param {boolean} newTap - Whether to open the url in a new tab.
  */
 function gotoUrl(url, newTap) {
-    // This is temporary function to navigate to url.
-    // We should implement other method sometime.
-    window.open(url, newTap ? '_blank' : '_self')
+  // This is temporary function to navigate to url.
+  // We should implement other method sometime.
+  window.open(url, newTap ? "_blank" : "_self")
 }
 
+const modes = [
+  { title: "mode1", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "" },
+  { title: "mode2", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "" },
+  { title: "mode3", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "" }
+]
 </script>
- 
+
 <template>
+
   <!-- * LandingPage start --------------------------------------------------------- -->
   <div
     v-if="router.id === 100"
@@ -102,25 +108,37 @@ function gotoUrl(url, newTap) {
   <!-- * LandingPage end --------------------------------------------------------- -->
 
   <!-- * Mode select screen start --------------------------------------------------------- -->
-  <div v-if="router.id === 101">
-    <h1>Mode Select Page !!!</h1>
-    <!-- TODO: Mode select screen -->
+  <div v-if="router.id === 101" class="grid place-items-center user-select-none user-drag-none">
+    <div class="flex gap-4 mt-60">
+      <div
+        v-for="(mode, index) in modes"
+        :key="index"
+      >
+        <div class="overflow-hidden w-52 h-52 rounded-lg">
+          <img
+            src="https://gdb.voanews.com/EEA0B145-95D4-4532-9C69-D0FCD1833D53_w408_r0_s.jpg"
+            alt="Monkey Picture"
+          />
+        </div>
+        <div class="text-center">{{ mode.title }}</div>
+      </div>
+    </div>
   </div>
   <!-- * Mode select screen end --------------------------------------------------------- -->
 </template>
- 
+
 <style scoped>
 .flip {
-    /* perspective: 1000px; */
-    transform: rotateY(180deg);
-    backface-visibility: hidden;
+  /* perspective: 1000px; */
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
 }
 
 .transform-style-3d {
-    transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 .perspective-1000 {
-    perspective: 1000px;
+  perspective: 1000px;
 }
 </style>
