@@ -7,13 +7,14 @@ import InfoIcon from "./assets/info-circle.svg?raw"
 
 const landingPageCardFlipState = reactive([false, false, false, false])
 const router = reactive({
-  id: 101
+  id: parseInt(localStorage.getItem('router_id')) || 100
 })
 
 // Start Page ID:100
 // Selecmode page ID:101
 function setRouterId(id) {
   router.id = id
+  localStorage.setItem("router_id", id)
 }
 
 /**
