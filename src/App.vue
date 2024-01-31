@@ -12,6 +12,7 @@ const router = reactive({
 
 // Start Page ID:100
 // Selecmode page ID:101
+// Single player Mode ID:200
 function setRouterId(id) {
   router.id = id
   localStorage.setItem("router_id", id)
@@ -29,10 +30,37 @@ function gotoUrl(url, newTap) {
 }
 
 const modes = [
-  { title: "mode1", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "https://gdb.voanews.com/EEA0B145-95D4-4532-9C69-D0FCD1833D53_w408_r0_s.jpg" },
-  { title: "mode2", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "https://gdb.voanews.com/EEA0B145-95D4-4532-9C69-D0FCD1833D53_w408_r0_s.jpg" },
-  { title: "mode3", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "https://gdb.voanews.com/EEA0B145-95D4-4532-9C69-D0FCD1833D53_w408_r0_s.jpg" }
+  {
+    title: "Endless Mode (1P)",
+    description: "More quick, more score",
+    thumbnail: "https://media.discordapp.net/attachments/1201850170887639051/1202061950922784768/Firefly_I_want_dragon_cute_3d_style_no_colorful_54651.jpg?ex=65cc166e&is=65b9a16e&hm=ed493ed740832d2cfd1dd1a76ed8ca135757b19add130fc36f9face796a9f45c",
+    gif: "https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    routerId: 200
+  },
+  {
+    title: "Versus Mode (2P)",
+    description: "Play with your friend",
+    thumbnail: "https://media.discordapp.net/attachments/1201850170887639051/1202079916418678784/Firefly_I_want_monkey_3d_style_cute_i_want_glass_style_mor_minimal_21146.jpg?ex=65cc2729&is=65b9b229&hm=bd3caa716b0fc61ff31be1d851ade1fb1ee5cab8b283c21fd37cc6a859dada0f",
+    gif: "https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    routerId: 201
+  },
 ]
+
+const gameState = reactive({
+  mode: 0, // 0: No selected, 1: Endless Mode (1P), 2: Versus Mode (2P)
+  status: {
+    isPlaying: false,
+    isPaused: false,
+  },
+  score: 0,
+  time: 0,
+})
+
+/** @param {Event} e */
+const handleBgClick = (e) => {
+  if (e.target.id !== 'mode-select') return
+  gameState.mode = 0
+}
 </script>
 
 <template>
@@ -111,30 +139,63 @@ const modes = [
   <!-- * LandingPage end --------------------------------------------------------- -->
 
   <!-- * Mode select screen start --------------------------------------------------------- -->
-  <div v-if="router.id === 101" class="grid place-items-center select-none">
+  <div v-if="router.id === 101" @click="handleBgClick" class="grid place-items-center select-none">
     <button @click="setRouterId(100)" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Back</div>
     </button>
-    <div class="flex justify-center gap-20 mt-64">
+    <!-- <div class="text-4xl font-bold">Select Mode</div> -->
+    <div id="mode-select" class="w-full h-screen flex justify-center items-center gap-20">
       <div
         v-for="(mode, index) in modes"
         :key="index"
-        class="w-1/4 flex flex-col justify-center items-center"
+        :class="(((gameState.mode === index + 1) && (gameState.mode !== 0)) ? 'border-4 border-green-500 z-10 lg:scale-110' : '')"
+        @click="gameState.mode = index + 1"
+        class="relative w-1/4 px-5 py-10 flex flex-col justify-center items-center gap-4 bg-base-200 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] cursor-pointer"
       >
-        <div class="overflow-hidden w-52 h-52 rounded-lg relative">
-          <div v-html="InfoIcon" class="absolute top-2 right-2 scale-150"></div>
+        <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
+        <div class="w-[13em] h-[13em]">
           <img
-            :src="mode.thumbnail"
-            alt="Monkey Picture"
+            :src="((gameState.mode === index + 1) && (gameState.mode !== 0)) ? mode.gif : mode.thumbnail"
+            :alt="mode.title"
+            class="w-full h-full object-cover rounded-lg"
           />
         </div>
-        <div class="text-center">{{ mode.title }}</div>
-        <div class="text-center">{{ mode.description }}</div>
+        <div class="flex flex-col gap-2">
+          <div class="text-center text-[1.25em] font-bold">{{ mode.title }}</div>
+          <div class="text-center text-[0.875em]">{{ mode.description }}</div>
+        </div>
+        <button
+          v-if="gameState.mode === index + 1"
+          type="button"
+          @click="setRouterId(mode.routerId)"
+          class="btn btn-success px-10 text-[1em] text-white font-semibold"
+        >
+          Play
+        </button>
       </div>
     </div>
   </div>
   <!-- * Mode select screen end --------------------------------------------------------- -->
+
+  <!-- * Single player mode start --------------------------------------------------------- -->
+  <div v-if="router.id === 200">
+    <button @click="setRouterId(100)" type="button" class="btn btn-warning absolute left-4 top-4">
+      <div v-html="ArrowLeftIcon"></div>
+      <div>Quit</div>
+    </button>
+  </div>
+  <!-- * Single player mode end --------------------------------------------------------- -->
+
+  <!-- * Multi player mode start --------------------------------------------------------- -->
+  <div v-if="router.id === 201">
+    <button @click="setRouterId(100)" type="button" class="btn btn-warning absolute left-4 top-4">
+      <div v-html="ArrowLeftIcon"></div>
+      <div>Quit</div>
+    </button>
+  </div>
+  <!-- * Multi player mode end --------------------------------------------------------- -->
+
 </template>
 
 <style scoped>
