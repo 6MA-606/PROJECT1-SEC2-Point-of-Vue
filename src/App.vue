@@ -4,12 +4,12 @@ import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
 import InfoIcon from "./assets/info-circle.svg?raw"
-import { getPairCard } from "./utils/cardFunction.js"
+import { getPairCard, shuffle } from "./utils/cardFunction.js"
 import { gotoUrl } from "./utils/helperFunction.js"
 
 
 const landingPageCards = reactive(getPairCard(2))
-console.log(landingPageCards)
+shuffle(landingPageCards)
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100
@@ -84,7 +84,7 @@ const handleBgClick = (e) => {
         </div>
       </div>
     </div>
-    <div id="landing-4-card" class="hidden sm:flex gap-8">
+    <div id="landing-4-card" class="hidden sm:flex gap-8 flex-wrap">
       <div
         v-for="(card, index) of landingPageCards"
         :key="index"
