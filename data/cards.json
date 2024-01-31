@@ -1,0 +1,22 @@
+[
+    {
+        "id": 0,
+        "name": "Unicorn",
+        "arts": "/cards/unicorn.webp"
+    },
+    {
+        "id": 1,
+        "name": "Dragon",
+        "arts": "/cards/dragon.webp"
+    },
+    {
+        "id": 2,
+        "name": "King kong",
+        "arts": "/cards/kingkong.webp"
+    },
+    {
+        "id": 3,
+        "name": "Phoenix",
+        "arts": "/cards/phoenix.webp"
+    }
+]

@@ -4,8 +4,34 @@ import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
 import InfoIcon from "./assets/info-circle.svg?raw"
+import Cards from "../data/cards.json"
 
-const landingPageCardFlipState = reactive([false, false, false, false])
+function getPairCard(pairAmount) {
+  const cardIds = []
+  const cards = []
+
+  for (let i = 0; i < pairAmount; i++) {
+    let randCardId
+    do {
+      randCardId = Math.round(Math.random() * (Cards.length - 1))
+    } while (cardIds.indexOf(randCardId) > -1)
+    cardIds.push(randCardId)
+  }
+
+  console.log(cardIds)
+
+  for (let cardId of cardIds) {
+    const cardObj = {...Cards.find(card => card.id === cardId), isFliped: false}
+    cards.push({...cardObj})
+    cards.push({...cardObj})
+  }
+
+  return cards
+}
+
+const landingPageCards = reactive(getPairCard(2))
+console.log(landingPageCards)
+
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100
 })
@@ -64,17 +90,19 @@ const modes = [
     </div>
     <div id="landing-4-card" class="hidden sm:flex gap-8">
       <div
-        v-for="(cardFlipState, index) of landingPageCardFlipState"
+        v-for="(card, index) of landingPageCards"
         :key="index"
         class="w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent perspective-1000"
-        @click="landingPageCardFlipState[index] = !landingPageCardFlipState[index]"
+        @click="card.isFliped = !card.isFliped"
       >
-          <div :class="cardFlipState ? 'flip' : ''" class="transition-transform duration-500 transform-style-3d">
+          <div :class="card.isFliped ? 'flip' : ''" class="transition-transform duration-500 transform-style-3d">
               <div class="absolute bg-black w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] flex justify-center items-center rounded-lg border-2">
-                  <div class="text-white text-2xl">Back</div>
+                <div class="text-white text-2xl">Back</div>
               </div>
-              <div class="flip absolute bg-white w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] flex justify-center items-center rounded-lg border-2">
-                  <div class="text-black text-2xl">Front</div>
+              <div class="flip absolute bg-white w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] flex flex-col gap-1 justify-center items-center rounded-lg border-2">
+                <div class="font-bold text-lg">{{ card.name }}</div>
+                <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12">
+                <div class="rotate-180 font-bold text-lg">{{ card.name }}</div>
               </div>
           </div>
       </div>
@@ -82,9 +110,9 @@ const modes = [
     <div id="landing-1-card" class="flex sm:hidden">
       <div
         class="w-[10rem] h-[14rem] bg-transparent perspective-1000"
-        @click="landingPageCardFlipState[0] = !landingPageCardFlipState[0]"
+        @click="landingPageCards[0].isFliped = !landingPageCards[0].isFliped"
       >
-          <div :class="landingPageCardFlipState[0] ? 'flip' : ''" class="transition-transform duration-500 transform-style-3d">
+          <div :class="landingPageCards[0].isFliped ? 'flip' : ''" class="transition-transform duration-500 transform-style-3d">
               <div class="absolute bg-black w-[10rem] h-[14rem] flex justify-center items-center rounded-lg border-2">
                   <div class="text-white text-2xl">Back</div>
               </div>
