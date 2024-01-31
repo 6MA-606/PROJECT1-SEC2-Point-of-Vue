@@ -1,17 +1,20 @@
 <script setup>
-import { reactive, ref } from 'vue';
-import GitHubIcon from './assets/github.svg?raw'
-import BookIcon from './assets/book.svg?raw'
+import { reactive, ref } from "vue"
+import GitHubIcon from "./assets/github.svg?raw"
+import BookIcon from "./assets/book.svg?raw"
+import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
+import InfoIcon from "./assets/info-circle.svg?raw"
 
 const landingPageCardFlipState = reactive([false, false, false, false])
 const router = reactive({
-  id:100
+  id: parseInt(localStorage.getItem('router_id')) || 100
 })
 
 // Start Page ID:100
 // Selecmode page ID:101
-function setRouterId(id){
+function setRouterId(id) {
   router.id = id
+  localStorage.setItem("router_id", id)
 }
 
 /**
@@ -20,14 +23,20 @@ function setRouterId(id){
  * @param {boolean} newTap - Whether to open the url in a new tab.
  */
 function gotoUrl(url, newTap) {
-    // This is temporary function to navigate to url.
-    // We should implement other method sometime.
-    window.open(url, newTap ? '_blank' : '_self')
+  // This is temporary function to navigate to url.
+  // We should implement other method sometime.
+  window.open(url, newTap ? "_blank" : "_self")
 }
 
+const modes = [
+  { title: "mode1", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "https://gdb.voanews.com/EEA0B145-95D4-4532-9C69-D0FCD1833D53_w408_r0_s.jpg" },
+  { title: "mode2", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "https://gdb.voanews.com/EEA0B145-95D4-4532-9C69-D0FCD1833D53_w408_r0_s.jpg" },
+  { title: "mode3", description: "Lorem ipsum dolor sit amet consectetur adipisicing elit.", thumbnail: "https://gdb.voanews.com/EEA0B145-95D4-4532-9C69-D0FCD1833D53_w408_r0_s.jpg" }
+]
 </script>
- 
+
 <template>
+
   <!-- * LandingPage start --------------------------------------------------------- -->
   <div
     v-if="router.id === 100"
@@ -102,25 +111,44 @@ function gotoUrl(url, newTap) {
   <!-- * LandingPage end --------------------------------------------------------- -->
 
   <!-- * Mode select screen start --------------------------------------------------------- -->
-  <div v-if="router.id === 101">
-    <h1>Mode Select Page !!!</h1>
-    <!-- TODO: Mode select screen -->
+  <div v-if="router.id === 101" class="grid place-items-center select-none">
+    <button @click="setRouterId(100)" type="button" class="btn btn-warning absolute left-4 top-4">
+      <div v-html="ArrowLeftIcon"></div>
+      <div>Back</div>
+    </button>
+    <div class="flex justify-center gap-20 mt-64">
+      <div
+        v-for="(mode, index) in modes"
+        :key="index"
+        class="w-1/4 flex flex-col justify-center items-center"
+      >
+        <div class="overflow-hidden w-52 h-52 rounded-lg relative">
+          <div v-html="InfoIcon" class="absolute top-2 right-2 scale-150"></div>
+          <img
+            :src="mode.thumbnail"
+            alt="Monkey Picture"
+          />
+        </div>
+        <div class="text-center">{{ mode.title }}</div>
+        <div class="text-center">{{ mode.description }}</div>
+      </div>
+    </div>
   </div>
   <!-- * Mode select screen end --------------------------------------------------------- -->
 </template>
- 
+
 <style scoped>
 .flip {
-    /* perspective: 1000px; */
-    transform: rotateY(180deg);
-    backface-visibility: hidden;
+  /* perspective: 1000px; */
+  transform: rotateY(180deg);
+  backface-visibility: hidden;
 }
 
 .transform-style-3d {
-    transform-style: preserve-3d;
+  transform-style: preserve-3d;
 }
 
 .perspective-1000 {
-    perspective: 1000px;
+  perspective: 1000px;
 }
 </style>
