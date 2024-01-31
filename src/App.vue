@@ -4,30 +4,9 @@ import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
 import InfoIcon from "./assets/info-circle.svg?raw"
-import Cards from "../data/cards.json"
+import { getPairCard } from "./utils/cardFunction.js"
+import { gotoUrl } from "./utils/helperFunction.js"
 
-function getPairCard(pairAmount) {
-  const cardIds = []
-  const cards = []
-
-  for (let i = 0; i < pairAmount; i++) {
-    let randCardId
-    do {
-      randCardId = Math.round(Math.random() * (Cards.length - 1))
-    } while (cardIds.indexOf(randCardId) > -1)
-    cardIds.push(randCardId)
-  }
-
-  console.log(cardIds)
-
-  for (let cardId of cardIds) {
-    const cardObj = {...Cards.find(card => card.id === cardId), isFliped: false}
-    cards.push({...cardObj})
-    cards.push({...cardObj})
-  }
-
-  return cards
-}
 
 const landingPageCards = reactive(getPairCard(2))
 console.log(landingPageCards)
@@ -42,17 +21,6 @@ const router = reactive({
 function setRouterId(id) {
   router.id = id
   localStorage.setItem("router_id", id)
-}
-
-/**
- * This function is used to navigate to url.
- * @param {string} url - The url to navigate to.
- * @param {boolean} newTap - Whether to open the url in a new tab.
- */
-function gotoUrl(url, newTap) {
-  // This is temporary function to navigate to url.
-  // We should implement other method sometime.
-  window.open(url, newTap ? "_blank" : "_self")
 }
 
 const modes = [
