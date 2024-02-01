@@ -67,8 +67,8 @@ const { p1, p2 } = toRefs(gameState.player)
 function reset() {
   gameState.mode = 0
   gameState.time = 30
-  p1.value.selectedCards.splice(0, selectedCards.length)
-  p2.value.selectedCards.splice(0, selectedCards.length)
+  p1.value.selectedCards.splice(0, p1.value.selectedCards.length)
+  p2.value.selectedCards.splice(0, p2.value.selectedCards.length)
   p1.value.paired = 0
   p2.value.paired = 0
 }
@@ -97,8 +97,10 @@ function startSinglePlayerMode() {
 }
 
 const singlePlayerCardClick = (card) => {
-  if (!card.isFliped && p1.value.selectedCards.length < 2) card.isFliped = true
-  p1.value.selectedCards.push(card)
+  if (!card.isFliped && p1.value.selectedCards.length < 2) { 
+    card.isFliped = true
+    p1.value.selectedCards.push(card)
+  } else return
   
   if (p1.value.selectedCards.length === 2) {
     if (p1.value.selectedCards[0].id === p1.value.selectedCards[1].id) {
