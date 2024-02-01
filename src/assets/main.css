@@ -12,5 +12,6 @@
 
 body {
     overflow: hidden;
-    background-image: linear-gradient(to bottom, #642375 0% 60%, #3c1846 70% 100%);
+    /* background-image: linear-gradient(to bottom, #642375 0% 60%, #3c1846 70% 100%); */
+    background-image: url(./bg.svg);
 }

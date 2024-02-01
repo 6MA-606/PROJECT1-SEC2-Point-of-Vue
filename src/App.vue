@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref } from "vue"
+import { reactive, ref, toRefs, watch } from "vue"
 import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
@@ -21,9 +21,9 @@ const isLoading = ref(false)
 // Start Page ID:100
 // Selecmode page ID:101
 // Single player Mode ID:200
-function setRouterId(id) {
+function setRouterId(id, saveRoute) {
   router.id = id
-  localStorage.setItem("router_id", id)
+  localStorage.setItem("router_id", saveRoute ? id : 100)
 }
 
 const modes = [
@@ -49,9 +49,29 @@ const gameState = reactive({
     isPlaying: false,
     isPaused: false,
   },
-  score: 0,
-  time: 0,
+  time: 30,
+  player: {
+    p1: {
+      selectedCards: [],
+      paired: 0
+    },
+    p2: {
+      selectedCards: [],
+      paired: 0
+    }
+  }
 })
+
+const { p1, p2 } = toRefs(gameState.player)
+
+function reset() {
+  gameState.mode = 0
+  gameState.time = 30
+  p1.value.selectedCards.splice(0, selectedCards.length)
+  p2.value.selectedCards.splice(0, selectedCards.length)
+  p1.value.paired = 0
+  p2.value.paired = 0
+}
 
 /** @param {Event} e */
 const handleBgClick = (e) => {
@@ -59,19 +79,74 @@ const handleBgClick = (e) => {
   gameState.mode = 0
 }
 
-const handleRouterBtnClick = (routerId) => {
+const routeWithTransition = (routerId, milliseconds, saveRoute) => {
   isLoading.value = true
   setTimeout(()=>{
+    setRouterId(routerId, saveRoute)
     isLoading.value = false
-    setRouterId(routerId)
-  }, 3000)
+  }, milliseconds)
 }
+
+const cardInBoard = reactive([])
+
+function startSinglePlayerMode() {
+  cardInBoard.splice(0, cardInBoard.length)
+  cardInBoard.push(...getPairCard(4))
+  shuffle(cardInBoard)
+  console.log(cardInBoard)
+}
+
+const singlePlayerCardClick = (card) => {
+  if (!card.isFliped && p1.value.selectedCards.length < 2) card.isFliped = true
+  p1.value.selectedCards.push(card)
+  
+  if (p1.value.selectedCards.length === 2) {
+    if (p1.value.selectedCards[0].id === p1.value.selectedCards[1].id) {
+      p1.value.paired += 1
+      p1.value.selectedCards.splice(0, p1.value.selectedCards.length)
+    } else {
+      setTimeout(() => {
+        p1.value.selectedCards.forEach(card => { card.isFliped = false })
+        p1.value.selectedCards.splice(0, p1.value.selectedCards.length)
+      }, 1000)
+    }
+  }
+}
+
+const handleQuitBtn = () => {
+  if (window.confirm('Quit?') === true) {
+    routeWithTransition(100, 2000, true)
+    reset()
+  }
+}
+
+watch(
+  () => router.id,
+  (newRouterId) => {
+    switch (newRouterId) {
+      case 200:
+        console.log('singleplayer mode start')
+        startSinglePlayerMode()
+        break
+      case 201:
+        console.log('multiplayer mode start')
+        break
+    }
+  }
+)
+
+watch(
+  gameState,
+  (x) => {console.log(x)},
+  {deep: true}
+)
+
 </script>
 
 <template>
 
   <!-- * Loading screen start --------------------------------------------------------- -->
-  <div :class="isLoading ? 'translate-y-[0%]' : ''" class="absolute grid place-items-center translate-y-[100%] transition-transform duration-1000 w-full h-screen bg-purple-950 z-20">
+  <div :class="isLoading ? 'translate-y-[0%]' : 'translate-y-[100%]'" class="absolute grid place-items-center transition-transform duration-1000 w-full h-screen bg-purple-950 z-50">
     <div class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95">
       <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
         <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
@@ -149,7 +224,7 @@ const handleRouterBtnClick = (routerId) => {
       id="play-btn"
       type="button"
       class="btn-mythmatch"
-      @click="handleRouterBtnClick(101)"
+      @click="routeWithTransition(101, 2000, true)"
     >
       Play
     </button>
@@ -175,13 +250,13 @@ const handleRouterBtnClick = (routerId) => {
       <div>Back</div>
     </button>
     <!-- <div class="text-4xl font-bold">Select Mode</div> -->
-    <div id="mode-select" class="w-full h-screen flex justify-center items-center gap-20">
+    <div id="mode-select" class="w-full h-screen overflow-auto flex flex-col lg:flex-row lg:justify-center py-36 lg:py-0 items-center gap-20">
       <div
         v-for="(mode, index) in modes"
         :key="index"
         :class="(((gameState.mode === index + 1) && (gameState.mode !== 0)) ? 'border-4 border-green-500 z-10 lg:scale-110' : '')"
         @click="gameState.mode = index + 1"
-        class="relative w-1/4 px-5 py-10 flex flex-col justify-center items-center gap-4 bg-base-200 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] cursor-pointer"
+        class="relative w-[20rem] lg:w-[22rem] px-5 py-10 flex flex-col justify-center items-center gap-4 bg-base-200 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] cursor-pointer"
       >
         <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
         <div class="w-[13em] h-[13em]">
@@ -198,7 +273,7 @@ const handleRouterBtnClick = (routerId) => {
         <button
           v-if="gameState.mode === index + 1"
           type="button"
-          @click="setRouterId(mode.routerId)"
+          @click="routeWithTransition(mode.routerId, 2000, false)"
           class="btn btn-success px-10 text-[1em] text-white font-semibold"
         >
           Play
@@ -209,11 +284,33 @@ const handleRouterBtnClick = (routerId) => {
   <!-- * Mode select screen end --------------------------------------------------------- -->
 
   <!-- * Single player mode start --------------------------------------------------------- -->
-  <div v-if="router.id === 200">
-    <button @click="setRouterId(100)" type="button" class="btn btn-warning absolute left-4 top-4">
+  <div v-if="router.id === 200" class="h-screen bg-[#0009] flex justify-center items-center">
+    <!-- <div class="absolute w-full h-screen bg-[#0005] z-30"></div> -->
+    <button @click="handleQuitBtn" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
+    <div class="grid grid-cols-4 grid-flow-row place-items-center gap-3">
+      <div
+        v-for="(card, index) of cardInBoard"
+        :key="index"
+        :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
+        class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+        @click="singlePlayerCardClick(card)"
+      >
+          <div :class="card.isFliped ? 'flip' : ''" class="transition-transform w-full h-full duration-500 transform-style-3d relative">
+              <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
+                <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
+                <img src="./assets/backcard.png" alt="backcard" class="w-full h-full">
+              </div>
+              <div :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`" class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100">
+                <div class="font-bold font-mythmatch text-xl text-mythmatch-100">{{ card.name }}</div>
+                <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12">
+                <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">{{ card.name }}</div>
+              </div>
+          </div>
+      </div>
+    </div>
   </div>
   <!-- * Single player mode end --------------------------------------------------------- -->
 
@@ -237,16 +334,16 @@ const handleRouterBtnClick = (routerId) => {
 
 .animate-con-flip {
   animation: animate-con-flip 2.5s infinite forwards linear;
-  
-  & > .back-load-card {
-    backface-visibility: hidden;
-    transform: rotate(12deg);
-  }
-  
-  & > .front-load-card {
-    backface-visibility: hidden;
-    transform: rotate(12deg) rotateY(180deg);
-  }
+}
+
+.animate-con-flip > .back-load-card {
+  backface-visibility: hidden;
+  transform: rotate(12deg);
+}
+
+.animate-con-flip > .front-load-card {
+  backface-visibility: hidden;
+  transform: rotate(12deg) rotateY(180deg);
 }
 
 @keyframes animate-con-flip {

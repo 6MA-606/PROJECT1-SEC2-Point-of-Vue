@@ -1,0 +1,42 @@
+<svg width="1920" height="1080" viewBox="0 0 1920 1080" fill="none" xmlns="http://www.w3.org/2000/svg">
+
+<style>
+
+#wave1-1 {
+    animation: slide-1 15s infinite linear;
+}
+
+#wave2-1 {
+    animation: slide-1 10s infinite linear;
+}
+
+#wave1-2 {
+    transform: translateX(-1920px);
+    animation: slide-2 15s infinite linear;
+}
+
+#wave2-2 {
+    transform: translateX(-1920px);
+    animation: slide-2 10s infinite linear;
+}
+
+@keyframes slide-1 {
+    0% { transform: translateX(0px); }
+    100% { transform: translateX(1920px); }
+}
+
+@keyframes slide-2 {
+    0% { transform: translateX(-1920px); }
+    100% { transform: translateX(0px); }
+}
+
+</style>
+
+<g clip-path="url(#clip0_26_2)">
+<path id="bg" d="M1920 0H0V1080H1920V0Z" fill="#4c0f72"/>
+<path id="wave2-2" d="M1920 1080V540C1920 540 1444.5 281.5 960 540C475.5 798.5 0 540 0 540V1080H1920Z" fill="#3d0053"/>
+<path id="wave2-1" d="M1920 1080V540C1920 540 1444.5 281.5 960 540C475.5 798.5 0 540 0 540V1080H1920Z" fill="#3d0053"/>
+<path id="wave1-2" opacity="0.5" d="M1920 1080V540C1920 540 1369 61.5 960 540C551 1018.5 0 540 0 540V1080H1920Z" fill="#390b56"/>
+<path id="wave1-1" opacity="0.5" d="M1920 1080V540C1920 540 1369 61.5 960 540C551 1018.5 0 540 0 540V1080H1920Z" fill="#390b56"/>
+</g>
+</svg>
