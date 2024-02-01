@@ -4,7 +4,7 @@
 
 <img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner">
 <div align="center">
-<h2 style ="font-size:36px">Card Match Game
+<h2 style ="font-size:36px">Mythmatch Logo
 </h2>
 <p align = "left">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
 
@@ -17,27 +17,30 @@ Figma
 </a>
 </div>
 <div>
+Screen Short
+</div>
+<div>
 <h1 align = "center">Team Member</h1>
-<h4>
+<h4 align ="center">
 
 65130500089 lorem Ipsum
 <a>
 </h4>
-<h4>
+<h4 align ="center">
 
 65130500089 lorem Ipsum
 
 </h4>
-<h4>
+<h4 align ="center">
 
 65130500089 lorem Ipsum
 
 </h4>
-<h4>
+<h4 align ="center">
 
 65130500089 lorem Ipsum
 
-</h4>
+</h4 align ="center">
 </div>
 
 
