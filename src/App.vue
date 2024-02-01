@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, toRefs, watch } from "vue"
+import { onMounted, reactive, ref, toRefs, watch } from "vue"
 import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
@@ -25,7 +25,12 @@ function setRouterId(id, saveRoute) {
   router.id = id
   localStorage.setItem("router_id", saveRoute ? id : 100)
 }
-
+onMounted(()=>{
+  if(parseInt(localStorage.getItem("router_id")) === 200 ){
+    reset()
+    startSinglePlayerMode()
+  }
+})
 const modes = [
   {
     title: "Endless Mode (1P)",
@@ -275,7 +280,7 @@ watch(
         <button
           v-if="gameState.mode === index + 1"
           type="button"
-          @click="routeWithTransition(mode.routerId, 2000, false)"
+          @click="routeWithTransition(mode.routerId, 2000, true)"
           class="btn btn-success px-10 text-[1em] text-white font-semibold"
         >
           Play
