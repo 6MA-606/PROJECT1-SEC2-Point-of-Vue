@@ -1,7 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Dancing+Script:wght@400;500;600;700&display=swap');
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 * {
     -webkit-user-drag: none;
+    -webkit-user-select: none;
+    user-select: none;
+}
+
+body {
+    overflow: hidden;
+    background-image: linear-gradient(to bottom, #642375 0% 60%, #3c1846 70% 100%);
 }

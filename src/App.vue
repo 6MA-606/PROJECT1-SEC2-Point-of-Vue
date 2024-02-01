@@ -4,9 +4,10 @@ import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
 import InfoIcon from "./assets/info-circle.svg?raw"
+// import MythMatchLogo from "./assets/MythMatch_logo.svg?raw"
 import { getPairCard, shuffle } from "./utils/cardFunction.js"
 import { gotoUrl } from "./utils/helperFunction.js"
-
+import Cards from '../data/cards.json'
 
 const landingPageCards = reactive(getPairCard(2))
 shuffle(landingPageCards)
@@ -14,6 +15,8 @@ shuffle(landingPageCards)
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100
 })
+
+const isLoading = ref(false)
 
 // Start Page ID:100
 // Selecmode page ID:101
@@ -55,9 +58,38 @@ const handleBgClick = (e) => {
   if (e.target.id !== 'mode-select') return
   gameState.mode = 0
 }
+
+const handleRouterBtnClick = (routerId) => {
+  isLoading.value = true
+  setTimeout(()=>{
+    isLoading.value = false
+    setRouterId(routerId)
+  }, 3000)
+}
 </script>
 
 <template>
+
+  <!-- * Loading screen start --------------------------------------------------------- -->
+  <div :class="isLoading ? 'translate-y-[0%]' : ''" class="absolute grid place-items-center translate-y-[100%] transition-transform duration-1000 w-full h-screen bg-purple-950 z-20">
+    <div class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95">
+      <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
+        <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
+          <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
+          <img src="./assets/backcard.png" alt="backcard" class="w-full h-full">
+        </div>
+        <div
+          :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`"
+          class="front-load-card absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+        >
+          <div class="font-bold font-mythmatch text-xl text-mythmatch-100">{{ Cards[0].name }}</div>
+          <img :src="Cards[0].arts" :alt="Cards[0].name" class="rounded-lg w-10/12">
+          <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">{{ Cards[0].name }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- * Loading screen end --------------------------------------------------------- -->
 
   <!-- * LandingPage start --------------------------------------------------------- -->
   <div
@@ -66,59 +98,61 @@ const handleBgClick = (e) => {
     class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32"
   >
     <div id="game-title" class="flex gap-2 sm:gap-6">
-      <div class="-rotate-12 text-[0.5rem] sm:text-[1rem]">
-        <div class="absolute bg-white w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 origin-bottom -rotate-45">
-          <div class="text-black text-md">Front</div>
+      <div class="hidden sm:block -rotate-12 text-[0.5rem] sm:text-[1rem]">
+        <div :style="`background-image: linear-gradient(135deg, ${Cards[1].color.primary} 0% 10%, #303 10% 90% , ${Cards[1].color.secondary} 90% 100%)`" class="absolute w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100  origin-bottom -rotate-45">
+          <div class="font-bold font-mythmatch text-xs text-mythmatch-100">{{ Cards[1].name }}</div>
+          <img :src="Cards[1].arts" :alt="Cards[1].name" class="rounded-lg w-10/12">
+          <div class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100">{{ Cards[1].name }}</div>
         </div>
-        <div class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2">
-            <div class="text-white text-md">Back</div>
+        <div class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden">
+          <img src="./assets/backcard.png" alt="bcakcard" class="w-full h-full">
         </div>  
       </div>
-      <div class="text-3xl sm:text-6xl lg:text-8xl font-bold tracking-wider">Game Title</div>
-      <div class="rotate-12 text-[0.5rem] sm:text-[1rem]">
-        <div class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 origin-bottom rotate-45">
-          <div class="text-white text-md">Back</div>
+      <!-- <div class="text-3xl sm:text-6xl lg:text-8xl font-bold tracking-wider">Game Title</div> -->
+      <div class="">
+        <img src="./assets/MythMatch_logo.svg" alt="" class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow">
+      </div>
+      
+      <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
+        <div class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10">
+          <img src="./assets/backcard.png" alt="bcakcard" class="w-full h-full">
         </div>  
-        <div class="bg-white w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2">
-          <div class="text-black text-md">Front</div>
+        <div :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`" class="w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100">
+          <div class="font-bold font-mythmatch text-xs text-mythmatch-100">{{ Cards[0].name }}</div>
+          <img :src="Cards[0].arts" :alt="Cards[0].name" class="rounded-lg w-10/12">
+          <div class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100">{{ Cards[0].name }}</div>
         </div>
       </div>
     </div>
-    <div id="landing-4-card" class="hidden sm:flex gap-8 flex-wrap">
+    <div id="landing-4-card" class="gap-8 flex flex-wrap">
       <div
         v-for="(card, index) of landingPageCards"
         :key="index"
-        class="w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent perspective-1000"
+        :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
+        class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
         @click="card.isFliped = !card.isFliped"
       >
-          <div :class="card.isFliped ? 'flip' : ''" class="transition-transform duration-500 transform-style-3d">
-              <div class="absolute bg-black w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] flex justify-center items-center rounded-lg border-2">
-                <div class="text-white text-2xl">Back</div>
+          <div :class="card.isFliped ? 'flip' : ''" class="transition-transform w-full h-full duration-500 transform-style-3d relative">
+              <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
+                <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
+                <img src="./assets/backcard.png" alt="backcard" class="w-full h-full">
               </div>
-              <div class="flip absolute bg-white w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] flex flex-col gap-1 justify-center items-center rounded-lg border-2">
-                <div class="font-bold text-lg">{{ card.name }}</div>
+              <div :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`" class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100">
+                <div class="font-bold font-mythmatch text-xl text-mythmatch-100">{{ card.name }}</div>
                 <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12">
-                <div class="rotate-180 font-bold text-lg">{{ card.name }}</div>
+                <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">{{ card.name }}</div>
               </div>
           </div>
       </div>
     </div>
-    <div id="landing-1-card" class="flex sm:hidden">
-      <div
-        class="w-[10rem] h-[14rem] bg-transparent perspective-1000"
-        @click="landingPageCards[0].isFliped = !landingPageCards[0].isFliped"
-      >
-          <div :class="landingPageCards[0].isFliped ? 'flip' : ''" class="transition-transform duration-500 transform-style-3d">
-              <div class="absolute bg-black w-[10rem] h-[14rem] flex justify-center items-center rounded-lg border-2">
-                  <div class="text-white text-2xl">Back</div>
-              </div>
-              <div class="flip absolute bg-white w-[10rem] h-[14rem] flex justify-center items-center rounded-lg border-2">
-                  <div class="text-black text-2xl">Front</div>
-              </div>
-          </div>
-      </div>
-    </div>
-    <button id="play-btn" type="button" class="btn btn-lg btn-success w-52 text-2xl text-white font-bold" @click="setRouterId(101)">Play</button>
+    <button
+      id="play-btn"
+      type="button"
+      class="btn-mythmatch"
+      @click="handleRouterBtnClick(101)"
+    >
+      Play
+    </button>
     <div id="corner-btn-group" class="absolute flex xs:flex-col gap-2 right-4 bottom-4">
       <div class="tooltip hover:tooltip-open tooltip-left tooltip-info" data-tip="How to play?">
         <button type="button" class="btn btn-circle btn-neutral btn-lg">
@@ -201,11 +235,38 @@ const handleBgClick = (e) => {
   backface-visibility: hidden;
 }
 
+.animate-con-flip {
+  animation: animate-con-flip 2.5s infinite forwards linear;
+  
+  & > .back-load-card {
+    backface-visibility: hidden;
+    transform: rotate(12deg);
+  }
+  
+  & > .front-load-card {
+    backface-visibility: hidden;
+    transform: rotate(12deg) rotateY(180deg);
+  }
+}
+
+@keyframes animate-con-flip {
+  0% {
+    transform: rotateY(0deg);
+  }
+  100% {
+    transform: rotateY(360deg);
+  }
+}
+
 .transform-style-3d {
   transform-style: preserve-3d;
 }
 
 .perspective-1000 {
   perspective: 1000px;
+}
+
+.btn-mythmatch {
+  @apply w-52 h-16 text-2xl transition-all text-mythmatch-200 bg-mythmatch-100 border-4 hover:border-0 border-mythmatch-200 rounded-lg font-bold active:scale-95 hover:scale-105 hover:bg-mythmatch-200 hover:text-mythmatch-100
 }
 </style>

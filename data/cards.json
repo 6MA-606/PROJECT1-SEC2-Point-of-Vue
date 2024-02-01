@@ -2,26 +2,46 @@
     {
         "id": 0,
         "name": "Unicorn",
-        "arts": "/cards/unicorn.webp"
+        "arts": "/cards/unicorn.webp",
+        "color": {
+            "primary": "#95bed2",
+            "secondary": "#fdd1ce"
+        }
     },
     {
         "id": 1,
         "name": "Dragon",
-        "arts": "/cards/dragon.webp"
+        "arts": "/cards/dragon.webp",
+        "color": {
+            "primary": "#02616d",
+            "secondary": "#a82f1d"
+        }
     },
     {
         "id": 2,
-        "name": "King kong",
-        "arts": "/cards/kingkong.webp"
+        "name": "Minotaur",
+        "arts": "/cards/minotaur.webp",
+        "color": {
+            "primary": "#5acee7",
+            "secondary": "#f3a778"
+        }
     },
     {
         "id": 3,
         "name": "Phoenix",
-        "arts": "/cards/phoenix.webp"
+        "arts": "/cards/phoenix.webp",
+        "color": {
+            "primary": "#033d51",
+            "secondary": "#f64b21"
+        }
     },
     {
         "id": 4,
-        "name": "Untitled",
-        "arts": "/cards/untitled.jpg"
+        "name": "Alicorn",
+        "arts": "/cards/alicorn.webp",
+        "color": {
+            "primary": "#bcbffa",
+            "secondary": "#8c72a1"
+        }
     }
 ]
