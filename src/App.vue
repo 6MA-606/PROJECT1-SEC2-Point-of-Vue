@@ -1,5 +1,5 @@
 <script setup>
-import { reactive, ref, toRefs, watch } from "vue"
+import { onMounted, reactive, ref, toRefs, watch } from "vue"
 import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
@@ -10,10 +10,10 @@ import { gotoUrl } from "./utils/helperFunction.js"
 import Cards from '../data/cards.json'
 import { Player } from "../classes/Player"
 import { Board } from "../classes/Board"
-const landingBoard = new Board()
-landingBoard.getPairCard(2)
-landingBoard.shuffle()
-const landingPageCards = reactive(landingBoard)
+// const landingBoard = new Board()
+// landingBoard.getPairCard(2)
+// landingBoard.shuffle()
+// const landingPageCards = reactive(landingBoard)
 
 
 const router = reactive({
@@ -62,7 +62,12 @@ const gameState = reactive({
 })
 
 const {board, player:{p1,p2}  } = toRefs(gameState)
-
+onMounted(()=>{
+  if(router.id === 100){
+    board.value.getPairCard(2)
+    board.value.shuffle()
+  }
+})
 function reset() {
   gameState.mode = 0
   gameState.time = 30
@@ -123,7 +128,12 @@ const handleQuitBtn = () => {
 watch(
   () => router.id,
   (newRouterId) => {
+    console.log(newRouterId);
     switch (newRouterId) {
+      case 100:
+        board.value.getPairCard(2)
+        board.value.shuffle()
+        break
       case 200:
         console.log('singleplayer mode start')
         startSinglePlayerMode()
@@ -201,7 +211,7 @@ watch(
     </div>
     <div id="landing-4-card" class="gap-8 flex flex-wrap">
       <div
-        v-for="(card, index) of landingPageCards.cards"
+        v-for="(card, index) of board.cards"
         :key="index"
         :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
         class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
