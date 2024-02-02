@@ -110,7 +110,7 @@ const singlePlayerCardClick = (card) => {
       setTimeout(() => {
         p1.value.selectedCards.forEach(card => { card.isFliped = false })
         p1.value.selectedCards.splice(0, p1.value.selectedCards.length)
-      }, 1000)
+      }, 500)
     }
   }
 }
