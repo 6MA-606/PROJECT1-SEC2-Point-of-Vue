@@ -43,5 +43,104 @@
             "primary": "#bcbffa",
             "secondary": "#8c72a1"
         }
+    },
+    {
+        "id": 5,
+        "name": "Cerberus",
+        "arts": "/cards/cerberus.webp",
+        "color": {
+            "primary": "#02ba88",
+            "secondary": "#fbeac9"
+        }
+    },
+    {
+        "id": 6,
+        "name": "Jörmungandr",
+        "arts": "/cards/jormungandr.webp",
+        "color": {
+            "primary": "#3d9cb0",
+            "secondary": "#fbfde8"
+        }
+    },
+    {
+        "id": 7,
+        "name": "Kraken",
+        "arts": "/cards/kraken.webp",
+        "color": {
+            "primary": "#fed1ca",
+            "secondary": "#87cfd9"
+        }
+    },
+    {
+        "id": 8,
+        "name": "Pegasus",
+        "arts": "/cards/pegasus.webp",
+        "color": {
+            "primary": "#aab2df",
+            "secondary": "#eaaa8b"
+        }
+    },
+    {
+        "id": 9,
+        "name": "Xuan Wu",
+        "arts": "/cards/xuan_wu.webp",
+        "color": {
+            "primary": "#005e60",
+            "secondary": "#2a2f32"
+        }
+    },
+    {
+        "id": 10,
+        "name": "Bái Hǔ",
+        "arts": "/cards/bai_hu.webp",
+        "color": {
+            "primary": "#ebbab6",
+            "secondary": "#eff4f7"
+        }
+    },
+    {
+        "id": 11,
+        "name": "Simurgh",
+        "arts": "/cards/simurgh.webp",
+        "color": {
+            "primary": "#ec79a2",
+            "secondary": "#44eff2"
+        }
+    },
+    {
+        "id": 12,
+        "name": "Naga",
+        "arts": "/cards/naga.webp",
+        "color": {
+            "primary": "#f4bb62",
+            "secondary": "#38b760"
+        }
+    },
+    {
+        "id": 13,
+        "name": "Garuda",
+        "arts": "/cards/garuda.webp",
+        "color": {
+            "primary": "#fbbd8c",
+            "secondary": "#fe4845"
+        }
+    },
+    {
+        "id": 14,
+        "name": "Gajasimha",
+        "arts": "/cards/gajasimha.webp",
+        "color": {
+            "primary": "#dabba8",
+            "secondary": "#88678f"
+        }
+    },
+    {
+        "id": 15,
+        "name": "Tanuki",
+        "arts": "/cards/tanuki.webp",
+        "color": {
+            "primary": "#fedeb8",
+            "secondary": "#b8f480"
+        }
     }
 ]

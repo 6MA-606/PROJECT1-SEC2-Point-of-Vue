@@ -161,7 +161,7 @@ watch(
       <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
         <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
           <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
-          <img src="./assets/backcard.png" alt="backcard" class="w-full h-full">
+          <img src="/cards/backcard.webp" alt="backcard" class="w-full h-full">
         </div>
         <div
           :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`"
@@ -190,7 +190,7 @@ watch(
           <div class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100">{{ Cards[1].name }}</div>
         </div>
         <div class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden">
-          <img src="./assets/backcard.png" alt="bcakcard" class="w-full h-full">
+          <img src="/cards/backcard.webp" alt="bcakcard" class="w-full h-full">
         </div>  
       </div>
       <!-- <div class="text-3xl sm:text-6xl lg:text-8xl font-bold tracking-wider">Game Title</div> -->
@@ -200,7 +200,7 @@ watch(
       
       <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
         <div class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10">
-          <img src="./assets/backcard.png" alt="bcakcard" class="w-full h-full">
+          <img src="/cards/backcard.webp" alt="bcakcard" class="w-full h-full">
         </div>  
         <div :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`" class="w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100">
           <div class="font-bold font-mythmatch text-xs text-mythmatch-100">{{ Cards[0].name }}</div>
@@ -220,7 +220,7 @@ watch(
           <div :class="card.isFliped ? 'flip' : ''" class="transition-transform w-full h-full duration-500 transform-style-3d relative">
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
                 <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
-                <img src="./assets/backcard.png" alt="backcard" class="w-full h-full">
+                <img src="/cards/backcard.webp" alt="backcard" class="w-full h-full">
               </div>
               <div :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`" class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100">
                 <div class="font-bold font-mythmatch text-xl text-mythmatch-100">{{ card.name }}</div>
@@ -311,7 +311,7 @@ watch(
           <div :class="card.isFliped ? 'flip' : ''" class="transition-transform w-full h-full duration-500 transform-style-3d relative">
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
                 <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
-                <img src="./assets/backcard.png" alt="backcard" class="w-full h-full">
+                <img src="/cards/backcard.webp" alt="backcard" class="w-full h-full">
               </div>
               <div :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`" class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100">
                 <div class="font-bold font-mythmatch text-xl text-mythmatch-100">{{ card.name }}</div>
