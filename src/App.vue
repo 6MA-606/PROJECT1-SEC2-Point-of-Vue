@@ -4,13 +4,17 @@ import GitHubIcon from "./assets/github.svg?raw"
 import BookIcon from "./assets/book.svg?raw"
 import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
 import InfoIcon from "./assets/info-circle.svg?raw"
-// import MythMatchLogo from "./assets/MythMatch_logo.svg?raw"
-import { getPairCard, shuffle } from "./utils/cardFunction.js"
+
+
 import { gotoUrl } from "./utils/helperFunction.js"
 import Cards from '../data/cards.json'
+import { Player } from "../classes/Player"
+import { Board } from "../classes/Board"
+const landingBoard = new Board()
+landingBoard.getPairCard(2)
+landingBoard.shuffle()
+const landingPageCards = reactive(landingBoard)
 
-const landingPageCards = reactive(getPairCard(2))
-shuffle(landingPageCards)
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100
@@ -49,28 +53,22 @@ const gameState = reactive({
     isPlaying: false,
     isPaused: false,
   },
+  board: new Board(),
   time: 30,
   player: {
-    p1: {
-      selectedCards: [],
-      paired: 0
-    },
-    p2: {
-      selectedCards: [],
-      paired: 0
-    }
+    p1: new Player(),
+    p2: new Player()
   }
 })
 
-const { p1, p2 } = toRefs(gameState.player)
+const {board, player:{p1,p2}  } = toRefs(gameState)
 
 function reset() {
   gameState.mode = 0
   gameState.time = 30
-  p1.value.selectedCards.splice(0, p1.value.selectedCards.length)
-  p2.value.selectedCards.splice(0, p2.value.selectedCards.length)
-  p1.value.paired = 0
-  p2.value.paired = 0
+  p1.value.reset()
+  p2.value.reset()
+
 }
 
 /** @param {Event} e */
@@ -99,18 +97,18 @@ function startSinglePlayerMode() {
 const singlePlayerCardClick = (card) => {
   if (!card.isFliped && p1.value.selectedCards.length < 2) { 
     card.isFliped = true
-    p1.value.selectedCards.push(card)
+    p1.value.addCard(card)
   } else return
   
   if (p1.value.selectedCards.length === 2) {
-    if (p1.value.selectedCards[0].id === p1.value.selectedCards[1].id) {
-      p1.value.paired += 1
-      p1.value.selectedCards.splice(0, p1.value.selectedCards.length)
+    if (p1.value.isPaired()) {
+      p1.value.addScores(1)
+      p1.value.clearCards()
     } else {
       setTimeout(() => {
         p1.value.selectedCards.forEach(card => { card.isFliped = false })
-        p1.value.selectedCards.splice(0, p1.value.selectedCards.length)
-      }, 500)
+        p1.value.clearCards()
+      }, 1000)
     }
   }
 }
@@ -203,7 +201,7 @@ watch(
     </div>
     <div id="landing-4-card" class="gap-8 flex flex-wrap">
       <div
-        v-for="(card, index) of landingPageCards"
+        v-for="(card, index) of landingPageCards.cards"
         :key="index"
         :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
         class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"

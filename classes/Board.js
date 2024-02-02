@@ -1,4 +1,5 @@
-import Cards from '../../data/cards.json'
+import Cards from '../data/cards.json'
+import { Card } from './Card'
 
 export class Board {
     constructor () {
@@ -7,7 +8,7 @@ export class Board {
 
     getPairCard(pairAmount) {
         const cardIds = []
-        const cards = []
+        const newCards = []
       
         for (let i = 0; i < pairAmount; i++) {
           let randCardId
@@ -20,15 +21,19 @@ export class Board {
         console.log(cardIds)
       
         for (let cardId of cardIds) {
-          const cardObj = {
-            ...Cards.find((card) => card.id === cardId),
-            isFliped: false,
-          }
-          cards.push({ ...cardObj })
-          cards.push({ ...cardObj })
+          // const cardObj = {
+          //   ...Cards.find((card) => card.id === cardId),
+          //   isFliped: false,
+          // }
+          const jsonCard = Cards.find((card) => card.id === cardId)
+         
+          newCards.push(new Card(jsonCard))
+          newCards.push(new Card(jsonCard))
+          console.log(jsonCard);
+          
         }
       
-        this.cards.push(...cards)
+        this.cards.push(...newCards)
 
       }
 

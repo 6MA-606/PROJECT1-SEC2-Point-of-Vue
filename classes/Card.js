@@ -1,5 +1,5 @@
 export class Card{
-    constructor(id,name,arts,color){
+    constructor({id,name,arts,color}){
         this.id = id
         this.name = name
         this.arts = arts
