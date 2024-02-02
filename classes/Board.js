@@ -32,9 +32,9 @@ export class Board {
           console.log(jsonCard);
           
         }
-      
-        this.cards.push(...newCards)
 
+        this.cards.splice(0, this.cards.length)
+        this.cards.push(...newCards)
       }
 
       shuffle() {
