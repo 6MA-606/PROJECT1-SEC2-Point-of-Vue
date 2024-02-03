@@ -61,7 +61,9 @@ const gameState = reactive({
   }
 })
 
-const {board, player:{p1,p2}  } = toRefs(gameState)
+const {board, player} = toRefs(gameState)
+const {p1,p2} = player.value
+console.log(gameState.player.p1);
 onMounted(()=>{
   if(router.id === 100){
     board.value.getPairCard(2)
@@ -101,19 +103,19 @@ function startSinglePlayerMode() {
 }
 
 const singlePlayerCardClick = (card) => {
-  if (!card.isFliped && p1.value.selectedCards.length < 2) { 
+  if (!card.isFliped && p1.selectedCards.length < 2) { 
     card.isFliped = true
-    p1.value.addCard(card)
+    p1.addCard(card)
   } else return
   
-  if (p1.value.selectedCards.length === 2) {
-    if (p1.value.isPaired()) {
-      p1.value.addScores(1)
-      p1.value.clearCards()
+  if (p1.selectedCards.length === 2) {
+    if (p1.isPaired()) {
+      p1.addScores(1)
+      p1.clearCards()
     } else {
       setTimeout(() => {
-        p1.value.selectedCards.forEach(card => { card.isFliped = false })
-        p1.value.clearCards()
+        p1.selectedCards.forEach(card => { card.isFliped = false })
+        p1.clearCards()
       }, 1000)
     }
   }
