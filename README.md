@@ -2,10 +2,9 @@
   <h2 style="font-size:24px;">Section 2</h2>
 </div>
 
-<img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner">
+<!-- <img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner"> -->
 <div align="center">
-<h2 style ="font-size:36px">Mythmatch Logo
-</h2>
+<img src = "./ReadMeImg/placeholder.png" style = "border-radius:25px">
 <p align = "left">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
 
 </div>
