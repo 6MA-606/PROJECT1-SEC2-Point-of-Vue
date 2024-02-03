@@ -48,5 +48,6 @@ export class Board {
          this.cards[i] = this.cards[rand]
          this.cards[rand] = temp
         }
+        this.cards.splice(this.cards.indexOf(undefined),1)
       }
 } 

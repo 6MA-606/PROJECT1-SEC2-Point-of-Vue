@@ -90,12 +90,13 @@ const routeWithTransition = (routerId, milliseconds, saveRoute) => {
   }, milliseconds)
 }
 
-const cardInBoard = reactive([])
+const cardInBoard = reactive(gameState.board.cards)
+console.log(cardInBoard);
 
 function startSinglePlayerMode() {
   cardInBoard.splice(0, cardInBoard.length)
-  cardInBoard.push(...getPairCard(4))
-  shuffle(cardInBoard)
+  cardInBoard.push(gameState.board.getPairCard(4))
+  gameState.board.shuffle()
   console.log(cardInBoard)
 }
 
@@ -234,6 +235,7 @@ watch(
       id="play-btn"
       type="button"
       class="btn-mythmatch"
+      alt = "home-play-btn"
       @click="routeWithTransition(101, 2000, true)"
     >
       Play
@@ -285,6 +287,7 @@ watch(
           type="button"
           @click="routeWithTransition(mode.routerId, 2000, false)"
           class="btn btn-success px-10 text-[1em] text-white font-semibold"
+          alt = "play-endlesMode-button"
         >
           Play
         </button>
@@ -308,6 +311,7 @@ watch(
         class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
         @click="singlePlayerCardClick(card)"
       >
+      {{ console.log(card) }}
           <div :class="card.isFliped ? 'flip' : ''" class="transition-transform w-full h-full duration-500 transform-style-3d relative">
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
                 <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
