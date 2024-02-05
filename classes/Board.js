@@ -42,12 +42,16 @@ export class Board {
           const temp = this.cards[i]
           let rand
           do {
-              rand = Math.floor(Math.random() * this.cards.length)
-              console.log(rand)
+              rand = Math.floor(Math.random() * this.cards.length )
+              
           } while (rand === i)
          this.cards[i] = this.cards[rand]
          this.cards[rand] = temp
         }
-        this.cards.splice(this.cards.indexOf(undefined),1)
+        if(this.cards.indexOf(undefined) !== -1){
+          this.cards.splice(this.cards.indexOf(undefined),1)
+
+        }
+        
       }
 } 

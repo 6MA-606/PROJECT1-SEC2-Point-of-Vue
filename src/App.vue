@@ -63,11 +63,15 @@ const gameState = reactive({
 
 const {board, player} = toRefs(gameState)
 const {p1,p2} = player.value
-console.log(gameState.player.p1);
+
 onMounted(()=>{
   if(router.id === 100){
     board.value.getPairCard(2)
     board.value.shuffle()
+    console.log(board.value.cards);
+    
+
+    console.log(gameState.board.cards);
   }
 })
 function reset() {
