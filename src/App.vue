@@ -128,7 +128,8 @@ const singlePlayerCardClick = (card) => {
 const handleQuitBtn = () => {
   if (window.confirm('Quit?') === true) {
     routeWithTransition(100, 2000, true)
-    reset()
+    p1.reset()
+    p2.reset()
   }
 }
 
