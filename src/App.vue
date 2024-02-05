@@ -64,6 +64,7 @@ const gameState = reactive({
 const {board, player} = toRefs(gameState)
 const {p1,p2} = player.value
 
+
 onMounted(()=>{
   if(router.id === 100){
     board.value.getPairCard(2)
@@ -77,8 +78,8 @@ onMounted(()=>{
 function reset() {
   gameState.mode = 0
   gameState.time = 30
-  p1.value.reset()
-  p2.value.reset()
+  p1.reset()
+  p2.reset()
 
 }
 
@@ -96,14 +97,14 @@ const routeWithTransition = (routerId, milliseconds, saveRoute) => {
   }, milliseconds)
 }
 
-const cardInBoard = reactive(gameState.board.cards)
-console.log(cardInBoard);
+
 
 function startSinglePlayerMode() {
-  cardInBoard.splice(0, cardInBoard.length)
-  cardInBoard.push(gameState.board.getPairCard(4))
-  gameState.board.shuffle()
-  console.log(cardInBoard)
+  board.value.clearCards()
+  board.value.getPairCard(4)
+  board.value.shuffle()
+
+
 }
 
 const singlePlayerCardClick = (card) => {
@@ -309,15 +310,16 @@ watch(
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
+   
     <div class="grid grid-cols-4 grid-flow-row place-items-center gap-3">
       <div
-        v-for="(card, index) of cardInBoard"
+        v-for="(card, index) of board.cards"
         :key="index"
         :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
         class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
         @click="singlePlayerCardClick(card)"
       >
-      {{ console.log(card) }}
+      
           <div :class="card.isFliped ? 'flip' : ''" class="transition-transform w-full h-full duration-500 transform-style-3d relative">
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
                 <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
