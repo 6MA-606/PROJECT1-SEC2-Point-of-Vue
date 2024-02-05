@@ -61,18 +61,25 @@ const gameState = reactive({
   }
 })
 
-const {board, player:{p1,p2}  } = toRefs(gameState)
+const {board, player} = toRefs(gameState)
+const {p1,p2} = player.value
+
+
 onMounted(()=>{
   if(router.id === 100){
     board.value.getPairCard(2)
     board.value.shuffle()
+    console.log(board.value.cards);
+    
+
+    console.log(gameState.board.cards);
   }
 })
 function reset() {
   gameState.mode = 0
   gameState.time = 30
-  p1.value.reset()
-  p2.value.reset()
+  p1.reset()
+  p2.reset()
 
 }
 
@@ -90,29 +97,30 @@ const routeWithTransition = (routerId, milliseconds, saveRoute) => {
   }, milliseconds)
 }
 
-const cardInBoard = reactive([])
+
 
 function startSinglePlayerMode() {
-  cardInBoard.splice(0, cardInBoard.length)
-  cardInBoard.push(...getPairCard(4))
-  shuffle(cardInBoard)
-  console.log(cardInBoard)
+  board.value.clearCards()
+  board.value.getPairCard(4)
+  board.value.shuffle()
+
+
 }
 
 const singlePlayerCardClick = (card) => {
-  if (!card.isFliped && p1.value.selectedCards.length < 2) { 
+  if (!card.isFliped && p1.selectedCards.length < 2) { 
     card.isFliped = true
-    p1.value.addCard(card)
+    p1.addCard(card)
   } else return
   
-  if (p1.value.selectedCards.length === 2) {
-    if (p1.value.isPaired()) {
-      p1.value.addScores(1)
-      p1.value.clearCards()
+  if (p1.selectedCards.length === 2) {
+    if (p1.isPaired()) {
+      p1.addScores(1)
+      p1.clearCards()
     } else {
       setTimeout(() => {
-        p1.value.selectedCards.forEach(card => { card.isFliped = false })
-        p1.value.clearCards()
+        p1.selectedCards.forEach(card => { card.isFliped = false })
+        p1.clearCards()
       }, 1000)
     }
   }
@@ -234,6 +242,7 @@ watch(
       id="play-btn"
       type="button"
       class="btn-mythmatch"
+      alt = "home-play-btn"
       @click="routeWithTransition(101, 2000, true)"
     >
       Play
@@ -285,6 +294,7 @@ watch(
           type="button"
           @click="routeWithTransition(mode.routerId, 2000, false)"
           class="btn btn-success px-10 text-[1em] text-white font-semibold"
+          alt = "play-endlesMode-button"
         >
           Play
         </button>
@@ -300,14 +310,16 @@ watch(
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
+   
     <div class="grid grid-cols-4 grid-flow-row place-items-center gap-3">
       <div
-        v-for="(card, index) of cardInBoard"
+        v-for="(card, index) of board.cards"
         :key="index"
         :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
         class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
         @click="singlePlayerCardClick(card)"
       >
+      
           <div :class="card.isFliped ? 'flip' : ''" class="transition-transform w-full h-full duration-500 transform-style-3d relative">
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
                 <!-- <div v-html="BackCard" class="w-full h-full"></div> -->
