@@ -52,6 +52,11 @@ export class Board {
           this.cards.splice(this.cards.indexOf(undefined),1)
 
         }
+      
         
+      }
+      clearCards(){
+        this.cards.splice(0,this.cards.length)
+
       }
 } 
