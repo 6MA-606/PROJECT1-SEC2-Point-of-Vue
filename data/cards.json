@@ -142,5 +142,129 @@
             "primary": "#fedeb8",
             "secondary": "#b8f480"
         }
+    },
+    {
+        "id": 16,
+        "name": "Basilisk",
+        "arts": "/cards/basilisk.webp",
+        "color": {
+            "primary": "#72a360",
+            "secondary": "#acff8e"
+        }
+    },
+    {
+        "id": 17,
+        "name": "Harpy",
+        "arts": "/cards/harpy.webp",
+        "color": {
+            "primary": "#ab9adb",
+            "secondary": "#70519a"
+        }
+    },{
+        "id": 18,
+        "name": "Hippocampus",
+        "arts": "/cards/hippocampus.webp",
+        "color": {
+            "primary": "#d2bb81",
+            "secondary": "#4b1890"
+        }
+    },
+    {
+        "id": 19,
+        "name": "Horus",
+        "arts": "/cards/horus.webp",
+        "color": {
+            "primary": "#a19a7b",
+            "secondary": "#feb038"
+        }
+    },
+    {
+        "id": 20,
+        "name": "Jade Rabbit",
+        "arts": "/cards/jaderabbit.webp",
+        "color": {
+            "primary": "#f27f5b",
+            "secondary": "#ff3eb8"
+        }
+    },
+    {
+        "id": 21,
+        "name": "Mermaid",
+        "arts": "/cards/mermaid.webp",
+        "color": {
+            "primary": "#c8beec",
+            "secondary": "#f385b1"
+        }
+    },
+    {
+        "id": 22,
+        "name": "Ninetail fox",
+        "arts": "/cards/ninetailfox.webp",
+        "color": {
+            "primary": "#e0222c",
+            "secondary": "#f3decc"
+        }
+    },
+    {
+        "id": 23,
+        "name": "Sarimanok",
+        "arts": "/cards/sarimanok.webp",
+        "color": {
+            "primary": "#ff7612",
+            "secondary": "#3ce553"
+        }
+    },
+    {
+        "id": 24,
+        "name": "Sphinx",
+        "arts": "/cards/sphinx.webp",
+        "color": {
+            "primary": "#ffdf01",
+            "secondary": "#22231c"
+        }
+    },
+    {
+        "id": 25,
+        "name": "Wukong",
+        "arts": "/cards/wukong.webp",
+        "color": {
+            "primary": "#f16252",
+            "secondary": "#fdd068"
+        }
+    },
+    {
+        "id": 26,
+        "name": "Griffin",
+        "arts": "/cards/griffin.webp",
+        "color": {
+            "primary": "#ddc3a5",
+            "secondary": "#fede19"
+        }
+    },
+    {
+        "id": 26,
+        "name": "Griffin",
+        "arts": "/cards/griffin.webp",
+        "color": {
+            "primary": "#ddc3a5",
+            "secondary": "#fede19"
+        }
+    },
+    {
+        "id": 27,
+        "name": "Kirin",
+        "arts": "/cards/kirin.webp",
+        "color": {
+            "primary": "#9a4e64",
+            "secondary": "#0af6d9"
+        }
     }
+    
+
+
+
+
+    
+    
+    
 ]
