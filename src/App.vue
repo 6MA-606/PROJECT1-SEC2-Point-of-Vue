@@ -89,7 +89,7 @@ const routeWithTransition = (routerId, milliseconds, saveRoute) => {
 
 function startSinglePlayerMode() {
   board.value.clearCards()
-  board.value.getPairCard(4)
+  board.value.getPairCard(2)
   board.value.shuffle()
 }
 
@@ -335,7 +335,7 @@ watch(
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
-    <div class="grid grid-cols-4 grid-flow-row place-items-center gap-3">
+    <div class="grid grid-cols-2 grid-flow-row place-items-center gap-3">
       <div
         v-for="(card, index) of board.cards"
         :key="index"
