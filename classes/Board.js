@@ -67,4 +67,10 @@ export default class Board {
       [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
     }
   }
+
+  isAllCardFlipped() {
+    return this.cards.every((card) => card.isFliped)
+  }
+
+ 
 } 

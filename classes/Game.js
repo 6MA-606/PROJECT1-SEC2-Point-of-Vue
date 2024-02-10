@@ -35,4 +35,12 @@ export default class Game {
 
         console.log('Game has been reset!')
     }
+
+    nextLevel() {
+        this.level++
+        this.board.clearCards()
+        this.board.getPairCard(this.level + 1)
+    }
+
+    
 }
