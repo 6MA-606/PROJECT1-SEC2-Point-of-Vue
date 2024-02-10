@@ -12,9 +12,10 @@ export default class Game {
             p1: new Player(),
             p2: new Player(),
         }
-        this.level = 1
+        this.level = 0
         this.time = DEFAULT_TIME
         this.playerTurn = 1
+        this.bgm = ''
     }
 
     switchTurn() {

@@ -1,15 +1,15 @@
 <script setup>
-import { onMounted, reactive, ref, toRefs, watch } from "vue"
-import GitHubIcon from "./assets/github.svg?raw"
-import BookIcon from "./assets/book.svg?raw"
-import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
-import InfoIcon from "./assets/info-circle.svg?raw"
-import { gotoUrl } from "./utils/helperFunction.js"
+import { onMounted, reactive, ref, toRefs, watch } from 'vue'
+import GitHubIcon from './assets/github.svg?raw'
+import BookIcon from './assets/book.svg?raw'
+import ArrowLeftIcon from './assets/arrow-left.svg?raw'
+import InfoIcon from './assets/info-circle.svg?raw'
+import { gotoUrl } from './utils/helperFunction.js'
 import Cards from '../data/cards.json'
-import Game from "../classes/Game"
+import Game from '../classes/Game'
 
 const router = reactive({
-  id: parseInt(localStorage.getItem('router_id')) || 100
+  id: parseInt(localStorage.getItem('router_id')) || 100,
 })
 
 const isLoading = ref(false)
@@ -19,23 +19,25 @@ const isLoading = ref(false)
 // Single player Mode ID:200
 function setRouterId(id, saveRoute) {
   router.id = id
-  localStorage.setItem("router_id", saveRoute ? id : 100)
+  localStorage.setItem('router_id', saveRoute ? id : 100)
 }
 
 const modes = [
   {
-    title: "Endless Mode (1P)",
-    description: "More quick, more score",
-    thumbnail: "https://media.discordapp.net/attachments/1201850170887639051/1202061950922784768/Firefly_I_want_dragon_cute_3d_style_no_colorful_54651.jpg?ex=65cc166e&is=65b9a16e&hm=ed493ed740832d2cfd1dd1a76ed8ca135757b19add130fc36f9face796a9f45c",
-    gif: "https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
-    routerId: 200
+    title: 'Endless Mode (1P)',
+    description: 'More quick, more score',
+    thumbnail:
+      'https://media.discordapp.net/attachments/1201850170887639051/1202061950922784768/Firefly_I_want_dragon_cute_3d_style_no_colorful_54651.jpg?ex=65cc166e&is=65b9a16e&hm=ed493ed740832d2cfd1dd1a76ed8ca135757b19add130fc36f9face796a9f45c',
+    gif: 'https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
+    routerId: 200,
   },
   {
-    title: "Versus Mode (2P)",
-    description: "Play with your friend",
-    thumbnail: "https://media.discordapp.net/attachments/1201850170887639051/1202079916418678784/Firefly_I_want_monkey_3d_style_cute_i_want_glass_style_mor_minimal_21146.jpg?ex=65cc2729&is=65b9b229&hm=bd3caa716b0fc61ff31be1d851ade1fb1ee5cab8b283c21fd37cc6a859dada0f",
-    gif: "https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
-    routerId: 201
+    title: 'Versus Mode (2P)',
+    description: 'Play with your friend',
+    thumbnail:
+      'https://media.discordapp.net/attachments/1201850170887639051/1202079916418678784/Firefly_I_want_monkey_3d_style_cute_i_want_glass_style_mor_minimal_21146.jpg?ex=65cc2729&is=65b9b229&hm=bd3caa716b0fc61ff31be1d851ade1fb1ee5cab8b283c21fd37cc6a859dada0f',
+    gif: 'https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
+    routerId: 201,
   },
 ]
 
@@ -55,7 +57,7 @@ const { board, players } = toRefs(gameState)
 const { p1, p2 } = players.value
 
 onMounted(() => {
-  if(router.id === 100){
+  if (router.id === 100) {
     board.value.getPairCard(2)
     board.value.shuffle()
   }
@@ -77,31 +79,37 @@ const handleBgClick = (e) => {
 
 const routeWithTransition = (routerId, milliseconds, saveRoute) => {
   isLoading.value = true
-  setTimeout(()=>{
+  setTimeout(() => {
     setRouterId(routerId, saveRoute)
     isLoading.value = false
   }, milliseconds)
 }
 
 function startSinglePlayerMode() {
+  gameState.level = 1
   board.value.clearCards()
   board.value.getPairCard(2)
   board.value.shuffle()
+  // setTimeout(() => {
+  //   gameState.bgm = 'bgmPhase2'
+  // }, 1000)
 }
 
 const singlePlayerCardClick = (card) => {
-  if (!card.isFliped && p1.selectedCards.length < 2) { 
+  if (!card.isFliped && p1.selectedCards.length < 2) {
     card.isFliped = true
     p1.addCard(card)
   } else return
-  
+
   if (p1.selectedCards.length === 2) {
     if (p1.isPaired()) {
       p1.addScores(1)
       p1.clearCards()
     } else {
       setTimeout(() => {
-        p1.selectedCards.forEach(card => { card.isFliped = false })
+        p1.selectedCards.forEach((card) => {
+          card.isFliped = false
+        })
         p1.clearCards()
       }, 1000)
     }
@@ -122,7 +130,7 @@ const handleQuitBtn = () => {
 watch(
   () => router.id,
   (newRouterId) => {
-    console.log(newRouterId);
+    console.log(newRouterId)
     switch (newRouterId) {
       case 100:
         board.value.getPairCard(2)
@@ -140,8 +148,33 @@ watch(
 )
 
 watch(
+  () => gameState.level,
+  (newLevel) => {
+    if (newLevel === 1) {
+      gameState.bgm = 'bgmPhase1'
+    } else if (newLevel === 5) {
+      gameState.bgm = 'bgmPhase2'
+    } else if (newLevel === 9) {
+      gameState.bgm = 'bgmPhase3'
+    }
+  }
+)
+
+let bgm = null
+watch(
+  () => gameState.bgm,
+  (newBgm) => {
+    console.log(newBgm)
+    if (bgm) bgm.pause()
+    bgm = new Audio(`/sounds/${newBgm}.mp3`)
+    bgm.loop = true
+    bgm.play()
+  }
+)
+
+watch(
   gameState,
-  ({ mode, board, players: { p1, p2 }, level, time, playerTurn }) => { 
+  ({ mode, board, players: { p1, p2 }, level, time, playerTurn }) => {
     const debugString = `
       mode: ${mode}
       board: ${board.cards.map((c) => c.name)}
@@ -150,7 +183,9 @@ watch(
       playerTurn: ${playerTurn}
       players: {
         p1: {
-          selectedCards: ${p1.selectedCards.map((c, index) => `${c.name}(${index})` )}
+          selectedCards: ${p1.selectedCards.map(
+            (c, index) => `${c.name}(${index})`
+          )}
           scores: ${p1.scores}
           counter: {
             flip: ${p1.counter.flip}
@@ -158,7 +193,9 @@ watch(
           }
         }
         p1: {
-          selectedCards: ${p2.selectedCards.map((c, index) => `${c.name}(${index})`)}
+          selectedCards: ${p2.selectedCards.map(
+            (c, index) => `${c.name}(${index})`
+          )}
           scores: ${p2.scores}
           counter: {
             flip: ${p2.counter.flip}
@@ -167,32 +204,50 @@ watch(
         }
       }
     `
-    console.log(debugString) 
+    console.log(debugString)
   },
-  {deep: true}
+  { deep: true }
 )
-
 </script>
 
 <template>
-
   <!-- * Loading screen start --------------------------------------------------------- -->
   <div
     :class="isLoading ? 'translate-y-[0%]' : 'translate-y-[100%]'"
     class="absolute grid place-items-center transition-transform duration-1000 w-full h-screen bg-purple-950 z-50"
   >
-    <div class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95">
-      <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
-        <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
-          <img src="/cards/backcard.webp" alt="backcard" class="w-full h-full">
+    <div
+      class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+    >
+      <div
+        class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative"
+      >
+        <div
+          class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
+        >
+          <img
+            src="/cards/backcard.webp"
+            alt="backcard"
+            class="w-full h-full"
+          />
         </div>
         <div
           :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`"
           class="front-load-card absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
         >
-          <div class="font-bold font-mythmatch text-xl text-mythmatch-100">{{ Cards[0].name }}</div>
-          <img :src="Cards[0].arts" :alt="Cards[0].name" class="rounded-lg w-10/12">
-          <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">{{ Cards[0].name }}</div>
+          <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+            {{ Cards[0].name }}
+          </div>
+          <img
+            :src="Cards[0].arts"
+            :alt="Cards[0].name"
+            class="rounded-lg w-10/12"
+          />
+          <div
+            class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+          >
+            {{ Cards[0].name }}
+          </div>
         </div>
       </div>
     </div>
@@ -209,42 +264,64 @@ watch(
       <div class="hidden sm:block -rotate-12 text-[0.5rem] sm:text-[1rem]">
         <div
           :style="`background-image: linear-gradient(135deg, ${Cards[1].color.primary} 0% 10%, #303 10% 90% , ${Cards[1].color.secondary} 90% 100%)`"
-          class="absolute w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100  origin-bottom -rotate-45"
+          class="absolute w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100 origin-bottom -rotate-45"
         >
           <div class="font-bold font-mythmatch text-xs text-mythmatch-100">
             {{ Cards[1].name }}
           </div>
           <img
-            :src="Cards[1].arts" :alt="Cards[1].name"
+            :src="Cards[1].arts"
+            :alt="Cards[1].name"
             class="rounded-lg w-10/12"
+          />
+          <div
+            class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100"
           >
-          <div class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100">
             {{ Cards[1].name }}
           </div>
         </div>
-        <div class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden">
-          <img src="/cards/backcard.webp" alt="bcakcard" class="w-full h-full">
-        </div>  
+        <div
+          class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden"
+        >
+          <img
+            src="/cards/backcard.webp"
+            alt="bcakcard"
+            class="w-full h-full"
+          />
+        </div>
       </div>
       <div>
-        <img src="./assets/MythMatch_logo.svg" alt="MythMatch_logo" class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow">
+        <img
+          src="./assets/MythMatch_logo.svg"
+          alt="MythMatch_logo"
+          class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow"
+        />
       </div>
       <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
-        <div class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10">
-          <img src="/cards/backcard.webp" alt="bcakcard" class="w-full h-full">
-        </div>  
-        <div 
-          :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`" 
+        <div
+          class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10"
+        >
+          <img
+            src="/cards/backcard.webp"
+            alt="bcakcard"
+            class="w-full h-full"
+          />
+        </div>
+        <div
+          :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`"
           class="w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100"
         >
           <div class="font-bold font-mythmatch text-xs text-mythmatch-100">
             {{ Cards[0].name }}
           </div>
           <img
-            :src="Cards[0].arts" :alt="Cards[0].name"
+            :src="Cards[0].arts"
+            :alt="Cards[0].name"
             class="rounded-lg w-10/12"
+          />
+          <div
+            class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100"
           >
-          <div class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100">
             {{ Cards[0].name }}
           </div>
         </div>
@@ -254,50 +331,76 @@ watch(
       <div
         v-for="(card, index) of board.cards"
         :key="index"
-        :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
+        :class="
+          index > 0
+            ? 'hidden sm:block w-[8rem] h-[11.2rem]'
+            : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'
+        "
         class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
         @click="card.isFliped = !card.isFliped"
       >
+        <div
+          :class="card.isFliped ? 'flip' : ''"
+          class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+        >
           <div
-            :class="card.isFliped ? 'flip' : ''"
-            class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+            class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
           >
-              <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
-                <img src="/cards/backcard.webp" alt="backcard" class="w-full h-full">
-              </div>
-              <div
-                :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
-                class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
-              >
-                <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
-                  {{ card.name }}
-                </div>
-                <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12">
-                <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">
-                  {{ card.name }}
-                </div>
-              </div>
+            <img
+              src="/cards/backcard.webp"
+              alt="backcard"
+              class="w-full h-full"
+            />
           </div>
+          <div
+            :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
+            class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+          >
+            <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+              {{ card.name }}
+            </div>
+            <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12" />
+            <div
+              class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+            >
+              {{ card.name }}
+            </div>
+          </div>
+        </div>
       </div>
     </div>
     <button
       id="play-btn"
       type="button"
       class="btn-mythmatch"
-      alt = "home-play-btn"
+      alt="home-play-btn"
       @click="routeWithTransition(101, 2000, true)"
     >
       Play
     </button>
-    <div id="corner-btn-group" class="absolute flex xs:flex-col gap-2 right-4 bottom-4">
-      <div class="tooltip hover:tooltip-open tooltip-left tooltip-info" data-tip="How to play?">
+    <div
+      id="corner-btn-group"
+      class="absolute flex xs:flex-col gap-2 right-4 bottom-4"
+    >
+      <div
+        class="tooltip hover:tooltip-open tooltip-left tooltip-info"
+        data-tip="How to play?"
+      >
         <button type="button" class="btn btn-circle btn-neutral btn-lg">
           <div v-html="BookIcon" class="scale-[1.75]"></div>
         </button>
       </div>
-      <div class="tooltip hover:tooltip-open tooltip-left tooltip-info" data-tip="This project on GitHub">
+      <div
+        class="tooltip hover:tooltip-open tooltip-left tooltip-info"
+        data-tip="This project on GitHub"
+      >
         <button
-          @click="gotoUrl('https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/', true)"
+          @click="
+            gotoUrl(
+              'https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/',
+              true
+            )
+          "
           type="button"
           class="btn btn-circle btn-neutral btn-lg"
         >
@@ -322,24 +425,37 @@ watch(
       <div v-html="ArrowLeftIcon"></div>
       <div>Back</div>
     </button>
-    <div id="mode-select" class="w-full h-screen overflow-auto flex flex-col lg:flex-row lg:justify-center py-36 lg:py-0 items-center gap-20">
+    <div
+      id="mode-select"
+      class="w-full h-screen overflow-auto flex flex-col lg:flex-row lg:justify-center py-36 lg:py-0 items-center gap-20"
+    >
       <div
         v-for="(mode, index) in modes"
         :key="index"
-        :class="(((gameState.mode === index + 1) && (gameState.mode !== 0)) ? 'border-4 border-green-500 z-10 lg:scale-110' : '')"
+        :class="
+          gameState.mode === index + 1 && gameState.mode !== 0
+            ? 'border-4 border-green-500 z-10 lg:scale-110'
+            : ''
+        "
         @click="gameState.mode = index + 1"
         class="relative w-[20rem] lg:w-[22rem] px-5 py-10 flex flex-col justify-center items-center gap-4 bg-base-200 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] cursor-pointer"
       >
         <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
         <div class="w-[13em] h-[13em]">
           <img
-            :src="((gameState.mode === index + 1) && (gameState.mode !== 0)) ? mode.gif : mode.thumbnail"
+            :src="
+              gameState.mode === index + 1 && gameState.mode !== 0
+                ? mode.gif
+                : mode.thumbnail
+            "
             :alt="mode.title"
             class="w-full h-full object-cover rounded-lg"
           />
         </div>
         <div class="flex flex-col gap-2">
-          <div class="text-center text-[1.25em] font-bold">{{ mode.title }}</div>
+          <div class="text-center text-[1.25em] font-bold">
+            {{ mode.title }}
+          </div>
           <div class="text-center text-[0.875em]">{{ mode.description }}</div>
         </div>
         <button
@@ -347,7 +463,7 @@ watch(
           type="button"
           @click="routeWithTransition(mode.routerId, 2000, false)"
           class="btn btn-success px-10 text-[1em] text-white font-semibold"
-          alt = "play-endlesMode-button"
+          alt="play-endlesMode-button"
         >
           Play
         </button>
@@ -357,55 +473,86 @@ watch(
   <!-- * Mode select screen end --------------------------------------------------------- -->
 
   <!-- * Single player mode start --------------------------------------------------------- -->
-  <div v-if="router.id === 200" class="h-screen bg-[#0009] flex justify-center items-center">
+  <div
+    v-if="router.id === 200"
+    :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
+    class="h-screen flex justify-center items-center"
+  >
     <!-- <button @click="handleQuitBtn" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button> -->
     <!-- <div>{{ p1.scores }}</div> -->
     <div class="lg:w-9/12 grid place-items-center">
-      <div :class="`grid-cols-${gameState.level < 6 ? gameState.level + 1 : 6} ${gameState.level < 6 ? '' : 'scale-75'}`" class="w-fit grid grid-flow-row gap-3">
+      <div
+        :class="`grid-cols-${gameState.level < 6 ? gameState.level + 1 : 6} ${
+          gameState.level < 6 ? '' : 'scale-75'
+        }`"
+        class="w-fit grid grid-flow-row gap-3"
+      >
         <div
           v-for="(card, index) of board.cards"
           :key="index"
-          :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
+          :class="
+            index > 0
+              ? 'hidden sm:block w-[8rem] h-[11.2rem]'
+              : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'
+          "
           class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
           @click="singlePlayerCardClick(card)"
         >
+          <div
+            :class="card.isFliped ? 'flip' : ''"
+            class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+          >
             <div
-              :class="card.isFliped ? 'flip' : ''"
-              class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+              class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
             >
-                <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
-                  <img src="/cards/backcard.webp" alt="backcard" class="w-full h-full">
-                </div>
-                <div
-                  :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
-                  class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
-                >
-                  <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
-                    {{ card.name }}
-                  </div>
-                  <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12">
-                  <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">
-                    {{ card.name }}
-                  </div>
-                </div>
+              <img
+                src="/cards/backcard.webp"
+                alt="backcard"
+                class="w-full h-full"
+              />
             </div>
+            <div
+              :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
+              class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+            >
+              <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+                {{ card.name }}
+              </div>
+              <img
+                :src="card.arts"
+                :alt="card.name"
+                class="rounded-lg w-10/12"
+              />
+              <div
+                class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+              >
+                {{ card.name }}
+              </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
     <div class="lg:w-3/12">
       <div class="h-screen w-full relative">
-        <div class="absolute inset-4 bg-[#fff3] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col items-center">
+        <div
+          class="absolute inset-4 bg-[#fff3] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col items-center"
+        >
           <div class="w-10/12">
-            <img src="./assets/MythMatch_logo.svg" alt="logo">
+            <img src="./assets/MythMatch_logo.svg" alt="logo" />
           </div>
-          <div class="text-mythmatch-100 flex flex-col items-center justify-center h-2/6">
+          <div
+            class="text-mythmatch-100 flex flex-col items-center justify-center h-2/6"
+          >
             <div class="text-3xl">Time</div>
             <div class="text-5xl font-semibold">{{ gameState.time }}</div>
           </div>
-          <div class="text-mythmatch-100 flex flex-col items-center justify-center h-1/6">
+          <div
+            class="text-mythmatch-100 flex flex-col items-center justify-center h-1/6"
+          >
             <div class="text-3xl">Your Score</div>
             <div class="text-5xl font-bold">{{ p1.scores }}</div>
           </div>
@@ -417,13 +564,16 @@ watch(
 
   <!-- * Multi player mode start --------------------------------------------------------- -->
   <div v-if="router.id === 201">
-    <button @click="setRouterId(100)" type="button" class="btn btn-warning absolute left-4 top-4">
+    <button
+      @click="setRouterId(100)"
+      type="button"
+      class="btn btn-warning absolute left-4 top-4"
+    >
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
   </div>
   <!-- * Multi player mode end --------------------------------------------------------- -->
-
 </template>
 
 <style scoped>
@@ -465,6 +615,6 @@ watch(
 }
 
 .btn-mythmatch {
-  @apply w-52 h-16 text-2xl transition-all text-mythmatch-200 bg-mythmatch-100 border-4 hover:border-0 border-mythmatch-200 rounded-lg font-bold active:scale-95 hover:scale-105 hover:bg-mythmatch-200 hover:text-mythmatch-100
+  @apply w-52 h-16 text-2xl transition-all text-mythmatch-200 bg-mythmatch-100 border-4 hover:border-0 border-mythmatch-200 rounded-lg font-bold active:scale-95 hover:scale-105 hover:bg-mythmatch-200 hover:text-mythmatch-100;
 }
 </style>

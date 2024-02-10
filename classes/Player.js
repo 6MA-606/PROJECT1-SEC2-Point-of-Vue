@@ -40,6 +40,8 @@ export default class Player {
      */
     addScores(scores) {
         this.scores += scores
+        const sfx = new Audio('/sounds/pointGain.mp3')
+        sfx.play()
         return this.scores
     }
 
