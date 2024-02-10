@@ -6,8 +6,7 @@ import ArrowLeftIcon from "./assets/arrow-left.svg?raw"
 import InfoIcon from "./assets/info-circle.svg?raw"
 import { gotoUrl } from "./utils/helperFunction.js"
 import Cards from '../data/cards.json'
-import { Player } from "../classes/Player"
-import { Board } from "../classes/Board"
+import Game from "../classes/Game"
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100
@@ -40,23 +39,20 @@ const modes = [
   },
 ]
 
-const gameState = reactive({
-  mode: 0, // 0: No selected, 1: Endless Mode (1P), 2: Versus Mode (2P)
-  status: {
-    isPlaying: false,
-    isPaused: false,
-  },
-  board: new Board(),
-  time: 30,
-  player: {
-    p1: new Player(),
-    p2: new Player()
-  }
-})
+// const gameState = reactive({
+//   mode: 0, // 0: No selected, 1: Endless Mode (1P), 2: Versus Mode (2P)
+//   board: new Board(),
+//   time: '00:00:30.00',
+//   player: {
+//     p1: new Player(),
+//     p2: new Player()
+//   }
+// })
 
-const { board, player } = toRefs(gameState)
-const { p1, p2 } = player.value
+const gameState = reactive(new Game())
 
+const { board, players } = toRefs(gameState)
+const { p1, p2 } = players.value
 
 onMounted(() => {
   if(router.id === 100){
@@ -65,13 +61,13 @@ onMounted(() => {
   }
 })
 
-function reset() {
-  gameState.mode = 0
-  gameState.time = 30
-  p1.reset()
-  p2.reset()
-  board.value.clearCards()
-}
+// function reset() {
+//   gameState.mode = 0
+//   gameState.time = 30
+//   p1.reset()
+//   p2.reset()
+//   board.value.clearCards()
+// }
 
 /** @param {Event} e */
 const handleBgClick = (e) => {
@@ -115,7 +111,7 @@ const singlePlayerCardClick = (card) => {
 const handleQuitBtn = () => {
   if (window.confirm('Quit?') === true) {
     routeWithTransition(100, 2000, true)
-    reset()
+    gameState.reset()
   }
 }
 
@@ -141,7 +137,34 @@ watch(
 
 watch(
   gameState,
-  (newGameState) => { console.log(newGameState) },
+  ({ mode, board, players: { p1, p2 }, level, time, playerTurn }) => { 
+    const debugString = `
+      mode: ${mode}
+      board: ${board.cards.map((c) => c.name)}
+      level: ${level}
+      time: ${time}
+      playerTurn: ${playerTurn}
+      players: {
+        p1: {
+          selectedCards: ${p1.selectedCards.map((c, index) => `${c.name}(${index})` )}
+          scores: ${p1.scores}
+          counter: {
+            flip: ${p1.counter.flip}
+            pair: ${p1.counter.pair}
+          }
+        }
+        p1: {
+          selectedCards: ${p2.selectedCards.map((c, index) => `${c.name}(${index})`)}
+          scores: ${p2.scores}
+          counter: {
+            flip: ${p2.counter.flip}
+            pair: ${p2.counter.pair}
+          }
+        }
+      }
+    `
+    console.log(debugString) 
+  },
   {deep: true}
 )
 
@@ -330,11 +353,12 @@ watch(
   <!-- * Mode select screen end --------------------------------------------------------- -->
 
   <!-- * Single player mode start --------------------------------------------------------- -->
-  <div v-if="router.id === 200" class="h-screen bg-[#0009] flex justify-center items-center">
+  <div v-if="router.id === 200" class="h-screen bg-[#0009] flex flex-col justify-center items-center">
     <button @click="handleQuitBtn" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
+    <div>{{ p1.scores }}</div>
     <div class="grid grid-cols-2 grid-flow-row place-items-center gap-3">
       <div
         v-for="(card, index) of board.cards"

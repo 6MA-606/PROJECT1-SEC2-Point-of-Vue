@@ -1,7 +1,7 @@
-import Cards from '../data/cards.json'
-import { Card } from './Card'
+import CardJsonData from '../data/cards.json'
+import Card from './Card'
 
-export class Board {
+export default class Board {
 
   /**
    * Create a new board
@@ -35,19 +35,20 @@ export class Board {
    */
   getPairCard(pairAmount) {
     if (pairAmount < 1) throw new Error('Pair amount must be greater than 0')
+    if (pairAmount > CardJsonData.length) throw new Error('Pair amount must be less than or equal to the amount of cards in the data')
     const cardIds = []
     const newCards = []
 
     for (let i = 0; i < pairAmount; i++) {
       let randCardId
       do {
-        randCardId = Math.round(Math.random() * (Cards.length - 1))
+        randCardId = Math.round(Math.random() * (CardJsonData.length - 1))
       } while (cardIds.indexOf(randCardId) > -1)
       cardIds.push(randCardId)
     }
 
     for (let cardId of cardIds) {
-      const jsonCard = Cards.find((card) => card.id === cardId)
+      const jsonCard = CardJsonData.find((card) => card.id === cardId)
       newCards.push(new Card(jsonCard))
       newCards.push(new Card(jsonCard))
     }
@@ -61,17 +62,17 @@ export class Board {
    */
   // TODO: Improve shuffle algorithm
   shuffle() {
-    for (let i = 0; i < this.cards.length; i++) {
-      const temp = this.cards[i]
-      let rand
-      do {
-        rand = Math.floor(Math.random() * this.cards.length)
-      } while (rand === i)
-      this.cards[i] = this.cards[rand]
-      this.cards[rand] = temp
-    }
-    if(this.cards.indexOf(undefined) !== -1){
-      this.cards.splice(this.cards.indexOf(undefined),1)
-    }
+    // for (let i = 0; i < this.cards.length; i++) {
+    //   const temp = this.cards[i]
+    //   let rand
+    //   do {
+    //     rand = Math.floor(Math.random() * this.cards.length)
+    //   } while (rand === i)
+    //   this.cards[i] = this.cards[rand]
+    //   this.cards[rand] = temp
+    // }
+    // if(this.cards.indexOf(undefined) !== -1){
+    //   this.cards.splice(this.cards.indexOf(undefined),1)
+    // }
   }
 } 

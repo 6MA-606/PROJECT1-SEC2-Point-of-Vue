@@ -1,4 +1,4 @@
-export class Card{
+export default class Card{
 
     /**
      * Create a new card
@@ -10,7 +10,9 @@ export class Card{
      * @param {String} object.color.primary - Card primary color
      * @param {String} object.color.secondary - Card secondary color
      */
-    constructor({id, name, arts, color}){
+    constructor(jsonCard){
+        if (typeof jsonCard !== 'object') throw new Error('Card data must be an object')
+        const {id, name, arts, color} = jsonCard
         const argsCheck = ['id', 'name', 'arts', 'color']
         for (let key in arguments[0]) {
             argsCheck.splice(argsCheck.indexOf(key), 1)
