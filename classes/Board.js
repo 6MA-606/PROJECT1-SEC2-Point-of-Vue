@@ -62,17 +62,9 @@ export default class Board {
    */
   // TODO: Improve shuffle algorithm
   shuffle() {
-    // for (let i = 0; i < this.cards.length; i++) {
-    //   const temp = this.cards[i]
-    //   let rand
-    //   do {
-    //     rand = Math.floor(Math.random() * this.cards.length)
-    //   } while (rand === i)
-    //   this.cards[i] = this.cards[rand]
-    //   this.cards[rand] = temp
-    // }
-    // if(this.cards.indexOf(undefined) !== -1){
-    //   this.cards.splice(this.cards.indexOf(undefined),1)
-    // }
+    for (let i = 0; i < this.cards.length; i++) {
+      const j = Math.floor(Math.random() * i);
+      [this.cards[i], this.cards[j]] = [this.cards[j], this.cards[i]];
+    }
   }
 } 
