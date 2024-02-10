@@ -75,4 +75,10 @@ export default class Board {
     //   this.cards.splice(this.cards.indexOf(undefined),1)
     // }
   }
+
+  isAllCardFlipped() {
+    return this.cards.every((card) => card.isFliped)
+  }
+
+ 
 } 
