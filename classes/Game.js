@@ -2,6 +2,7 @@ import Board from './Board.js';
 import Player from './Player';
 
 const DEFAULT_TIME = '00:00:30.00'
+const MAX_LEVEL = 11
 
 export default class Game {
     constructor() {
@@ -37,9 +38,19 @@ export default class Game {
     }
 
     nextLevel() {
-        this.level++
-        this.board.clearCards()
-        this.board.getPairCard(this.level + 1)
+        if (this.level === MAX_LEVEL) {
+            console.log('Game has reached the maximum level')
+            return
+        }
+        setTimeout(() => {
+            this.board.setFlipAllCards(false)
+        }, 500)
+        setTimeout(() => {
+            this.level++
+            this.board.clearCards()
+            this.board.getPairCard(this.level + 1)
+            this.board.shuffle()
+        }, 1000)
     }
 
     
