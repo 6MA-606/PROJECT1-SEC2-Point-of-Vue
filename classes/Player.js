@@ -1,6 +1,6 @@
-import { Card } from "./Card"
+import Card from "./Card"
 
-export class Player {
+export default class Player {
 
     /**
      * Create a new player
@@ -9,6 +9,10 @@ export class Player {
         this.name = ''
         this.selectedCards = []
         this.scores = 0
+        this.counter = {
+            flip: 0,
+            pair: 0
+        }
     }
 
     /**
@@ -36,6 +40,8 @@ export class Player {
      */
     addScores(scores) {
         this.scores += scores
+        const sfx = new Audio('/sounds/pointGain.mp3')
+        sfx.play()
         return this.scores
     }
 

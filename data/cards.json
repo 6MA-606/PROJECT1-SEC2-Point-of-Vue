@@ -242,15 +242,6 @@
         }
     },
     {
-        "id": 26,
-        "name": "Griffin",
-        "arts": "/cards/griffin.webp",
-        "color": {
-            "primary": "#ddc3a5",
-            "secondary": "#fede19"
-        }
-    },
-    {
         "id": 27,
         "name": "Kirin",
         "arts": "/cards/kirin.webp",
@@ -259,12 +250,4 @@
             "secondary": "#0af6d9"
         }
     }
-    
-
-
-
-
-    
-    
-    
 ]
