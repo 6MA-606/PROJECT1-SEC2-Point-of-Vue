@@ -16,14 +16,27 @@ export default class Game {
         this.time = DEFAULT_TIME
         this.playerTurn = 1
         this.bgm = ''
+        this.endTime = 0
     }
 
     switchTurn() {
         this.playerTurn = this.playerTurn === 1 ? 2 : 1
     }
 
-    startTimer() {
-        // To be implemented
+    startTimer(second) {
+        this.endTime = Date.now() + (second * 1000)
+        const timerInterval = setInterval(() => {
+        const durationLeft = this.endTime - Date.now()
+        if(durationLeft <= 0){
+            clearInterval(timerInterval)
+            this.time = 0
+        } else {
+            this.time = durationLeft / 1000;
+        }
+    } , 100) 
+    }
+    addTime(second){
+        this.endTime += second * 1000
     }
 
     reset() {
@@ -34,6 +47,7 @@ export default class Game {
         this.level = 1
         this.time = DEFAULT_TIME
         this.playerTurn = 1
+        this.endTime = 0
 
         console.log('Game has been reset!')
     }

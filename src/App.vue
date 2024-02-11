@@ -93,6 +93,7 @@ function startSinglePlayerMode() {
   // setTimeout(() => {
   //   gameState.bgm = 'bgmPhase2'
   // }, 1000)
+  gameState.startTimer(30)
 }
 
 const singlePlayerCardClick = (card) => {
@@ -105,6 +106,7 @@ const singlePlayerCardClick = (card) => {
     if (p1.isPaired()) {
       p1.addScores(1)
       p1.clearCards()
+      gameState.addTime(5)
     } else {
       setTimeout(() => {
         p1.selectedCards.forEach((card) => {
