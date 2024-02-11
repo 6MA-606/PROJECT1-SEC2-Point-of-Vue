@@ -24,20 +24,18 @@ function setRouterId(id, saveRoute) {
 
 const modes = [
   {
-    title: 'Endless Mode (1P)',
-    description: 'More quick, more score',
-    thumbnail:
-      'https://media.discordapp.net/attachments/1201850170887639051/1202061950922784768/Firefly_I_want_dragon_cute_3d_style_no_colorful_54651.jpg?ex=65cc166e&is=65b9a16e&hm=ed493ed740832d2cfd1dd1a76ed8ca135757b19add130fc36f9face796a9f45c',
-    gif: 'https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
-    routerId: 200,
+    title: "Endless Mode (1P)",
+    description: "More quick, more score",
+    thumbnail: "/gamemode/singleplayer.jpg",
+    gif: "https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    routerId: 200
   },
   {
-    title: 'Versus Mode (2P)',
-    description: 'Play with your friend',
-    thumbnail:
-      'https://media.discordapp.net/attachments/1201850170887639051/1202079916418678784/Firefly_I_want_monkey_3d_style_cute_i_want_glass_style_mor_minimal_21146.jpg?ex=65cc2729&is=65b9b229&hm=bd3caa716b0fc61ff31be1d851ade1fb1ee5cab8b283c21fd37cc6a859dada0f',
-    gif: 'https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g',
-    routerId: 201,
+    title: "Versus Mode (2P)",
+    description: "Play with your friend",
+    thumbnail: "/gamemode/multiplayer.png",
+    gif: "https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
+    routerId: 201
   },
 ]
 
