@@ -13,6 +13,7 @@ export default class Player {
             flip: 0,
             pair: 0
         }
+        this.accuracy = 0
     }
 
     /**
@@ -38,9 +39,10 @@ export default class Player {
      * @param {Number} scores 
      * @returns {Number} Return the total scores of the player
      */
-    addScores(scores) {
+    addScores(scores, sfxVolume = 100) {
         this.scores += scores
         const sfx = new Audio('/sounds/pointGain.mp3')
+        sfx.volume = sfxVolume / 100
         sfx.play()
         return this.scores
     }

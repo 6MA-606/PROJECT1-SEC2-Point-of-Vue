@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, reactive, ref, toRefs, watch } from 'vue'
+import { computed, onMounted, reactive, ref, toRef, toRefs, watch } from 'vue'
 import GitHubIcon from './assets/github.svg?raw'
 import BookIcon from './assets/book.svg?raw'
 import ArrowLeftIcon from './assets/arrow-left.svg?raw'
@@ -51,8 +51,13 @@ const modes = [
 
 const gameState = reactive(new Game())
 
-const { board, players } = toRefs(gameState)
+const { board, players, setting } = toRefs(gameState)
 const { p1, p2 } = players.value
+p1.accuracy = computed(() => {
+  if (p1.counter.flip === 0) return 0
+  return ((p1.counter.pair / p1.counter.flip) * 100).toFixed(2)
+})
+let { volume } = setting.value
 
 onMounted(() => {
   if (router.id === 100) {
@@ -105,16 +110,16 @@ function startSinglePlayerMode() {
 const singlePlayerCardClick = (card) => {
   if (!card.isFliped && p1.selectedCards.length < 2) {
     card.isFliped = true
-    p1.addFlipCount()
     p1.addCard(card)
   } else return
-
+  
   if (p1.selectedCards.length === 2) {
+    p1.addFlipCount()
     if (p1.isPaired()) {
       p1.addPairCount()
-      p1.addScores(1)
+      p1.addScores(gameState.level, setting.value.volume)
       p1.clearCards()
-      gameState.addTime(5)
+      if (gameState.level < 11) gameState.addTime(5)
     } else {
       setTimeout(() => {
         p1.selectedCards.forEach((card) => {
@@ -131,10 +136,7 @@ const singlePlayerCardClick = (card) => {
 }
 
 const handleQuitBtn = () => {
-  if (window.confirm('Quit?') === true) {
-    routeWithTransition(100, 2000, true)
-    gameState.reset()
-  }
+  routeWithTransition(100, 2000, true)
 }
 
 watch(
@@ -143,6 +145,7 @@ watch(
     console.log(newRouterId)
     switch (newRouterId) {
       case 100:
+        gameState.reset()
         board.value.getPairCard(2)
         board.value.shuffle()
         break
@@ -171,36 +174,40 @@ watch(
 )
 
 let bgm = null
-let volume = ref(gameState.setting.volume)
-let quality = ref(gameState.setting.isQuality)
 watch(
   () => gameState.bgm,
   (newBgm) => {
     console.log(newBgm)
     if (bgm) bgm.pause()
+    if (newBgm === '') return
     bgm = new Audio(`/sounds/${newBgm}.mp3`)
-    bgm.volume = volume.value/100
+    bgm.volume = volume / 100
     bgm.loop = true
     bgm.play()
   }
 )
-watch(volume,(newvalue)=>{
-  bgm.volume = newvalue/100
-  console.log("Sound volume is ",newvalue/100);
-})
+watch(
+  () => gameState.setting.volume,
+  (newvalue)=>{
+    bgm.volume = newvalue / 100
+    console.log("Sound volume is ", newvalue / 100);
+  }
+)
 
 //handle mute function
-watch(()=> gameState.setting.isMute,(newvalue)=>{
-  console.log('Watch execute');
-  if(!bgm) return
-  if(newvalue === true){
-    bgm.volume = 0
+watch(
+  ()=> gameState.setting.isMute,
+  (newvalue)=>{
+    console.log('Watch execute');
+    if(!bgm) return
+    if(newvalue === true){
+      bgm.volume = 0
+    }
+    else{
+      bgm.volume = 1
+    }
   }
-  else{
-    bgm.volume = 1
-  }
-
-})
+)
 watch(
   gameState,
   ({ mode, board, players: { p1, p2 }, level, time, playerTurn }) => {
@@ -508,13 +515,6 @@ watch(
     :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
     class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
   >
-  
-    <!-- <button @click="handleQuitBtn" type="button" class="btn btn-warning absolute left-4 top-4">
-      <div v-html="ArrowLeftIcon"></div>
-      <div>Quit</div>
-    </button> -->
-    <!-- <div>{{ p1.scores }}</div> -->
-
     <div class="lg:hidden w-full mb-5 flex flex-col items-center">
       <div class="w-8/12 my-3"><img src="./assets/MythMatch_logo.svg" alt="logo" /></div>
       <div class="w-full flex justify-around">
@@ -584,24 +584,26 @@ watch(
           <div class="w-10/12">
             <img src="./assets/MythMatch_logo.svg" alt="logo" />
           </div>
-          <div
-            class="text-mythmatch-100 flex flex-col items-center justify-center h-2/6"
-          >
+          <div class="w-full flex justify-evenly">
+            <div
+              class="text-mythmatch-100 flex flex-col items-center justify-center"
+            >
+              <div class="text-3xl">Level</div>
+              <div class="text-5xl font-bold">{{ gameState.level }}</div>
+            </div>
+            <div
+              class="text-mythmatch-100 flex flex-col items-center justify-center"
+            >
+              <div class="text-3xl">Your Score</div>
+              <div class="text-5xl font-bold">{{ p1.scores }}</div>
+            </div>
+          </div>
+          <div class="text-mythmatch-100 flex flex-col items-center justify-center">
             <div class="text-3xl">Time</div>
-            <div class="text-5xl font-semibold">{{ gameState.time }}</div>
+            <div class="text-5xl font-semibold font-mono">{{ gameState.time }}</div>
           </div>
-          <div
-            class="text-mythmatch-100 flex flex-col items-center justify-center h-1/6"
-          >
-            <div class="text-3xl">Level</div>
-            <div class="text-5xl font-bold">{{ gameState.level }}</div>
-          </div>
-          <div
-            class="text-mythmatch-100 flex flex-col items-center justify-center h-1/6"
-          >
-            <div class="text-3xl">Your Score</div>
-            <div class="text-5xl font-bold">{{ p1.scores }}</div>
-          </div>
+          <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
+          <button class="btn btn-error" type="button">Surrender</button>
         </div>
       </div>
     </div>
@@ -611,12 +613,21 @@ watch(
 
   <!-- * Single player gameover start --------------------------------------------------------- -->
 
-  <div :class="gameState.isGameOverred ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000a] flex flex-col gap-16 justify-center items-center text-center">
-    <div class="text-6xl">Game Over</div>
+  <div :class="gameState.isGameOver ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+    <div class="text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
+      <div class="flex flex-col items-center">
+        <div class="text-3xl">Score</div>
+        <div class="text-6xl font-semibold text-mythmatch-100">{{ p1.scores }}</div>
+      </div>
       <div>
         <div class="text-2xl">You've flipped {{ p1.counter.flip }} times</div>
         <div class="text-2xl">You've collected {{ p1.counter.pair }} pairs</div>
+        <div class="text-2xl">Accuracy {{ p1.accuracy }}%</div>
       </div>
+      <button @click="handleQuitBtn" type="button" class="btn btn-warning">
+      <div v-html="ArrowLeftIcon"></div>
+      <div>Quit</div>
+    </button>
   </div>
 
   <!-- * Single player gameover end --------------------------------------------------------- -->
@@ -636,21 +647,35 @@ watch(
 
   <!-- setting modal start -------------------------------------------------------------->
   <div v-show="gameState.isSettingOpen" class="absolute w-full h-screen translate-y-[-100%] bg-[#0005]  flex justify-center items-center z-30">
-    <div class="flex flex-col bg-slate-200">
-      <p class="mx-auto">Setting</p>
-      <div class="flex gap-4 mx-auto p-3">
-        <label for="range">Sound</label>
-        <input type="range" class="range" min="0" max="100" step="10" v-model="volume" :disabled = "gameState.setting.isMute">
-        <button @click="gameState.setMute()" :class="gameState.setting.isMute?'block':'hidden'" >
-          <img src="/setting/volume.jpg" alt="volume" class="rounded">
-        </button>
-        <button :class="gameState.setting.isMute?'hidden':'block' " @click="gameState.setMute() ">
-          <img src="/setting/volume-mute.jpg" alt="muted" class="rounded">
-        </button>
+    <div class="relative h-[15rem] flex flex-col bg-base-100 border-2 border-mythmatch-100 rounded-lg">
+      <div class="text-center text-4xl font-mythmatch font-bold my-5">Setting</div>
+      <div class="flex flex-col items-start gap-3 px-5">
+        <div class="flex items-center gap-4">
+          <label class="flex items-center gap-2">
+            <div class="text-lg">Sound</div>
+            <input type="range" class="range range-sm disabled:opacity-70 disabled:cursor-not-allowed" min="0" max="100" step="10" v-model="gameState.setting.volume" :disabled="gameState.setting.isMute">
+          </label>
+          <button @click="gameState.toggleMute()" :class="setting.isMute ? 'bg-red-400' : 'bg-base-200'" class="w-6 h-6 grid place-items-center rounded-lg">
+            <img v-if="setting.isMute" src="/setting/sound_off.svg" alt="muted">
+            <img v-else src="/setting/sound_on.svg" alt="volume">
+          </button>
+        </div>
+        <div class="flex gap-3 justify-center">
+          <div>Quality</div>
+          <label class="flex gap-1 items-center">
+            <input type="radio" name="quality" class="radio radio-xs">
+            <span>low</span>
+          </label>
+          <label class="flex gap-1 items-center">
+            <input type="radio" name="quality" class="radio radio-xs" checked>
+            <span>High</span>
+          </label>
+        </div>
       </div>
-      <div class="flex gap-3 justify-center">
-        <label for="">High Quality</label>
-        <input type="checkbox" class="checkbox" alt="Highquality checkbox">
+      <div class="absolute top-2 right-2">
+        <button @click="gameState.setSettingOpenState(false)" class="btn btn-circle btn-neutral btn-sm">
+          <div>X</div>
+        </button>
       </div>
     </div>
     

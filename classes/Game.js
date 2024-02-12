@@ -14,21 +14,27 @@ export default class Game {
         }
         this.level = 0
         this.time = DEFAULT_TIME
-        this.isGameOverred = false
+        this.isGameOver = false
         this.playerTurn = 1
         this.bgm = ''
         this.endTime = 0
         this.isSettingOpen = false
         this.setting = {
-            volume:100,
-            isQuality:false,
-            isMute:false,
+            volume: 100,
+            isQuality: false,
+            isMute: false,
         }
     }
-    setMute(){
+
+    toggleMute() {
         this.setting.isMute = !this.setting.isMute
         console.log(this.setting.isMute);
     }
+
+    setVolume(volume) {
+        this.setting.volume = volume
+    }
+
    setSettingOpenState(openState){
     this.isSettingOpen = openState
    }
@@ -40,16 +46,18 @@ export default class Game {
     startTimer(second) {
         this.endTime = Date.now() + (second * 1000)
         const timerInterval = setInterval(() => {
-        const durationLeft = this.endTime - Date.now()
-        if(durationLeft <= 0){
-            clearInterval(timerInterval)
-            this.time = 0
-            this.isGameOverred = true
-        } else {
-            this.time = durationLeft / 1000;
-        }
-    } , 100) 
+            const durationLeft = this.endTime - Date.now()
+            if(durationLeft <= 0){
+                clearInterval(timerInterval)
+                this.time = 0
+                this.isGameOver = true
+                this.bgm = ''
+            } else {
+                this.time = Math.floor(durationLeft / 1000) + '.' + Math.floor(durationLeft % 1000 / 10).toString().padStart(2, '0')
+            }
+        }, 100)
     }
+
     addTime(second){
         this.endTime += second * 1000
     }
@@ -63,23 +71,19 @@ export default class Game {
         this.time = DEFAULT_TIME
         this.playerTurn = 1
         this.endTime = 0
-        this.isGameOverred = false
+        this.isGameOver = false
 
         console.log('Game has been reset!')
     }
 
     nextLevel() {
-        if (this.level === MAX_LEVEL) {
-            console.log('Game has reached the maximum level')
-            return
-        }
         setTimeout(() => {
             this.board.setFlipAllCards(false)
         }, 500)
         setTimeout(() => {
             this.level++
             this.board.clearCards()
-            this.board.getPairCard(this.level + 1)
+            this.board.getPairCard(this.level < 11 ? this.level + 1 : 12)
             this.board.shuffle()
         }, 1000)
     }
