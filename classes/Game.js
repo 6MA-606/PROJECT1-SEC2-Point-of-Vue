@@ -14,6 +14,7 @@ export default class Game {
         }
         this.level = 0
         this.time = DEFAULT_TIME
+        this.isGameOverred = false
         this.playerTurn = 1
         this.bgm = ''
         this.endTime = 0
@@ -30,6 +31,7 @@ export default class Game {
         if(durationLeft <= 0){
             clearInterval(timerInterval)
             this.time = 0
+            this.isGameOverred = true
         } else {
             this.time = durationLeft / 1000;
         }
@@ -48,6 +50,7 @@ export default class Game {
         this.time = DEFAULT_TIME
         this.playerTurn = 1
         this.endTime = 0
+        this.isGameOverred = false
 
         console.log('Game has been reset!')
     }

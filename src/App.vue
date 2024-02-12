@@ -570,6 +570,18 @@ watch(
   </div>
   <!-- * Single player mode end --------------------------------------------------------- -->
 
+  <!-- * Single player gameover start --------------------------------------------------------- -->
+
+  <div :class="gameState.isGameOverred ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000a] flex flex-col gap-16 justify-center items-center text-center">
+    <div class="text-6xl">Game Over</div>
+      <div>
+        <div class="text-2xl">You've flipped {{ p1.counter.flip }} times</div>
+        <div class="text-2xl">You've collected {{ p1.counter.pair }} pairs</div>
+      </div>
+  </div>
+
+  <!-- * Single player gameover end --------------------------------------------------------- -->
+
   <!-- * Multi player mode start --------------------------------------------------------- -->
   <div v-if="router.id === 201">
     <button
