@@ -591,7 +591,7 @@ watch(
   <!-- * Single player mode end --------------------------------------------------------- -->
 
   <!-- * Multi player mode start --------------------------------------------------------- -->
-  <div v-if="router.id === 201" class="h-screen">
+  <div v-if="router.id === 201" class="h-screen flex items-center justify-center gap-10">
 
     <button
       @click="setRouterId(100)"
@@ -601,10 +601,18 @@ watch(
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
+    {{ gameState.playerTurn }}
+    <div
+      class="text-mythmatch-100 flex flex-col items-center justify-center "
+    >
+      <div class="text-3xl ">Player 1 score</div>
+      <div class="text-5xl ">{{ p1.scores }}</div>
+    </div>
 
-    <div class="lg:w-9/12 grid place-items-center">
+
+    <div class="lg:w-fit grid place-items-center">
       <div
-        class="w-fit grid grid-cols-6 grid-flow-row gap-3"
+        class="w-fit grid grid-cols-6 grid-flow-row gap-3 "
       >
         <div
           v-for="(card, index) of board.cards"
@@ -646,6 +654,12 @@ watch(
           </div>
         </div>
       </div>
+    </div>  
+    <div
+      class="text-mythmatch-100 flex flex-col items-center justify-center "
+    >
+      <div class="text-3xl ">Player 2 score</div>
+      <div class="text-5xl font-bold ">{{ p2.scores }}</div>
     </div>
   </div>
   <!-- * Multi player mode end --------------------------------------------------------- -->
