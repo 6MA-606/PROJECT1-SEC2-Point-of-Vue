@@ -18,8 +18,14 @@ export default class Game {
         this.bgm = ''
         this.endTime = 0
         this.setting = {
-            volume:100
+            volume:100,
+            isQuality:false,
+            isMute:false
         }
+    }
+    setMute(){
+        this.setting.isMute = !this.setting.isMute
+        console.log(this.setting.isMute);
     }
 
     switchTurn() {

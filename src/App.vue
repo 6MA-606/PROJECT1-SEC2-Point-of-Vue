@@ -483,7 +483,14 @@ watch(
     <p class="mx-auto">Setting</p>
     <div class="flex gap-4 mx-auto p-3">
       <label for="range">Sound</label>
-      <input type="range" class="range" min="0" max="100" step="10" v-model="volume">
+      <input type="range" class="range" min="0" max="100" step="10" v-model="volume" :disabled = "gameState.setting.isMute">
+      <button @click="gameState.setMute()" :class="gameState.setting.isMute?'block':'hidden'">
+        <img src="/setting/volume.jpg" alt="volume" class="rounded">
+      </button>
+      <button :class="gameState.setting.isMute?'hidden':'block' " @click="gameState.setMute() ">
+        <img src="/setting/volume-mute.jpg" alt="muted" class="rounded">
+
+      </button>
 
     </div>
     <div>
