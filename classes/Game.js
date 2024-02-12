@@ -17,6 +17,9 @@ export default class Game {
         this.playerTurn = 1
         this.bgm = ''
         this.endTime = 0
+        this.setting = {
+            volume:100
+        }
     }
 
     switchTurn() {

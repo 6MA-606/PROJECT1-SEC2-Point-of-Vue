@@ -161,7 +161,7 @@ watch(
 )
 
 let bgm = null
-let volume = ref(100)
+let volume = ref(gameState.setting.volume)
 watch(
   () => gameState.bgm,
   (newBgm) => {
