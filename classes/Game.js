@@ -20,7 +20,7 @@ export default class Game {
         this.setting = {
             volume:100,
             isQuality:false,
-            isMute:false
+            isMute:false,
         }
     }
     setMute(){

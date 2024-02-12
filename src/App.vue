@@ -162,6 +162,7 @@ watch(
 
 let bgm = null
 let volume = ref(gameState.setting.volume)
+let quality = ref(gameState.setting.isQuality)
 watch(
   () => gameState.bgm,
   (newBgm) => {
@@ -504,9 +505,9 @@ watch(
       </button>
 
     </div>
-    <div>
-      <label for="">Quality</label>
-      <input type="text">
+    <div class="flex gap-3 justify-center">
+      <label for="">High Quality</label>
+      <input type="checkbox" class="checkbox" alt="Highquality checkbox">
     </div>
     
     
