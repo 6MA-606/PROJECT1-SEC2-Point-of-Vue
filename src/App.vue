@@ -161,19 +161,22 @@ watch(
 )
 
 let bgm = null
-let volume = 0.1
+let volume = ref(100)
 watch(
   () => gameState.bgm,
   (newBgm) => {
     console.log(newBgm)
     if (bgm) bgm.pause()
     bgm = new Audio(`/sounds/${newBgm}.mp3`)
-    bgm.volume = volume
+    bgm.volume = volume.value/100
     bgm.loop = true
     bgm.play()
   }
 )
-watch()
+watch(volume,(newvalue)=>{
+  bgm.volume = newvalue/100
+  console.log("Sound volume is ",newvalue/100);
+})
 
 watch(
   gameState,
@@ -207,7 +210,7 @@ watch(
         }
       }
     `
-    console.log(debugString)
+    // console.log(debugString)
   },
   { deep: true }
 )
