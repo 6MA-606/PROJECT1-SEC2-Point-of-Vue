@@ -107,9 +107,7 @@ const singlePlayerCardClick = (card) => {
       gameState.addTime(5)
     } else {
       setTimeout(() => {
-        p1.selectedCards.forEach((card) => {
-          card.isFliped = false
-        })
+        p1.setFlipSelectedCard(false)
         p1.clearCards()
       }, 1000)
     }
@@ -127,6 +125,35 @@ const handleQuitBtn = () => {
   }
 }
 
+function startMultiPlayerMode() {
+  board.value.clearCards()
+  board.value.getPairCard(12)
+  board.value.shuffle()
+  if(Math.random() < 0.5) gameState.switchTurn()
+}
+
+const multiplayerCardsClick = (card) => {
+  const currentPlayer = players.value[`p${gameState.playerTurn}`]
+  if (!card.isFliped && currentPlayer.selectedCards.length < 2) {
+    card.isFliped = true
+    currentPlayer.addCard(card)
+  } else return
+
+  if (currentPlayer.selectedCards.length === 2) {
+    if (currentPlayer.isPaired()) {
+      currentPlayer.addScores(1)
+      currentPlayer.clearCards()
+    } else {
+      setTimeout(() => {
+        currentPlayer.setFlipSelectedCard(false)
+        currentPlayer.clearCards()
+        gameState.switchTurn()
+      }, 1000)
+    }
+  }
+
+}
+
 watch(
   () => router.id,
   (newRouterId) => {
@@ -142,6 +169,7 @@ watch(
         break
       case 201:
         console.log('multiplayer mode start')
+        startMultiPlayerMode()
         break
     }
   }
@@ -192,7 +220,7 @@ watch(
             pair: ${p1.counter.pair}
           }
         }
-        p1: {
+        p2: {
           selectedCards: ${p2.selectedCards.map(
             (c, index) => `${c.name}(${index})`
           )}
@@ -563,7 +591,8 @@ watch(
   <!-- * Single player mode end --------------------------------------------------------- -->
 
   <!-- * Multi player mode start --------------------------------------------------------- -->
-  <div v-if="router.id === 201">
+  <div v-if="router.id === 201" class="h-screen">
+
     <button
       @click="setRouterId(100)"
       type="button"
@@ -572,6 +601,52 @@ watch(
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
+
+    <div class="lg:w-9/12 grid place-items-center">
+      <div
+        class="w-fit grid grid-cols-6 grid-flow-row gap-3"
+      >
+        <div
+          v-for="(card, index) of board.cards"
+          :key="index"
+          class="lg:w-[7rem] lg:h-[9.8rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+          @click="multiplayerCardsClick(card)"
+        >
+          <div
+            :class="card.isFliped ? 'flip' : ''"
+            class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+          >
+            <div
+              class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
+            >
+              <img
+                src="/cards/backcard.webp"
+                alt="backcard"
+                class="w-full h-full"
+              />
+            </div>
+            <div
+              :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
+              class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+            >
+              <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+                {{ card.name }}
+              </div>
+              <img
+                :src="card.arts"
+                :alt="card.name"
+                class="rounded-lg w-10/12"
+              />
+              <div
+                class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+              >
+                {{ card.name }}
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
   <!-- * Multi player mode end --------------------------------------------------------- -->
 </template>

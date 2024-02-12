@@ -75,4 +75,10 @@ export default class Player {
     isPaired() {
         return this.selectedCards[0].id === this.selectedCards[1].id
     }
+
+    setFlipSelectedCard(flipState) {
+        this.selectedCards.forEach((card) => {
+            card.isFliped = flipState
+        })
+    }
 }
