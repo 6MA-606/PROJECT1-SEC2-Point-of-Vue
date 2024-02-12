@@ -171,17 +171,36 @@ watch(
 )
 
 let bgm = null
+let volume = ref(gameState.setting.volume)
+let quality = ref(gameState.setting.isQuality)
 watch(
   () => gameState.bgm,
   (newBgm) => {
     console.log(newBgm)
     if (bgm) bgm.pause()
     bgm = new Audio(`/sounds/${newBgm}.mp3`)
+    bgm.volume = volume.value/100
     bgm.loop = true
     bgm.play()
   }
 )
+watch(volume,(newvalue)=>{
+  bgm.volume = newvalue/100
+  console.log("Sound volume is ",newvalue/100);
+})
 
+//handle mute function
+watch(()=> gameState.setting.isMute,(newvalue)=>{
+  console.log('Watch execute');
+  if(!bgm) return
+  if(newvalue === true){
+    bgm.volume = 0
+  }
+  else{
+    bgm.volume = 1
+  }
+
+})
 watch(
   gameState,
   ({ mode, board, players: { p1, p2 }, level, time, playerTurn }) => {
@@ -214,7 +233,7 @@ watch(
         }
       }
     `
-    console.log(debugString)
+    // console.log(debugString)
   },
   { deep: true }
 )
@@ -483,11 +502,13 @@ watch(
   <!-- * Mode select screen end --------------------------------------------------------- -->
 
   <!-- * Single player mode start --------------------------------------------------------- -->
+  
   <div
     v-if="router.id === 200"
     :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
     class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
   >
+  
     <!-- <button @click="handleQuitBtn" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
@@ -612,6 +633,30 @@ watch(
     </button>
   </div>
   <!-- * Multi player mode end --------------------------------------------------------- -->
+
+  <!-- setting modal start -------------------------------------------------------------->
+  <div v-show="gameState.isSettingOpen" class="absolute w-full h-screen translate-y-[-100%] bg-[#0005]  flex justify-center items-center z-30">
+    <div class="flex flex-col bg-slate-200">
+      <p class="mx-auto">Setting</p>
+      <div class="flex gap-4 mx-auto p-3">
+        <label for="range">Sound</label>
+        <input type="range" class="range" min="0" max="100" step="10" v-model="volume" :disabled = "gameState.setting.isMute">
+        <button @click="gameState.setMute()" :class="gameState.setting.isMute?'block':'hidden'" >
+          <img src="/setting/volume.jpg" alt="volume" class="rounded">
+        </button>
+        <button :class="gameState.setting.isMute?'hidden':'block' " @click="gameState.setMute() ">
+          <img src="/setting/volume-mute.jpg" alt="muted" class="rounded">
+        </button>
+      </div>
+      <div class="flex gap-3 justify-center">
+        <label for="">High Quality</label>
+        <input type="checkbox" class="checkbox" alt="Highquality checkbox">
+      </div>
+    </div>
+    
+    
+  </div>
+<!-- setting modal end --------------------------------------------------------------------->
 </template>
 
 <style scoped>

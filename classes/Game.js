@@ -18,7 +18,20 @@ export default class Game {
         this.playerTurn = 1
         this.bgm = ''
         this.endTime = 0
+        this.isSettingOpen = false
+        this.setting = {
+            volume:100,
+            isQuality:false,
+            isMute:false,
+        }
     }
+    setMute(){
+        this.setting.isMute = !this.setting.isMute
+        console.log(this.setting.isMute);
+    }
+   setSettingOpenState(openState){
+    this.isSettingOpen = openState
+   }
 
     switchTurn() {
         this.playerTurn = this.playerTurn === 1 ? 2 : 1
