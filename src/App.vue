@@ -97,11 +97,13 @@ function startSinglePlayerMode() {
 const singlePlayerCardClick = (card) => {
   if (!card.isFliped && p1.selectedCards.length < 2) {
     card.isFliped = true
+    p1.addFlipCount()
     p1.addCard(card)
   } else return
 
   if (p1.selectedCards.length === 2) {
     if (p1.isPaired()) {
+      p1.addPairCount()
       p1.addScores(1)
       p1.clearCards()
       gameState.addTime(5)
