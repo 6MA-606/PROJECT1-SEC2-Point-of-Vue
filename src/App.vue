@@ -486,29 +486,37 @@ watch(
   <div
     v-if="router.id === 200"
     :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
-    class="h-screen flex justify-center items-center"
+    class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
   >
     <!-- <button @click="handleQuitBtn" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button> -->
     <!-- <div>{{ p1.scores }}</div> -->
-    <div class="lg:w-9/12 grid place-items-center">
+
+    <div class="lg:hidden w-full mb-5 flex flex-col items-center">
+      <div class="w-8/12 my-3"><img src="./assets/MythMatch_logo.svg" alt="logo" /></div>
+      <div class="w-full flex justify-around">
+        <div class="flex flex-col text-center">
+          <div class="text-3xl">Time</div>
+          <div class="text-5xl font-semibold">{{ gameState.time }}</div>
+        </div>
+        <div class="flex flex-col text-center">
+          <div class="text-3xl">Scores</div>
+          <div class="text-5xl font-semibold">{{ p1.scores }}</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="w-full lg:w-9/12 grid place-items-center">
       <div
-        :class="`grid-cols-${gameState.level < 6 ? gameState.level + 1 : 6} ${
-          gameState.level < 6 ? '' : 'scale-75'
-        }`"
-        class="w-fit grid grid-flow-row gap-3"
+        :class="`grid-cols-${gameState.level < 4 ? gameState.level + 1 : 4} xs:grid-cols-${gameState.level < 6 ? gameState.level + 1 : 6}`"
+        class="w-fit grid grid-flow-row gap-1 xs:gap-2"
       >
         <div
           v-for="(card, index) of board.cards"
           :key="index"
-          :class="
-            index > 0
-              ? 'hidden sm:block w-[8rem] h-[11.2rem]'
-              : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'
-          "
-          class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+          class="cursor-pointer w-[5.5rem] h-[5.5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
           @click="singlePlayerCardClick(card)"
         >
           <div
@@ -516,19 +524,19 @@ watch(
             class="transition-transform w-full h-full duration-500 transform-style-3d relative"
           >
             <div
-              class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
+              class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100"
             >
               <img
                 src="/cards/backcard.webp"
                 alt="backcard"
-                class="w-full h-full"
+                class="w-full lg:h-full"
               />
             </div>
             <div
               :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
-              class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+              class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-2 lg:border-4 border-mythmatch-100"
             >
-              <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+              <div class="hidden lg:flex font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
               <img
@@ -537,7 +545,7 @@ watch(
                 class="rounded-lg w-10/12"
               />
               <div
-                class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+                class="hidden lg:flex rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
               >
                 {{ card.name }}
               </div>
@@ -546,10 +554,11 @@ watch(
         </div>
       </div>
     </div>
-    <div class="lg:w-3/12">
+    <!-- lg: left info section begin -->
+    <div class="hidden lg:block lg:w-3/12">
       <div class="h-screen w-full relative">
         <div
-          class="absolute inset-4 bg-[#fff3] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col items-center"
+          class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col items-center"
         >
           <div class="w-10/12">
             <img src="./assets/MythMatch_logo.svg" alt="logo" />
@@ -563,12 +572,19 @@ watch(
           <div
             class="text-mythmatch-100 flex flex-col items-center justify-center h-1/6"
           >
+            <div class="text-3xl">Level</div>
+            <div class="text-5xl font-bold">{{ gameState.level }}</div>
+          </div>
+          <div
+            class="text-mythmatch-100 flex flex-col items-center justify-center h-1/6"
+          >
             <div class="text-3xl">Your Score</div>
             <div class="text-5xl font-bold">{{ p1.scores }}</div>
           </div>
         </div>
       </div>
     </div>
+    <!-- lg: left info section end -->
   </div>
   <!-- * Single player mode end --------------------------------------------------------- -->
 
