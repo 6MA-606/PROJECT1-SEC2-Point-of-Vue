@@ -161,16 +161,19 @@ watch(
 )
 
 let bgm = null
+let volume = 0.1
 watch(
   () => gameState.bgm,
   (newBgm) => {
     console.log(newBgm)
     if (bgm) bgm.pause()
     bgm = new Audio(`/sounds/${newBgm}.mp3`)
+    bgm.volume = volume
     bgm.loop = true
     bgm.play()
   }
 )
+watch()
 
 watch(
   gameState,
@@ -473,11 +476,26 @@ watch(
   <!-- * Mode select screen end --------------------------------------------------------- -->
 
   <!-- * Single player mode start --------------------------------------------------------- -->
+  <div class="absolute ml-0 bg-slate-500 w-1/4 h-1/2 flex flex-col rounded">
+    <p class="mx-auto">Setting</p>
+    <div class="flex gap-4 mx-auto p-3">
+      <label for="range">Sound</label>
+      <input type="range" class="range" min="0" max="100" step="10" v-model="volume">
+
+    </div>
+    <div>
+      <label for="">Quality</label>
+      <input type="text">
+    </div>
+    
+    
+  </div>
   <div
     v-if="router.id === 200"
     :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
     class="h-screen flex justify-center items-center"
   >
+  
     <!-- <button @click="handleQuitBtn" type="button" class="btn btn-warning absolute left-4 top-4">
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
