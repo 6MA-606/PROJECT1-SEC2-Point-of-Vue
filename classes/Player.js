@@ -44,6 +44,12 @@ export default class Player {
         sfx.play()
         return this.scores
     }
+    addFlipCount(){
+        this.counter.flip++
+    }
+    addPairCount(){
+        this.counter.pair++
+    }
 
     /**
      * Clear all selected cards from the player
