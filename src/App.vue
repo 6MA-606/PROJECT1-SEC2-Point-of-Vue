@@ -178,6 +178,17 @@ watch(volume,(newvalue)=>{
   console.log("Sound volume is ",newvalue/100);
 })
 
+//handle mute function
+watch(()=> gameState.setting.isMute,(newvalue)=>{
+  console.log('Watch execute');
+  if(newvalue === true){
+    bgm.volume = 0
+  }
+  else{
+    bgm.volume = 1
+  }
+
+})
 watch(
   gameState,
   ({ mode, board, players: { p1, p2 }, level, time, playerTurn }) => {
