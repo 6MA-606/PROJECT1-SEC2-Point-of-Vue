@@ -75,13 +75,21 @@ const handleBgClick = (e) => {
   gameState.mode = 0
 }
 
+let loadingCardId = 0
 const routeWithTransition = (routerId, milliseconds, saveRoute) => {
+  
+  function getRandomCardLoading() {
+    return Math.floor(Math.random() * (Cards.length - 1))
+  }
+
+  loadingCardId = getRandomCardLoading()
   isLoading.value = true
   setTimeout(() => {
     setRouterId(routerId, saveRoute)
     isLoading.value = false
   }, milliseconds)
 }
+
 
 function startSinglePlayerMode() {
   gameState.level = 1
@@ -232,21 +240,21 @@ watch(
           />
         </div>
         <div
-          :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`"
+          :style="`background-image: linear-gradient(135deg, ${Cards[loadingCardId].color.primary} 0% 10%, #303 10% 90% , ${Cards[loadingCardId].color.secondary} 90% 100%)`"
           class="front-load-card absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
         >
           <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
-            {{ Cards[0].name }}
+            {{ Cards[loadingCardId].name }}
           </div>
           <img
-            :src="Cards[0].arts"
-            :alt="Cards[0].name"
+            :src="Cards[loadingCardId].arts"
+            :alt="Cards[loadingCardId].name"
             class="rounded-lg w-10/12"
           />
           <div
             class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
           >
-            {{ Cards[0].name }}
+            {{ Cards[loadingCardId].name }}
           </div>
         </div>
       </div>
