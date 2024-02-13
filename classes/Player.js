@@ -68,12 +68,18 @@ export default class Player {
         this.scores = 0
     }
 
+    clearCounter(){
+        this.counter.flip = 0
+        this.counter.pair = 0
+    }
+
     /**
      * Reset the player cards and scores
      */
     reset() {
         this.clearCards()
         this.clearScores()
+        this.clearCounter()
     }
 
     /**
