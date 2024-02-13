@@ -17,6 +17,7 @@ export default class Game {
         this.playerTurn = 1
         this.bgm = ''
         this.endTime = 0
+        this.winner = 0
     }
 
     switchTurn() {
@@ -67,6 +68,4 @@ export default class Game {
             this.board.shuffle()
         }, 1000)
     }
-
-    
 }

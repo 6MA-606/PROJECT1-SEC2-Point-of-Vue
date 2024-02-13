@@ -128,7 +128,7 @@ const handleQuitBtn = () => {
 function startMultiPlayerMode() {
   board.value.clearCards()
   board.value.getPairCard(12)
-  board.value.shuffle()
+  // board.value.shuffle()
   if(Math.random() < 0.5) gameState.switchTurn()
 }
 
@@ -151,7 +151,15 @@ const multiplayerCardsClick = (card) => {
       }, 1000)
     }
   }
-
+  if(board.value.isAllCardFlipped()){
+            if(p1.scores !== p2.scores){
+                if(p1.scores > p2.scores){
+                    gameState.winner = 1
+                } else {
+                    gameState.winner = 2
+                }
+            }
+        }
 }
 
 watch(
@@ -665,6 +673,17 @@ watch(
     </div>
   </div>
   <!-- * Multi player mode end --------------------------------------------------------- -->
+  <!-- * Multiplayer winner modal start --------------------------------------------------------- -->
+  <div v-if="gameState.winner > 0" class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] grid place-items-center">
+    <div>
+      <div class="text-2xl">
+        Player {{ gameState.winner }} is winner.
+      </div>
+    </div>
+  </div>
+  <!-- * Multiplayer winner modal end --------------------------------------------------------- -->
+
+
 </template>
 
 <style scoped>
