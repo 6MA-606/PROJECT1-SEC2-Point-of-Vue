@@ -57,7 +57,6 @@ p1.accuracy = computed(() => {
   if (p1.counter.flip === 0) return 0
   return ((p1.counter.pair / p1.counter.flip) * 100).toFixed(2)
 })
-let { volume } = setting.value
 
 onMounted(() => {
   if (router.id === 100) {
@@ -181,7 +180,7 @@ watch(
     if (bgm) bgm.pause()
     if (newBgm === '') return
     bgm = new Audio(`/sounds/${newBgm}.mp3`)
-    bgm.volume = volume / 100
+    bgm.volume = setting.value.volume / 100
     bgm.loop = true
     bgm.play()
   }
@@ -603,16 +602,35 @@ watch(
             <div class="text-5xl font-semibold font-mono">{{ gameState.time }}</div>
           </div>
           <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
-          <button class="btn btn-error" type="button">Surrender</button>
+          <button @click="gameState.setSurrenderOpenState(true)" class="btn btn-error" type="button">Surrender</button>
         </div>
       </div>
     </div>
     <!-- lg: left info section end -->
   </div>
   <!-- * Single player mode end --------------------------------------------------------- -->
+  
+  <!-- * Single player surrender start --------------------------------------------------------- -->
+  <div :class="gameState.isSurrenderOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+    <div class="text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
+    <div class="text-xl">If you want restart, you can click 
+      <button @click="routeWithTransition(200, 2000, false)" type="button" class="btn btn-lg btn-success">
+        <div>Restart</div>
+      </button>
+    </div>
+    <div class="text-xl">but you want to really quit, right?</div>
+    <div class="flex gap-8">
+      <button @click="handleQuitBtn" type="button" class="btn btn-lg">
+        <div>Yes</div>
+      </button>
+      <button @click="gameState.setSurrenderOpenState(false)" type="button" class="btn btn-lg btn-warning">
+        <div>No</div>
+      </button>
+    </div>
+  </div>
+  <!-- * Single player surrender end --------------------------------------------------------- -->
 
   <!-- * Single player game over start --------------------------------------------------------- -->
-
   <div :class="gameState.isGameOver ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
     <div class="text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
       <div class="flex flex-col items-center">
@@ -629,7 +647,6 @@ watch(
       <div>Quit</div>
     </button>
   </div>
-
   <!-- * Single player game over end --------------------------------------------------------- -->
 
   <!-- * Multi player mode start --------------------------------------------------------- -->
