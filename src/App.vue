@@ -15,7 +15,7 @@ const router = reactive({
 const isLoading = ref(false)
 
 // Start Page ID:100
-// Selecmode page ID:101
+// Select mode page ID:101
 // Single player Mode ID:200
 function setRouterId(id, saveRoute) {
   router.id = id
@@ -108,8 +108,8 @@ function startSinglePlayerMode() {
 }
 
 const singlePlayerCardClick = (card) => {
-  if (!card.isFliped && p1.selectedCards.length < 2) {
-    card.isFliped = true
+  if (!card.isFlipped && p1.selectedCards.length < 2) {
+    card.isFlipped = true
     p1.addCard(card)
   } else return
   
@@ -123,7 +123,7 @@ const singlePlayerCardClick = (card) => {
     } else {
       setTimeout(() => {
         p1.selectedCards.forEach((card) => {
-          card.isFliped = false
+          card.isFlipped = false
         })
         p1.clearCards()
       }, 1000)
@@ -150,11 +150,11 @@ watch(
         board.value.shuffle()
         break
       case 200:
-        console.log('singleplayer mode start')
+        console.log('single player mode start')
         startSinglePlayerMode()
         break
       case 201:
-        console.log('multiplayer mode start')
+        console.log('multi player mode start')
         break
     }
   }
@@ -188,19 +188,19 @@ watch(
 )
 watch(
   () => gameState.setting.volume,
-  (newvalue)=>{
-    bgm.volume = newvalue / 100
-    console.log("Sound volume is ", newvalue / 100);
+  (newValue)=>{
+    bgm.volume = newValue / 100
+    console.log("Sound volume is ", newValue / 100);
   }
 )
 
 //handle mute function
 watch(
   ()=> gameState.setting.isMute,
-  (newvalue)=>{
+  (newValue)=>{
     console.log('Watch execute');
     if(!bgm) return
-    if(newvalue === true){
+    if(newValue === true){
       bgm.volume = 0
     }
     else{
@@ -321,7 +321,7 @@ watch(
         >
           <img
             src="/cards/backcard.webp"
-            alt="bcakcard"
+            alt="backcard"
             class="w-full h-full"
           />
         </div>
@@ -339,7 +339,7 @@ watch(
         >
           <img
             src="/cards/backcard.webp"
-            alt="bcakcard"
+            alt="backcard"
             class="w-full h-full"
           />
         </div>
@@ -373,10 +373,10 @@ watch(
             : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'
         "
         class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
-        @click="card.isFliped = !card.isFliped"
+        @click="card.isFlipped = !card.isFlipped"
       >
         <div
-          :class="card.isFliped ? 'flip' : ''"
+          :class="card.isFlipped ? 'flip' : ''"
           class="transition-transform w-full h-full duration-500 transform-style-3d relative"
         >
           <div
@@ -499,7 +499,7 @@ watch(
           type="button"
           @click="routeWithTransition(mode.routerId, 2000, false)"
           class="btn btn-success px-10 text-[1em] text-white font-semibold"
-          alt="play-endlesMode-button"
+          alt="play-endlessMode-button"
         >
           Play
         </button>
@@ -541,7 +541,7 @@ watch(
           @click="singlePlayerCardClick(card)"
         >
           <div
-            :class="card.isFliped ? 'flip' : ''"
+            :class="card.isFlipped ? 'flip' : ''"
             class="transition-transform w-full h-full duration-500 transform-style-3d relative"
           >
             <div
@@ -611,7 +611,7 @@ watch(
   </div>
   <!-- * Single player mode end --------------------------------------------------------- -->
 
-  <!-- * Single player gameover start --------------------------------------------------------- -->
+  <!-- * Single player game over start --------------------------------------------------------- -->
 
   <div :class="gameState.isGameOver ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
     <div class="text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
@@ -630,7 +630,7 @@ watch(
     </button>
   </div>
 
-  <!-- * Single player gameover end --------------------------------------------------------- -->
+  <!-- * Single player game over end --------------------------------------------------------- -->
 
   <!-- * Multi player mode start --------------------------------------------------------- -->
   <div v-if="router.id === 201">

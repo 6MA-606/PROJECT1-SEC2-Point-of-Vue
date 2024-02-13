@@ -69,7 +69,7 @@ export default class Board {
   }
 
   isAllCardFlipped() {
-    return this.cards.every((card) => card.isFliped)
+    return this.cards.every((card) => card.isFlipped)
   }
 
   setFlipAllCards(flipState) {
