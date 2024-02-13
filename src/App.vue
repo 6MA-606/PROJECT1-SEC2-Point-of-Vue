@@ -128,6 +128,7 @@ const handleQuitBtn = () => {
 function startMultiPlayerMode() {
   board.value.clearCards()
   board.value.getPairCard(12)
+  board.value.shuffle()
   if(Math.random() < 0.5) gameState.switchTurn()
 }
 
