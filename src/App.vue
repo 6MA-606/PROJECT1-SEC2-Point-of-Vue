@@ -330,7 +330,7 @@ watch(
         <img
           src="./assets/MythMatch_logo.svg"
           alt="MythMatch_logo"
-          class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow"
+          class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow animate-[pulse_2s_infinite_5000ms]"
         />
       </div>
       <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
