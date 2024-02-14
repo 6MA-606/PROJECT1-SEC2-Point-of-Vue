@@ -27,6 +27,7 @@ export default class Game {
         this.playerTurn = 1
         this.bgm = ''
         this.endTime = 0
+        this.winner = 0
         this.isSettingOpen = false
     }
 
@@ -86,6 +87,7 @@ export default class Game {
         this.isQuitOpen = false
         clearInterval(this.timerInterval)
         this.isTimerRunning = false
+        this.winner = 0
 
         console.log('Game has been reset!')
     }
@@ -109,6 +111,4 @@ export default class Game {
             this.board.shuffle()
         }, 1000)
     }
-
-    
 }

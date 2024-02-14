@@ -102,9 +102,7 @@ const singlePlayerCardClick = (card) => {
       if (gameState.level < 11) gameState.addTime(5)
     } else {
       setTimeout(() => {
-        p1.selectedCards.forEach((card) => {
-          card.isFlipped = false
-        })
+        p1.setFlipSelectedCard(false)
         p1.clearCards()
       }, 1000)
     }
@@ -125,6 +123,43 @@ const handleRestartBtn = (startModeFunction) => {
   setTimeout(startModeFunction, 2000)
 }
 
+function startMultiPlayerMode() {
+  board.value.clearCards()
+  board.value.getPairCard(12)
+  // board.value.shuffle()
+  if(Math.random() < 0.5) gameState.switchTurn()
+}
+
+const multiplayerCardsClick = (card) => {
+  const currentPlayer = players.value[`p${gameState.playerTurn}`]
+  if (!card.isFliped && currentPlayer.selectedCards.length < 2) {
+    card.isFliped = true
+    currentPlayer.addCard(card)
+  } else return
+
+  if (currentPlayer.selectedCards.length === 2) {
+    if (currentPlayer.isPaired()) {
+      currentPlayer.addScores(1)
+      currentPlayer.clearCards()
+    } else {
+      setTimeout(() => {
+        currentPlayer.setFlipSelectedCard(false)
+        currentPlayer.clearCards()
+        gameState.switchTurn()
+      }, 1000)
+    }
+  }
+  if(board.value.isAllCardFlipped()){
+            if(p1.scores !== p2.scores){
+                if(p1.scores > p2.scores){
+                    gameState.winner = 1
+                } else {
+                    gameState.winner = 2
+                }
+            }
+        }
+}
+
 watch(
   () => router.id,
   (newRouterId) => {
@@ -140,7 +175,8 @@ watch(
         startSinglePlayerMode()
         break
       case 201:
-        console.log('multi player mode start')
+        console.log('multiplayer mode start')
+        startMultiPlayerMode()
         break
     }
   },
@@ -238,7 +274,7 @@ watch(
             pair: ${p1.counter.pair}
           }
         }
-        p1: {
+        p2: {
           selectedCards: ${p2.selectedCards.map(
             (c, index) => `${c.name}(${index})`
           )}
@@ -703,8 +739,12 @@ watch(
       </button>
     </div>
     <!-- * Single player game over end --------------------------------------------------------- -->
+    
     <!-- * Multi player mode start --------------------------------------------------------- -->
-    <div v-if="router.id === 201">
+    <div v-if="router.id === 201" class="h-screen flex items-center justify-center gap-24" 
+    :style="gameState.playerTurn === 1 ? 'background-image: linear-gradient(to right, #f55a 0%, #0000 50% 100%)' 
+    : 'background-image: linear-gradient(to left, #f55a 0%, #0000 50% 100%)'">
+
       <button
         @click="setRouterId(100)"
         type="button"
@@ -713,8 +753,80 @@ watch(
         <div v-html="ArrowLeftIcon"></div>
         <div>Quit</div>
       </button>
+      <!-- {{ gameState.playerTurn }} -->
+      <div 
+        class="text-mythmatch-100 flex flex-col items-center justify-center "
+      >
+        <div class="text-3xl ">Player 1 score</div>
+        <div class="text-5xl ">{{ p1.scores }}</div>
+      </div>
+
+
+      <div class="lg:w-fit grid place-items-center">
+        <div
+          class="w-fit grid grid-cols-6 grid-flow-row gap-3 "
+        >
+          <div
+            v-for="(card, index) of board.cards"
+            :key="index"
+            class="lg:w-[7rem] lg:h-[9.8rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            @click="multiplayerCardsClick(card)"
+          >
+            <div
+              :class="card.isFliped ? 'flip' : ''"
+              class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+            >
+              <div
+                class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
+              >
+                <img
+                  src="/cards/backcard.webp"
+                  alt="backcard"
+                  class="w-full h-full"
+                />
+              </div>
+              <div
+                :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
+                class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+              >
+                <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+                  {{ card.name }}
+                </div>
+                <img
+                  :src="card.arts"
+                  :alt="card.name"
+                  class="rounded-lg w-10/12"
+                />
+                <div
+                  class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+                >
+                  {{ card.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>  
+      <div 
+        class="text-mythmatch-100 flex flex-col items-center justify-center "
+      >
+        <div class="text-3xl ">Player 2 score</div>
+        <div class="text-5xl font-bold ">{{ p2.scores }}</div>
+      </div>
     </div>
     <!-- * Multi player mode end --------------------------------------------------------- -->
+
+    <!-- * Multiplayer winner modal start --------------------------------------------------------- -->
+    <div v-if="gameState.winner > 0" class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] grid place-items-center">
+      <div class="flex flex-col justify-center items-center gap-5">
+        <div class="text-2xl">
+          Player {{ gameState.winner }} is winner.
+        </div>
+        <button @click="handleQuitBtn" type="button" class="btn btn-lg btn-warning">Quit</button>
+      </div>
+    </div>
+    <!-- * Multiplayer winner modal end --------------------------------------------------------- -->
+
     <!-- setting modal start -------------------------------------------------------------->
     <div v-show="gameState.isSettingOpen" class="absolute w-full h-screen translate-y-[-100%] bg-[#0005]  flex justify-center items-center z-30">
       <div class="relative h-[15rem] flex flex-col bg-base-100 border-2 border-mythmatch-100 rounded-lg">
@@ -748,8 +860,6 @@ watch(
           </button>
         </div>
       </div>
-    
-    
     </div>
     <!-- setting modal end --------------------------------------------------------------------->
   </div>
