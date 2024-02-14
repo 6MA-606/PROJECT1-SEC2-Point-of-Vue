@@ -7,6 +7,7 @@ import InfoIcon from './assets/info-circle.svg?raw'
 import { gotoUrl } from './utils/helperFunction.js'
 import Cards from '../data/cards.json'
 import Game from '../classes/Game'
+import Cursor from '../classes/Cursor'
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
@@ -39,20 +40,12 @@ const modes = [
   },
 ]
 
-// const gameState = reactive({
-//   mode: 0, // 0: No selected, 1: Endless Mode (1P), 2: Versus Mode (2P)
-//   board: new Board(),
-//   time: '00:00:30.00',
-//   player: {
-//     p1: new Player(),
-//     p2: new Player()
-//   }
-// })
+const cursor = reactive(new Cursor())
 
 const gameState = reactive(new Game())
-
 const { board, players, setting } = toRefs(gameState)
 const { p1, p2 } = players.value
+
 p1.accuracy = computed(() => {
   if (p1.counter.flip === 0) return 0
   return ((p1.counter.pair / p1.counter.flip) * 100).toFixed(2)
@@ -64,14 +57,6 @@ onMounted(() => {
     board.value.shuffle()
   }
 })
-
-// function reset() {
-//   gameState.mode = 0
-//   gameState.time = 30
-//   p1.reset()
-//   p2.reset()
-//   board.value.clearCards()
-// }
 
 /** @param {Event} e */
 const handleBgClick = (e) => {
@@ -149,10 +134,12 @@ watch(
         board.value.shuffle()
         break
       case 200:
+        gameState.reset()
         console.log('single player mode start')
         startSinglePlayerMode()
         break
       case 201:
+        gameState.reset()
         console.log('multi player mode start')
         break
     }
@@ -246,140 +233,40 @@ watch(
 </script>
 
 <template>
-  <!-- * Loading screen start --------------------------------------------------------- -->
   <div
-    :class="isLoading ? 'translate-y-[0%]' : 'translate-y-[100%]'"
-    class="absolute grid place-items-center transition-transform duration-1000 w-full h-screen bg-purple-950 z-50"
-  >
+    :style="`transform: translate(${cursor.x}, ${cursor.y})`"
+    class="absolute pointer-events-none z-[100]">
+    <div class="absolute translate-x-[-50%] translate-y-[-250%]"></div>
     <div
-      class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+      :class="cursor.isHovered ? 'opacity-50 scale-75' : ''"
+      class="absolute w-5 h-5 translate-x-[-50%] translate-y-[-50%] transition-all duration-150 bg-mythmatch-100 rounded-full"
     >
-      <div
-        class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative"
-      >
-        <div
-          class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
-        >
-          <img
-            src="/cards/backcard.webp"
-            alt="backcard"
-            class="w-full h-full"
-          />
-        </div>
-        <div
-          :style="`background-image: linear-gradient(135deg, ${Cards[loadingCardId].color.primary} 0% 10%, #303 10% 90% , ${Cards[loadingCardId].color.secondary} 90% 100%)`"
-          class="front-load-card absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
-        >
-          <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
-            {{ Cards[loadingCardId].name }}
-          </div>
-          <img
-            :src="Cards[loadingCardId].arts"
-            :alt="Cards[loadingCardId].name"
-            class="rounded-lg w-10/12"
-          />
-          <div
-            class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
-          >
-            {{ Cards[loadingCardId].name }}
-          </div>
-        </div>
-      </div>
+    </div>
+    <div
+      :class="`${cursor.isHovered && !cursor.isMouseDown ? 'opacity-50 scale-125' : ''} ${cursor.isMouseDown ? 'opacity-50 scale-75' : ''}`"
+      class="absolute w-10 h-10 translate-x-[-50%] translate-y-[-50%] transition-all duration-150 border-2 border-mythmatch-200 rounded-full"
+    >
     </div>
   </div>
-  <!-- * Loading screen end --------------------------------------------------------- -->
-
-  <!-- * LandingPage start --------------------------------------------------------- -->
   <div
-    v-if="router.id === 100"
-    id="landing-page"
-    class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32"
+    @mousemove="cursor.handleMouseMove($event)"
+    @mouseleave="cursor.reset()"
+    @mousedown="cursor.mouseDown()"
+    @mouseup="cursor.mouseUp()"
   >
-    <div id="game-title" class="flex gap-2 sm:gap-6">
-      <div class="hidden sm:block -rotate-12 text-[0.5rem] sm:text-[1rem]">
-        <div
-          :style="`background-image: linear-gradient(135deg, ${Cards[1].color.primary} 0% 10%, #303 10% 90% , ${Cards[1].color.secondary} 90% 100%)`"
-          class="absolute w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100 origin-bottom -rotate-45"
-        >
-          <div class="font-bold font-mythmatch text-xs text-mythmatch-100">
-            {{ Cards[1].name }}
-          </div>
-          <img
-            :src="Cards[1].arts"
-            :alt="Cards[1].name"
-            class="rounded-lg w-10/12"
-          />
-          <div
-            class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100"
-          >
-            {{ Cards[1].name }}
-          </div>
-        </div>
-        <div
-          class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden"
-        >
-          <img
-            src="/cards/backcard.webp"
-            alt="backcard"
-            class="w-full h-full"
-          />
-        </div>
-      </div>
-      <div>
-        <img
-          src="./assets/MythMatch_logo.svg"
-          alt="MythMatch_logo"
-          class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow"
-        />
-      </div>
-      <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
-        <div
-          class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10"
-        >
-          <img
-            src="/cards/backcard.webp"
-            alt="backcard"
-            class="w-full h-full"
-          />
-        </div>
-        <div
-          :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`"
-          class="w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100"
-        >
-          <div class="font-bold font-mythmatch text-xs text-mythmatch-100">
-            {{ Cards[0].name }}
-          </div>
-          <img
-            :src="Cards[0].arts"
-            :alt="Cards[0].name"
-            class="rounded-lg w-10/12"
-          />
-          <div
-            class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100"
-          >
-            {{ Cards[0].name }}
-          </div>
-        </div>
-      </div>
-    </div>
-    <div id="landing-4-card" class="gap-8 flex flex-wrap">
+    <!-- * Loading screen start --------------------------------------------------------- -->
+    <div
+      :class="isLoading ? 'translate-y-[0%]' : 'translate-y-[100%]'"
+      class="absolute grid place-items-center transition-transform duration-1000 w-full h-screen bg-purple-950 z-50"
+    >
       <div
-        v-for="(card, index) of board.cards"
-        :key="index"
-        :class="
-          index > 0
-            ? 'hidden sm:block w-[8rem] h-[11.2rem]'
-            : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'
-        "
-        class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
-        @click="card.isFlipped = !card.isFlipped"
+        class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
       >
         <div
-          :class="card.isFlipped ? 'flip' : ''"
-          class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+          class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative"
         >
           <div
-            class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
+            class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
           >
             <img
               src="/cards/backcard.webp"
@@ -388,184 +275,137 @@ watch(
             />
           </div>
           <div
-            :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
-            class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+            :style="`background-image: linear-gradient(135deg, ${Cards[loadingCardId].color.primary} 0% 10%, #303 10% 90% , ${Cards[loadingCardId].color.secondary} 90% 100%)`"
+            class="front-load-card absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
           >
             <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
-              {{ card.name }}
+              {{ Cards[loadingCardId].name }}
             </div>
-            <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12" />
+            <img
+              :src="Cards[loadingCardId].arts"
+              :alt="Cards[loadingCardId].name"
+              class="rounded-lg w-10/12"
+            />
             <div
               class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
             >
-              {{ card.name }}
+              {{ Cards[loadingCardId].name }}
             </div>
           </div>
         </div>
       </div>
     </div>
-    <button
-      id="play-btn"
-      type="button"
-      class="btn-mythmatch"
-      alt="home-play-btn"
-      @click="routeWithTransition(101, 2000, true)"
-    >
-      Play
-    </button>
+    <!-- * Loading screen end --------------------------------------------------------- -->
+    <!-- * LandingPage start --------------------------------------------------------- -->
     <div
-      id="corner-btn-group"
-      class="absolute flex xs:flex-col gap-2 right-4 bottom-4"
+      v-if="router.id === 100"
+      id="landing-page"
+      class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32"
     >
-      <div
-        class="tooltip hover:tooltip-open tooltip-left tooltip-info"
-        data-tip="How to play?"
-      >
-        <button type="button" class="btn btn-circle btn-neutral btn-lg">
-          <div v-html="BookIcon" class="scale-[1.75]"></div>
-        </button>
-      </div>
-      <div
-        class="tooltip hover:tooltip-open tooltip-left tooltip-info"
-        data-tip="This project on GitHub"
-      >
-        <button
-          @click="
-            gotoUrl(
-              'https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/',
-              true
-            )
-          "
-          type="button"
-          class="btn btn-circle btn-neutral btn-lg"
-        >
-          <div v-html="GitHubIcon" class="scale-[2]"></div>
-        </button>
-      </div>
-    </div>
-  </div>
-  <!-- * LandingPage end --------------------------------------------------------- -->
-
-  <!-- * Mode select screen start --------------------------------------------------------- -->
-  <div
-    v-if="router.id === 101"
-    @click="handleBgClick"
-    class="grid place-items-center select-none"
-  >
-    <button
-      @click="setRouterId(100)"
-      type="button"
-      class="btn btn-warning absolute left-4 top-4"
-    >
-      <div v-html="ArrowLeftIcon"></div>
-      <div>Back</div>
-    </button>
-    <div
-      id="mode-select"
-      class="w-full h-screen overflow-auto flex flex-col lg:flex-row lg:justify-center py-36 lg:py-0 items-center gap-20"
-    >
-      <div
-        v-for="(mode, index) in modes"
-        :key="index"
-        :class="
-          gameState.mode === index + 1 && gameState.mode !== 0
-            ? 'border-4 border-green-500 z-10 lg:scale-110'
-            : ''
-        "
-        @click="gameState.mode = index + 1"
-        class="relative w-[20rem] lg:w-[22rem] px-5 py-10 flex flex-col justify-center items-center gap-4 bg-base-200 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] cursor-pointer"
-      >
-        <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
-        <div class="w-[13em] h-[13em]">
+      <div id="game-title" class="flex gap-2 sm:gap-6">
+        <div class="hidden sm:block -rotate-12 text-[0.5rem] sm:text-[1rem]">
+          <div
+            :style="`background-image: linear-gradient(135deg, ${Cards[1].color.primary} 0% 10%, #303 10% 90% , ${Cards[1].color.secondary} 90% 100%)`"
+            class="absolute w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100 origin-bottom -rotate-45"
+          >
+            <div class="font-bold font-mythmatch text-xs text-mythmatch-100">
+              {{ Cards[1].name }}
+            </div>
+            <img
+              :src="Cards[1].arts"
+              :alt="Cards[1].name"
+              class="rounded-lg w-10/12"
+            />
+            <div
+              class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100"
+            >
+              {{ Cards[1].name }}
+            </div>
+          </div>
+          <div
+            class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden"
+          >
+            <img
+              src="/cards/backcard.webp"
+              alt="backcard"
+              class="w-full h-full"
+            />
+          </div>
+        </div>
+        <div>
           <img
-            :src="
-              gameState.mode === index + 1 && gameState.mode !== 0
-                ? mode.gif
-                : mode.thumbnail
-            "
-            :alt="mode.title"
-            class="w-full h-full object-cover rounded-lg"
+            src="./assets/MythMatch_logo.svg"
+            alt="MythMatch_logo"
+            class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow"
           />
         </div>
-        <div class="flex flex-col gap-2">
-          <div class="text-center text-[1.25em] font-bold">
-            {{ mode.title }}
+        <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
+          <div
+            class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10"
+          >
+            <img
+              src="/cards/backcard.webp"
+              alt="backcard"
+              class="w-full h-full"
+            />
           </div>
-          <div class="text-center text-[0.875em]">{{ mode.description }}</div>
-        </div>
-        <button
-          v-if="gameState.mode === index + 1"
-          type="button"
-          @click="routeWithTransition(mode.routerId, 2000, false)"
-          class="btn btn-success px-10 text-[1em] text-white font-semibold"
-          alt="play-endlessMode-button"
-        >
-          Play
-        </button>
-      </div>
-    </div>
-  </div>
-  <!-- * Mode select screen end --------------------------------------------------------- -->
-
-  <!-- * Single player mode start --------------------------------------------------------- -->
-  
-  <div
-    v-if="router.id === 200"
-    :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
-    class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
-  >
-    <div class="lg:hidden w-full mb-5 flex flex-col items-center">
-      <div class="w-8/12 my-3"><img src="./assets/MythMatch_logo.svg" alt="logo" /></div>
-      <div class="w-full flex justify-around">
-        <div class="flex flex-col text-center">
-          <div class="text-3xl">Time</div>
-          <div class="text-5xl font-semibold">{{ gameState.time }}</div>
-        </div>
-        <div class="flex flex-col text-center">
-          <div class="text-3xl">Scores</div>
-          <div class="text-5xl font-semibold">{{ p1.scores }}</div>
+          <div
+            :style="`background-image: linear-gradient(135deg, ${Cards[0].color.primary} 0% 10%, #303 10% 90% , ${Cards[0].color.secondary} 90% 100%)`"
+            class="w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex flex-col justify-center items-center rounded-lg border-2 border-mythmatch-100"
+          >
+            <div class="font-bold font-mythmatch text-xs text-mythmatch-100">
+              {{ Cards[0].name }}
+            </div>
+            <img
+              :src="Cards[0].arts"
+              :alt="Cards[0].name"
+              class="rounded-lg w-10/12"
+            />
+            <div
+              class="rotate-180 font-bold font-mythmatch text-xs text-mythmatch-100"
+            >
+              {{ Cards[0].name }}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-
-    <div class="w-full lg:w-9/12 grid place-items-center">
-      <div
-        :class="`grid-cols-${gameState.level < 4 ? gameState.level + 1 : 4} xs:grid-cols-${gameState.level < 6 ? gameState.level + 1 : 6}`"
-        class="w-fit grid grid-flow-row gap-1 xs:gap-2"
-      >
+      <div id="landing-4-card" class="gap-8 flex flex-wrap">
         <div
           v-for="(card, index) of board.cards"
+          @mouseover="cursor.hover()"
+          @mouseleave="cursor.unHover()"
           :key="index"
-          class="cursor-pointer w-[5.5rem] h-[5.5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
-          @click="singlePlayerCardClick(card)"
+          :class="
+            index > 0
+              ? 'hidden sm:block w-[8rem] h-[11.2rem]'
+              : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'
+          "
+          class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+          @click="card.isFlipped = !card.isFlipped"
         >
           <div
             :class="card.isFlipped ? 'flip' : ''"
             class="transition-transform w-full h-full duration-500 transform-style-3d relative"
           >
             <div
-              class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100"
+              class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
             >
               <img
                 src="/cards/backcard.webp"
                 alt="backcard"
-                class="w-full lg:h-full"
+                class="w-full h-full"
               />
             </div>
             <div
               :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
-              class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-2 lg:border-4 border-mythmatch-100"
+              class="flip absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
             >
-              <div class="hidden lg:flex font-bold font-mythmatch text-xl text-mythmatch-100">
+              <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
-              <img
-                :src="card.arts"
-                :alt="card.name"
-                class="rounded-lg w-10/12"
-              />
+              <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12" />
               <div
-                class="hidden lg:flex rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+                class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
               >
                 {{ card.name }}
               </div>
@@ -573,132 +413,296 @@ watch(
           </div>
         </div>
       </div>
-    </div>
-    <!-- lg: left info section begin -->
-    <div class="hidden lg:block lg:w-3/12">
-      <div class="h-screen w-full relative">
+      <button
+        id="play-btn"
+        type="button"
+        class="btn-mythmatch"
+        alt="home-play-btn"
+        @click="routeWithTransition(101, 2000, true)"
+      >
+        Play
+      </button>
+      <div
+        id="corner-btn-group"
+        class="absolute flex xs:flex-col gap-2 right-4 bottom-4"
+      >
         <div
-          class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col items-center"
+          class="tooltip hover:tooltip-open tooltip-left tooltip-info"
+          data-tip="How to play?"
         >
-          <div class="w-10/12">
-            <img src="./assets/MythMatch_logo.svg" alt="logo" />
-          </div>
-          <div class="w-full flex justify-evenly">
-            <div
-              class="text-mythmatch-100 flex flex-col items-center justify-center"
-            >
-              <div class="text-3xl">Level</div>
-              <div class="text-5xl font-bold">{{ gameState.level }}</div>
-            </div>
-            <div
-              class="text-mythmatch-100 flex flex-col items-center justify-center"
-            >
-              <div class="text-3xl">Your Score</div>
-              <div class="text-5xl font-bold">{{ p1.scores }}</div>
-            </div>
-          </div>
-          <div class="text-mythmatch-100 flex flex-col items-center justify-center">
-            <div class="text-3xl">Time</div>
-            <div class="text-5xl font-semibold font-mono">{{ gameState.time }}</div>
-          </div>
-          <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
-          <button @click="gameState.setSurrenderOpenState(true)" class="btn btn-error" type="button">Surrender</button>
-        </div>
-      </div>
-    </div>
-    <!-- lg: left info section end -->
-  </div>
-  <!-- * Single player mode end --------------------------------------------------------- -->
-  
-  <!-- * Single player surrender start --------------------------------------------------------- -->
-  <div :class="gameState.isSurrenderOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
-    <div class="text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
-    <div class="text-xl">If you want restart, you can click 
-      <button @click="routeWithTransition(200, 2000, false)" type="button" class="btn btn-lg btn-success">
-        <div>Restart</div>
-      </button>
-    </div>
-    <div class="text-xl">but you want to really quit, right?</div>
-    <div class="flex gap-8">
-      <button @click="handleQuitBtn" type="button" class="btn btn-lg">
-        <div>Yes</div>
-      </button>
-      <button @click="gameState.setSurrenderOpenState(false)" type="button" class="btn btn-lg btn-warning">
-        <div>No</div>
-      </button>
-    </div>
-  </div>
-  <!-- * Single player surrender end --------------------------------------------------------- -->
-
-  <!-- * Single player game over start --------------------------------------------------------- -->
-  <div :class="gameState.isGameOver ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
-    <div class="text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
-      <div class="flex flex-col items-center">
-        <div class="text-3xl">Score</div>
-        <div class="text-6xl font-semibold text-mythmatch-100">{{ p1.scores }}</div>
-      </div>
-      <div>
-        <div class="text-2xl">You've flipped {{ p1.counter.flip }} times</div>
-        <div class="text-2xl">You've collected {{ p1.counter.pair }} pairs</div>
-        <div class="text-2xl">Accuracy {{ p1.accuracy }}%</div>
-      </div>
-      <button @click="handleQuitBtn" type="button" class="btn btn-warning">
-      <div v-html="ArrowLeftIcon"></div>
-      <div>Quit</div>
-    </button>
-  </div>
-  <!-- * Single player game over end --------------------------------------------------------- -->
-
-  <!-- * Multi player mode start --------------------------------------------------------- -->
-  <div v-if="router.id === 201">
-    <button
-      @click="setRouterId(100)"
-      type="button"
-      class="btn btn-warning absolute left-4 top-4"
-    >
-      <div v-html="ArrowLeftIcon"></div>
-      <div>Quit</div>
-    </button>
-  </div>
-  <!-- * Multi player mode end --------------------------------------------------------- -->
-
-  <!-- setting modal start -------------------------------------------------------------->
-  <div v-show="gameState.isSettingOpen" class="absolute w-full h-screen translate-y-[-100%] bg-[#0005]  flex justify-center items-center z-30">
-    <div class="relative h-[15rem] flex flex-col bg-base-100 border-2 border-mythmatch-100 rounded-lg">
-      <div class="text-center text-4xl font-mythmatch font-bold my-5">Setting</div>
-      <div class="flex flex-col items-start gap-3 px-5">
-        <div class="flex items-center gap-4">
-          <label class="flex items-center gap-2">
-            <div class="text-lg">Sound</div>
-            <input type="range" class="range range-sm disabled:opacity-70 disabled:cursor-not-allowed" min="0" max="100" step="10" v-model="gameState.setting.volume" :disabled="gameState.setting.isMute">
-          </label>
-          <button @click="gameState.toggleMute()" :class="setting.isMute ? 'bg-red-400' : 'bg-base-200'" class="w-6 h-6 grid place-items-center rounded-lg">
-            <img v-if="setting.isMute" src="/setting/sound_off.svg" alt="muted">
-            <img v-else src="/setting/sound_on.svg" alt="volume">
+          <button type="button" class="btn btn-circle btn-neutral btn-lg">
+            <div v-html="BookIcon" class="scale-[1.75]"></div>
           </button>
         </div>
-        <div class="flex gap-3 justify-center">
-          <div>Quality</div>
-          <label class="flex gap-1 items-center">
-            <input type="radio" name="quality" class="radio radio-xs">
-            <span>low</span>
-          </label>
-          <label class="flex gap-1 items-center">
-            <input type="radio" name="quality" class="radio radio-xs" checked>
-            <span>High</span>
-          </label>
+        <div
+          class="tooltip hover:tooltip-open tooltip-left tooltip-info"
+          data-tip="This project on GitHub"
+        >
+          <button
+            @click="
+              gotoUrl(
+                'https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/',
+                true
+              )
+            "
+            type="button"
+            class="btn btn-circle btn-neutral btn-lg"
+          >
+            <div v-html="GitHubIcon" class="scale-[2]"></div>
+          </button>
         </div>
       </div>
-      <div class="absolute top-2 right-2">
-        <button @click="gameState.setSettingOpenState(false)" class="btn btn-circle btn-neutral btn-sm">
-          <div>X</div>
+    </div>
+    <!-- * LandingPage end --------------------------------------------------------- -->
+    <!-- * Mode select screen start --------------------------------------------------------- -->
+    <div
+      v-if="router.id === 101"
+      @click="handleBgClick"
+      class="grid place-items-center select-none"
+    >
+      <button
+        @click="setRouterId(100)"
+        type="button"
+        class="btn btn-warning absolute left-4 top-4"
+      >
+        <div v-html="ArrowLeftIcon"></div>
+        <div>Back</div>
+      </button>
+      <div
+        id="mode-select"
+        class="w-full h-screen overflow-auto flex flex-col lg:flex-row lg:justify-center py-36 lg:py-0 items-center gap-20"
+      >
+        <div
+          v-for="(mode, index) in modes"
+          :key="index"
+          :class="
+            gameState.mode === index + 1 && gameState.mode !== 0
+              ? 'border-4 border-green-500 z-10 lg:scale-110'
+              : ''
+          "
+          @click="gameState.mode = index + 1"
+          class="relative w-[20rem] lg:w-[22rem] px-5 py-10 flex flex-col justify-center items-center gap-4 bg-base-200 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] cursor-pointer"
+        >
+          <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
+          <div class="w-[13em] h-[13em]">
+            <img
+              :src="
+                gameState.mode === index + 1 && gameState.mode !== 0
+                  ? mode.gif
+                  : mode.thumbnail
+              "
+              :alt="mode.title"
+              class="w-full h-full object-cover rounded-lg"
+            />
+          </div>
+          <div class="flex flex-col gap-2">
+            <div class="text-center text-[1.25em] font-bold">
+              {{ mode.title }}
+            </div>
+            <div class="text-center text-[0.875em]">{{ mode.description }}</div>
+          </div>
+          <button
+            v-if="gameState.mode === index + 1"
+            type="button"
+            @click="routeWithTransition(mode.routerId, 2000, false)"
+            class="btn btn-success px-10 text-[1em] text-white font-semibold"
+            alt="play-endlessMode-button"
+          >
+            Play
+          </button>
+        </div>
+      </div>
+    </div>
+    <!-- * Mode select screen end --------------------------------------------------------- -->
+    <!-- * Single player mode start --------------------------------------------------------- -->
+    
+    <div
+      v-if="router.id === 200"
+      :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
+      class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
+    >
+      <div class="lg:hidden w-full mb-5 flex flex-col items-center">
+        <div class="w-8/12 my-3"><img src="./assets/MythMatch_logo.svg" alt="logo" /></div>
+        <div class="w-full flex justify-around">
+          <div class="flex flex-col text-center">
+            <div class="text-3xl">Time</div>
+            <div class="text-5xl font-semibold">{{ gameState.time }}</div>
+          </div>
+          <div class="flex flex-col text-center">
+            <div class="text-3xl">Scores</div>
+            <div class="text-5xl font-semibold">{{ p1.scores }}</div>
+          </div>
+        </div>
+      </div>
+      <div class="w-full lg:w-9/12 grid place-items-center">
+        <div
+          :class="`grid-cols-${gameState.level < 4 ? gameState.level + 1 : 4} xs:grid-cols-${gameState.level < 6 ? gameState.level + 1 : 6}`"
+          class="w-fit grid grid-flow-row gap-1 xs:gap-2"
+        >
+          <div
+            v-for="(card, index) of board.cards"
+            :key="index"
+            class="cursor-pointer w-[5.5rem] h-[5.5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            @click="singlePlayerCardClick(card)"
+          >
+            <div
+              :class="card.isFlipped ? 'flip' : ''"
+              class="transition-transform w-full h-full duration-500 transform-style-3d relative"
+            >
+              <div
+                class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100"
+              >
+                <img
+                  src="/cards/backcard.webp"
+                  alt="backcard"
+                  class="w-full lg:h-full"
+                />
+              </div>
+              <div
+                :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
+                class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-2 lg:border-4 border-mythmatch-100"
+              >
+                <div class="hidden lg:flex font-bold font-mythmatch text-xl text-mythmatch-100">
+                  {{ card.name }}
+                </div>
+                <img
+                  :src="card.arts"
+                  :alt="card.name"
+                  class="rounded-lg w-10/12"
+                />
+                <div
+                  class="hidden lg:flex rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+                >
+                  {{ card.name }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- lg: left info section begin -->
+      <div class="hidden lg:block lg:w-3/12">
+        <div class="h-screen w-full relative">
+          <div
+            class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col items-center"
+          >
+            <div class="w-10/12">
+              <img src="./assets/MythMatch_logo.svg" alt="logo" />
+            </div>
+            <div class="w-full flex justify-evenly">
+              <div
+                class="text-mythmatch-100 flex flex-col items-center justify-center"
+              >
+                <div class="text-3xl">Level</div>
+                <div class="text-5xl font-bold">{{ gameState.level }}</div>
+              </div>
+              <div
+                class="text-mythmatch-100 flex flex-col items-center justify-center"
+              >
+                <div class="text-3xl">Your Score</div>
+                <div class="text-5xl font-bold">{{ p1.scores }}</div>
+              </div>
+            </div>
+            <div class="text-mythmatch-100 flex flex-col items-center justify-center">
+              <div class="text-3xl">Time</div>
+              <div class="text-5xl font-semibold font-mono">{{ gameState.time }}</div>
+            </div>
+            <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
+            <button @click="gameState.setSurrenderOpenState(true)" class="btn btn-error" type="button">Surrender</button>
+          </div>
+        </div>
+      </div>
+      <!-- lg: left info section end -->
+    </div>
+    <!-- * Single player mode end --------------------------------------------------------- -->
+    
+    <!-- * Single player surrender start --------------------------------------------------------- -->
+    <div :class="gameState.isSurrenderOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+      <div class="text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
+      <div class="text-xl">If you want restart, you can click
+        <button @click="routeWithTransition(200, 2000, false)" type="button" class="btn btn-lg btn-success">
+          <div>Restart</div>
+        </button>
+      </div>
+      <div class="text-xl">but you want to really quit, right?</div>
+      <div class="flex gap-8">
+        <button @click="handleQuitBtn" type="button" class="btn btn-lg">
+          <div>Yes</div>
+        </button>
+        <button @click="gameState.setSurrenderOpenState(false)" type="button" class="btn btn-lg btn-warning">
+          <div>No</div>
         </button>
       </div>
     </div>
+    <!-- * Single player surrender end --------------------------------------------------------- -->
+    <!-- * Single player game over start --------------------------------------------------------- -->
+    <div :class="gameState.isGameOver ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+      <div class="text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
+        <div class="flex flex-col items-center">
+          <div class="text-3xl">Score</div>
+          <div class="text-6xl font-semibold text-mythmatch-100">{{ p1.scores }}</div>
+        </div>
+        <div>
+          <div class="text-2xl">You've flipped {{ p1.counter.flip }} times</div>
+          <div class="text-2xl">You've collected {{ p1.counter.pair }} pairs</div>
+          <div class="text-2xl">Accuracy {{ p1.accuracy }}%</div>
+        </div>
+        <button @click="handleQuitBtn" type="button" class="btn btn-warning">
+        <div v-html="ArrowLeftIcon"></div>
+        <div>Quit</div>
+      </button>
+    </div>
+    <!-- * Single player game over end --------------------------------------------------------- -->
+    <!-- * Multi player mode start --------------------------------------------------------- -->
+    <div v-if="router.id === 201">
+      <button
+        @click="setRouterId(100)"
+        type="button"
+        class="btn btn-warning absolute left-4 top-4"
+      >
+        <div v-html="ArrowLeftIcon"></div>
+        <div>Quit</div>
+      </button>
+    </div>
+    <!-- * Multi player mode end --------------------------------------------------------- -->
+    <!-- setting modal start -------------------------------------------------------------->
+    <div v-show="gameState.isSettingOpen" class="absolute w-full h-screen translate-y-[-100%] bg-[#0005]  flex justify-center items-center z-30">
+      <div class="relative h-[15rem] flex flex-col bg-base-100 border-2 border-mythmatch-100 rounded-lg">
+        <div class="text-center text-4xl font-mythmatch font-bold my-5">Setting</div>
+        <div class="flex flex-col items-start gap-3 px-5">
+          <div class="flex items-center gap-4">
+            <label class="flex items-center gap-2">
+              <div class="text-lg">Sound</div>
+              <input type="range" class="range range-sm disabled:opacity-70 disabled:cursor-not-allowed" min="0" max="100" step="10" v-model="gameState.setting.volume" :disabled="gameState.setting.isMute">
+            </label>
+            <button @click="gameState.toggleMute()" :class="setting.isMute ? 'bg-red-400' : 'bg-base-200'" class="w-6 h-6 grid place-items-center rounded-lg">
+              <img v-if="setting.isMute" src="/setting/sound_off.svg" alt="muted">
+              <img v-else src="/setting/sound_on.svg" alt="volume">
+            </button>
+          </div>
+          <div class="flex gap-3 justify-center">
+            <div>Quality</div>
+            <label class="flex gap-1 items-center">
+              <input type="radio" name="quality" class="radio radio-xs">
+              <span>low</span>
+            </label>
+            <label class="flex gap-1 items-center">
+              <input type="radio" name="quality" class="radio radio-xs" checked>
+              <span>High</span>
+            </label>
+          </div>
+        </div>
+        <div class="absolute top-2 right-2">
+          <button @click="gameState.setSettingOpenState(false)" class="btn btn-circle btn-neutral btn-sm">
+            <div>X</div>
+          </button>
+        </div>
+      </div>
     
     
+    </div>
+    <!-- setting modal end --------------------------------------------------------------------->
   </div>
-<!-- setting modal end --------------------------------------------------------------------->
 </template>
 
 <style scoped>
