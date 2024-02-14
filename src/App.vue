@@ -132,8 +132,8 @@ function startMultiPlayerMode() {
 
 const multiplayerCardsClick = (card) => {
   const currentPlayer = players.value[`p${gameState.playerTurn}`]
-  if (!card.isFliped && currentPlayer.selectedCards.length < 2) {
-    card.isFliped = true
+  if (!card.isFlipped && currentPlayer.selectedCards.length < 2) {
+    card.isFlipped = true
     currentPlayer.addCard(card)
   } else return
 
@@ -294,11 +294,11 @@ watch(
 
 <template>
   <div
-  @mousemove="cursor.handleMouseMove($event)"
-  @mouseleave="cursor.reset()"
-  @mousedown="cursor.mouseDown()"
-  @mouseup="cursor.mouseUp()"
-  class="relative overflow-hidden h-screen"
+    @mousemove="cursor.handleMouseMove($event)"
+    @mouseleave="cursor.reset()"
+    @mousedown="cursor.mouseDown()"
+    @mouseup="cursor.mouseUp()"
+    class="relative overflow-hidden h-screen"
   >
     <div
       :style="`transform: translate(${cursor.x}, ${cursor.y})`"
@@ -778,7 +778,7 @@ watch(
             @click="multiplayerCardsClick(card)"
           >
             <div
-              :class="card.isFliped ? 'flip' : ''"
+              :class="card.isFlipped ? 'flip' : ''"
               class="transition-transform w-full h-full duration-500 transform-style-3d relative"
             >
               <div

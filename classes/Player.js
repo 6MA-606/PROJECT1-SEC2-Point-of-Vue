@@ -92,7 +92,7 @@ export default class Player {
 
     setFlipSelectedCard(flipState) {
         this.selectedCards.forEach((card) => {
-            card.isFliped = flipState
+            card.isFlipped = flipState
         })
     }
 }
