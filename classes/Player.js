@@ -13,6 +13,7 @@ export default class Player {
             flip: 0,
             pair: 0
         }
+        this.accuracy = 0
     }
 
     /**
@@ -38,11 +39,18 @@ export default class Player {
      * @param {Number} scores 
      * @returns {Number} Return the total scores of the player
      */
-    addScores(scores) {
+    addScores(scores, sfxVolume = 100) {
         this.scores += scores
         const sfx = new Audio('/sounds/pointGain.mp3')
+        sfx.volume = sfxVolume / 100
         sfx.play()
         return this.scores
+    }
+    addFlipCount(){
+        this.counter.flip++
+    }
+    addPairCount(){
+        this.counter.pair++
     }
 
     /**
@@ -60,12 +68,18 @@ export default class Player {
         this.scores = 0
     }
 
+    clearCounter(){
+        this.counter.flip = 0
+        this.counter.pair = 0
+    }
+
     /**
      * Reset the player cards and scores
      */
     reset() {
         this.clearCards()
         this.clearScores()
+        this.clearCounter()
     }
 
     /**
