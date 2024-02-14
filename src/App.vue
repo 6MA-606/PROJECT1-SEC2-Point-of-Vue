@@ -128,7 +128,7 @@ const handleQuitBtn = () => {
 function startMultiPlayerMode() {
   board.value.clearCards()
   board.value.getPairCard(12)
-  board.value.shuffle()
+  // board.value.shuffle()
   if(Math.random() < 0.5) gameState.switchTurn()
 }
 
@@ -151,7 +151,15 @@ const multiplayerCardsClick = (card) => {
       }, 1000)
     }
   }
-
+  if(board.value.isAllCardFlipped()){
+            if(p1.scores !== p2.scores){
+                if(p1.scores > p2.scores){
+                    gameState.winner = 1
+                } else {
+                    gameState.winner = 2
+                }
+            }
+        }
 }
 
 watch(
@@ -160,6 +168,7 @@ watch(
     console.log(newRouterId)
     switch (newRouterId) {
       case 100:
+        gameState.reset()
         board.value.getPairCard(2)
         board.value.shuffle()
         break
@@ -591,7 +600,9 @@ watch(
   <!-- * Single player mode end --------------------------------------------------------- -->
 
   <!-- * Multi player mode start --------------------------------------------------------- -->
-  <div v-if="router.id === 201" class="h-screen">
+  <div v-if="router.id === 201" class="h-screen flex items-center justify-center gap-24" 
+  :style="gameState.playerTurn === 1 ? 'background-image: linear-gradient(to right, #f55a 0%, #0000 50% 100%)' 
+  : 'background-image: linear-gradient(to left, #f55a 0%, #0000 50% 100%)'">
 
     <button
       @click="setRouterId(100)"
@@ -601,10 +612,18 @@ watch(
       <div v-html="ArrowLeftIcon"></div>
       <div>Quit</div>
     </button>
+    <!-- {{ gameState.playerTurn }} -->
+    <div 
+      class="text-mythmatch-100 flex flex-col items-center justify-center "
+    >
+      <div class="text-3xl ">Player 1 score</div>
+      <div class="text-5xl ">{{ p1.scores }}</div>
+    </div>
 
-    <div class="lg:w-9/12 grid place-items-center">
+
+    <div class="lg:w-fit grid place-items-center">
       <div
-        class="w-fit grid grid-cols-6 grid-flow-row gap-3"
+        class="w-fit grid grid-cols-6 grid-flow-row gap-3 "
       >
         <div
           v-for="(card, index) of board.cards"
@@ -646,9 +665,27 @@ watch(
           </div>
         </div>
       </div>
+    </div>  
+    <div 
+      class="text-mythmatch-100 flex flex-col items-center justify-center "
+    >
+      <div class="text-3xl ">Player 2 score</div>
+      <div class="text-5xl font-bold ">{{ p2.scores }}</div>
     </div>
   </div>
   <!-- * Multi player mode end --------------------------------------------------------- -->
+  <!-- * Multiplayer winner modal start --------------------------------------------------------- -->
+  <div v-if="gameState.winner > 0" class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] grid place-items-center">
+    <div class="flex flex-col justify-center items-center gap-5">
+      <div class="text-2xl">
+        Player {{ gameState.winner }} is winner.
+      </div>
+      <button @click="handleQuitBtn" type="button" class="btn btn-lg btn-warning">Quit</button>
+    </div>
+  </div>
+  <!-- * Multiplayer winner modal end --------------------------------------------------------- -->
+
+
 </template>
 
 <style scoped>

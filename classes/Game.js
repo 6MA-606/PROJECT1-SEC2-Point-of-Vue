@@ -17,6 +17,7 @@ export default class Game {
         this.playerTurn = 1
         this.bgm = ''
         this.endTime = 0
+        this.winner = 0
     }
 
     switchTurn() {
@@ -48,6 +49,7 @@ export default class Game {
         this.time = DEFAULT_TIME
         this.playerTurn = 1
         this.endTime = 0
+        this.winner = 0
 
         console.log('Game has been reset!')
     }
@@ -67,6 +69,4 @@ export default class Game {
             this.board.shuffle()
         }, 1000)
     }
-
-    
 }
