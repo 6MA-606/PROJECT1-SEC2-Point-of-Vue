@@ -168,6 +168,7 @@ watch(
     console.log(newRouterId)
     switch (newRouterId) {
       case 100:
+        gameState.reset()
         board.value.getPairCard(2)
         board.value.shuffle()
         break
@@ -675,10 +676,11 @@ watch(
   <!-- * Multi player mode end --------------------------------------------------------- -->
   <!-- * Multiplayer winner modal start --------------------------------------------------------- -->
   <div v-if="gameState.winner > 0" class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] grid place-items-center">
-    <div>
+    <div class="flex flex-col justify-center items-center gap-5">
       <div class="text-2xl">
         Player {{ gameState.winner }} is winner.
       </div>
+      <button @click="handleQuitBtn" type="button" class="btn btn-lg btn-warning">Quit</button>
     </div>
   </div>
   <!-- * Multiplayer winner modal end --------------------------------------------------------- -->
