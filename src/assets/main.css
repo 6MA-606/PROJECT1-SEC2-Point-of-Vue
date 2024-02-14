@@ -12,7 +12,8 @@
 }
 
 body {
-    overflow: hidden;
+    /* overflow: hidden; */
+    height: 100vh;
     /* background-image: linear-gradient(to bottom, #642375 0% 60%, #3c1846 70% 100%); */
     background-image: url(/bg/bg.svg);
 }

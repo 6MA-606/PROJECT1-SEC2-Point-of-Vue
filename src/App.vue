@@ -51,12 +51,12 @@ p1.accuracy = computed(() => {
   return ((p1.counter.pair / p1.counter.flip) * 100).toFixed(2)
 })
 
-onMounted(() => {
-  if (router.id === 100) {
-    board.value.getPairCard(2)
-    board.value.shuffle()
-  }
-})
+// onMounted(() => {
+//   if (router.id === 100) {
+//     board.value.getPairCard(2)
+//     board.value.shuffle()
+//   }
+// })
 
 /** @param {Event} e */
 const handleBgClick = (e) => {
@@ -66,7 +66,6 @@ const handleBgClick = (e) => {
 
 let loadingCardId = 0
 const routeWithTransition = (routerId, milliseconds, saveRoute) => {
-  
   function getRandomCardLoading() {
     return Math.floor(Math.random() * (Cards.length - 1))
   }
@@ -79,20 +78,17 @@ const routeWithTransition = (routerId, milliseconds, saveRoute) => {
   }, milliseconds)
 }
 
-
 function startSinglePlayerMode() {
+  gameState.mode = 1
   gameState.level = 1
   board.value.clearCards()
   board.value.getPairCard(2)
   board.value.shuffle()
-  // setTimeout(() => {
-  //   gameState.bgm = 'bgmPhase2'
-  // }, 1000)
-  gameState.startTimer(30)
+  gameState.startTimer(3)
 }
 
 const singlePlayerCardClick = (card) => {
-  if (!card.isFlipped && p1.selectedCards.length < 2) {
+  if (gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
     card.isFlipped = true
     p1.addCard(card)
   } else return
@@ -123,6 +119,12 @@ const handleQuitBtn = () => {
   routeWithTransition(100, 2000, true)
 }
 
+const handleRestartBtn = (startModeFunction) => {
+  gameState.reset()
+  routeWithTransition(200, 2000, false)
+  setTimeout(startModeFunction, 2000)
+}
+
 watch(
   () => router.id,
   (newRouterId) => {
@@ -134,14 +136,36 @@ watch(
         board.value.shuffle()
         break
       case 200:
-        gameState.reset()
         console.log('single player mode start')
         startSinglePlayerMode()
         break
       case 201:
-        gameState.reset()
         console.log('multi player mode start')
         break
+    }
+  },
+  { immediate: true }
+)
+
+watch(
+  () => gameState.isTimerRunning,
+  (runningState) => {
+    if (gameState.mode === 1) {
+      if (!runningState && gameState.isPlaying) {
+        gameState.gameOver()
+      } else if (!runningState && !gameState.isPlaying) {
+        gameState.isPlaying = true
+      }
+    }
+  }
+)
+
+watch(
+  () => gameState.isPlaying,
+  (playingState) => {
+    if (playingState && gameState.mode === 1) {
+      gameState.startTimer(30)
+      console.log('play')
     }
   }
 )
@@ -253,6 +277,7 @@ watch(
     @mouseleave="cursor.reset()"
     @mousedown="cursor.mouseDown()"
     @mouseup="cursor.mouseUp()"
+    class="relative overflow-hidden h-screen"
   >
     <!-- * Loading screen start --------------------------------------------------------- -->
     <div
@@ -521,16 +546,28 @@ watch(
       :style="`background-image: url(/bg/bg${gameState.level >= 9 ? '2' : ''}.svg)`"
       class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
     >
-      <div class="lg:hidden w-full mb-5 flex flex-col items-center">
-        <div class="w-8/12 my-3"><img src="./assets/MythMatch_logo.svg" alt="logo" /></div>
-        <div class="w-full flex justify-around">
-          <div class="flex flex-col text-center">
-            <div class="text-3xl">Time</div>
-            <div class="text-5xl font-semibold">{{ gameState.time }}</div>
+      <div class="lg:hidden w-full mb-4 flex flex-col items-center">
+        <div class="w-full flex flex-col">
+          <div class="my-5 flex justify-evenly w-full">
+            <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />
+            <div class="flex flex-col items-center">
+              <div class="text-2xl">Level</div>
+              <div class="text-3xl font-semibold">{{ gameState.level }}</div>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="text-2xl">Scores</div>
+              <div class="text-3xl font-semibold">{{ p1.scores }}</div>
+            </div>
           </div>
-          <div class="flex flex-col text-center">
-            <div class="text-3xl">Scores</div>
-            <div class="text-5xl font-semibold">{{ p1.scores }}</div>
+          <div class="flex justify-evenly items-center">
+            <div class="flex flex-col text-center">
+              <div class="text-2xl">Time</div>
+              <div class="text-3xl font-bold font-mono">{{ gameState.time }}</div>
+            </div>
+            <div class="flex gap-3">
+              <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
+              <button @click="gameState.setQuitOpenState(true)" class="btn btn-error" type="button">Quit</button>
+            </div>
           </div>
         </div>
       </div>
@@ -541,6 +578,8 @@ watch(
         >
           <div
             v-for="(card, index) of board.cards"
+            @mouseover="cursor.hover()"
+            @mouseleave="cursor.unHover()"
             :key="index"
             class="cursor-pointer w-[5.5rem] h-[5.5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
             @click="singlePlayerCardClick(card)"
@@ -608,36 +647,47 @@ watch(
               <div class="text-5xl font-semibold font-mono">{{ gameState.time }}</div>
             </div>
             <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
-            <button @click="gameState.setSurrenderOpenState(true)" class="btn btn-error" type="button">Surrender</button>
+            <button @click="gameState.setQuitOpenState(true)" class="btn btn-error" type="button">Quit</button>
           </div>
         </div>
       </div>
       <!-- lg: left info section end -->
     </div>
     <!-- * Single player mode end --------------------------------------------------------- -->
+
+    <!-- * Single player countdown start --------------------------------------------------------- -->
+    <div
+      v-if="gameState.mode === 1 && !gameState.isPlaying && gameState.isTimerRunning"
+      class="absolute top-0 left-0 z-40 w-full h-screen bg-[#000c] flex flex-col justify-center items-center"
+    >
+      <div class="text-6xl font-mythmatch text-mythmatch-100">{{ Math.round(gameState.time) }}</div>
+    </div>
+    <!-- * Single player countdown start --------------------------------------------------------- -->
     
-    <!-- * Single player surrender start --------------------------------------------------------- -->
-    <div :class="gameState.isSurrenderOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
-      <div class="text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
-      <div class="text-xl">If you want restart, you can click
-        <button @click="routeWithTransition(200, 2000, false)" type="button" class="btn btn-lg btn-success">
-          <div>Restart</div>
-        </button>
+    <!-- * Single player quit start --------------------------------------------------------- -->
+    <div :class="gameState.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+      <div class="text-3xl xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
+      <div class="flex flex-col gap-3">
+        <div class="text-xl flex items-center gap-2"><div>If you want restart, you can click</div>
+          <button @click="handleRestartBtn(startSinglePlayerMode)" type="button" class="btn btn-sm btn-outline">
+            <div>Restart</div>
+          </button>
+        </div>
+        <div class="text-xl">but you want to really quit, right?</div>
       </div>
-      <div class="text-xl">but you want to really quit, right?</div>
       <div class="flex gap-8">
         <button @click="handleQuitBtn" type="button" class="btn btn-lg">
           <div>Yes</div>
         </button>
-        <button @click="gameState.setSurrenderOpenState(false)" type="button" class="btn btn-lg btn-warning">
+        <button @click="gameState.setQuitOpenState(false)" type="button" class="btn btn-lg btn-warning">
           <div>No</div>
         </button>
       </div>
     </div>
-    <!-- * Single player surrender end --------------------------------------------------------- -->
+    <!-- * Single player quit end --------------------------------------------------------- -->
     <!-- * Single player game over start --------------------------------------------------------- -->
-    <div :class="gameState.isGameOver ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
-      <div class="text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
+    <div :class="gameState.isGameOver && gameState.mode === 1 ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+      <div class="text-6xl xs:text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
         <div class="flex flex-col items-center">
           <div class="text-3xl">Score</div>
           <div class="text-6xl font-semibold text-mythmatch-100">{{ p1.scores }}</div>

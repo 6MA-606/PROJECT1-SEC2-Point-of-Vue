@@ -1,12 +1,13 @@
 import Board from './Board.js';
 import Player from './Player';
 
-const DEFAULT_TIME = '00:00:30.00'
+const DEFAULT_TIME = '30.00'
 const MAX_LEVEL = 11
 
 export default class Game {
     constructor() {
         this.mode = 0
+        this.isPlaying = false
         this.board = new Board()
         this.players = {
             p1: new Player(),
@@ -20,7 +21,8 @@ export default class Game {
         this.level = 0
         this.time = DEFAULT_TIME
         this.timerInterval = null
-        this.isSurrenderOpen = false
+        this.isTimerRunning = false
+        this.isQuitOpen = false
         this.isGameOver = false
         this.playerTurn = 1
         this.bgm = ''
@@ -41,8 +43,8 @@ export default class Game {
         this.isSettingOpen = openState
     }
 
-    setSurrenderOpenState(openState){
-        this.isSurrenderOpen = openState
+    setQuitOpenState(openState){
+        this.isQuitOpen = openState
     }
 
     switchTurn() {
@@ -50,16 +52,14 @@ export default class Game {
     }
 
     startTimer(second) {
+        this.isTimerRunning = true
         this.endTime = Date.now() + (second * 1000)
         this.timerInterval = setInterval(() => {
             const durationLeft = this.endTime - Date.now()
             if(durationLeft <= 0){
                 clearInterval(this.timerInterval)
+                this.isTimerRunning = false
                 this.time = '0.00'
-                this.isSettingOpen = false
-                this.isSurrenderOpen = false
-                this.isGameOver = true
-                this.bgm = ''
             } else {
                 this.time = Math.floor(durationLeft / 1000) + '.' + Math.floor(durationLeft % 1000 / 10).toString().padStart(2, '0')
             }
@@ -72,6 +72,7 @@ export default class Game {
 
     reset() {
         this.mode = 0
+        this.isPlaying = false
         this.board.clearCards()
         this.players.p1.reset()
         this.players.p2.reset()
@@ -82,10 +83,19 @@ export default class Game {
         this.isGameOver = false
         this.bgm = ''
         this.isSettingOpen = false
-        this.isSurrenderOpen = false
+        this.isQuitOpen = false
         clearInterval(this.timerInterval)
+        this.isTimerRunning = false
 
         console.log('Game has been reset!')
+    }
+
+    gameOver() {
+        this.isGameOver = true
+        this.isPlaying = false
+        this.isSettingOpen = false
+        this.isQuitOpen = false
+        this.bgm = ''
     }
 
     nextLevel() {
