@@ -294,27 +294,27 @@ watch(
 
 <template>
   <div
-    :style="`transform: translate(${cursor.x}, ${cursor.y})`"
-    class="absolute pointer-events-none z-[100]">
-    <div class="absolute translate-x-[-50%] translate-y-[-250%]"></div>
-    <div
-      :class="cursor.isHovered ? 'opacity-50 scale-75' : ''"
-      class="absolute w-5 h-5 translate-x-[-50%] translate-y-[-50%] transition-all duration-150 bg-mythmatch-100 rounded-full"
-    >
-    </div>
-    <div
-      :class="`${cursor.isHovered && !cursor.isMouseDown ? 'opacity-50 scale-125' : ''} ${cursor.isMouseDown ? 'opacity-50 scale-75' : ''}`"
-      class="absolute w-10 h-10 translate-x-[-50%] translate-y-[-50%] transition-all duration-150 border-2 border-mythmatch-200 rounded-full"
-    >
-    </div>
-  </div>
-  <div
-    @mousemove="cursor.handleMouseMove($event)"
-    @mouseleave="cursor.reset()"
-    @mousedown="cursor.mouseDown()"
-    @mouseup="cursor.mouseUp()"
-    class="relative overflow-hidden h-screen"
+  @mousemove="cursor.handleMouseMove($event)"
+  @mouseleave="cursor.reset()"
+  @mousedown="cursor.mouseDown()"
+  @mouseup="cursor.mouseUp()"
+  class="relative overflow-hidden h-screen"
   >
+    <div
+      :style="`transform: translate(${cursor.x}, ${cursor.y})`"
+      class="absolute pointer-events-none z-[100]">
+      <div class="absolute translate-x-[-50%] translate-y-[-250%]"></div>
+      <div
+        :class="cursor.isHovered ? 'opacity-50 scale-75' : ''"
+        class="absolute w-5 h-5 translate-x-[-50%] translate-y-[-50%] transition-all duration-150 bg-mythmatch-100 rounded-full"
+      >
+      </div>
+      <div
+        :class="`${cursor.isHovered && !cursor.isMouseDown ? 'opacity-50 scale-125' : ''} ${cursor.isMouseDown ? 'opacity-50 scale-75' : ''}`"
+        class="absolute w-10 h-10 translate-x-[-50%] translate-y-[-50%] transition-all duration-150 border-2 border-mythmatch-200 rounded-full"
+      >
+      </div>
+    </div>
     <!-- * Loading screen start --------------------------------------------------------- -->
     <div
       :class="isLoading ? 'translate-y-[0%]' : 'translate-y-[100%]'"
@@ -701,7 +701,9 @@ watch(
     <!-- * Single player countdown start --------------------------------------------------------- -->
     
     <!-- * Single player quit start --------------------------------------------------------- -->
-    <div :class="gameState.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+    <div
+      v-if="router.id === 200"
+      :class="gameState.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
       <div class="text-3xl xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
       <div class="flex flex-col gap-3">
         <div class="text-xl flex items-center gap-2"><div>If you want restart, you can click</div>
@@ -722,7 +724,10 @@ watch(
     </div>
     <!-- * Single player quit end --------------------------------------------------------- -->
     <!-- * Single player game over start --------------------------------------------------------- -->
-    <div :class="gameState.isGameOver && gameState.mode === 1 ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
+    <div
+      v-if="router.id === 200"
+      :class="gameState.isGameOver && gameState.mode === 1 ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center"
+    >
       <div class="text-6xl xs:text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
         <div class="flex flex-col items-center">
           <div class="text-3xl">Score</div>
@@ -734,10 +739,10 @@ watch(
           <div class="text-2xl">Accuracy {{ p1.accuracy }}%</div>
         </div>
         <button @click="handleQuitBtn" type="button" class="btn btn-warning">
-        <div v-html="ArrowLeftIcon"></div>
-        <div>Quit</div>
-      </button>
-    </div>
+          <div v-html="ArrowLeftIcon"></div>
+          <div>Quit</div>
+        </button>
+      </div>
     <!-- * Single player game over end --------------------------------------------------------- -->
     
     <!-- * Multi player mode start --------------------------------------------------------- -->
@@ -817,7 +822,7 @@ watch(
     <!-- * Multi player mode end --------------------------------------------------------- -->
 
     <!-- * Multiplayer winner modal start --------------------------------------------------------- -->
-    <div v-if="gameState.winner > 0" class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] grid place-items-center">
+    <div v-if="router.id === 201 && gameState.winner > 0" class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] grid place-items-center">
       <div class="flex flex-col justify-center items-center gap-5">
         <div class="text-2xl">
           Player {{ gameState.winner }} is winner.
