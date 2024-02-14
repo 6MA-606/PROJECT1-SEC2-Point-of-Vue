@@ -46,6 +46,18 @@ const gameState = reactive(new Game())
 const { board, players, setting } = toRefs(gameState)
 const { p1, p2 } = players.value
 
+const dummyPlayer = [
+  {
+    name: 'Title',
+    dummyScore: 500
+  },
+
+  {
+    name: 'Mink',
+    dummyScore: 300
+  }
+]
+
 p1.accuracy = computed(() => {
   if (p1.counter.flip === 0) return 0
   return ((p1.counter.pair / p1.counter.flip) * 100).toFixed(2)
@@ -200,7 +212,7 @@ watch(
   () => gameState.isPlaying,
   (playingState) => {
     if (playingState && gameState.mode === 1) {
-      gameState.startTimer(30)
+      gameState.startTimer(30500000)
       console.log('play')
     }
   }
@@ -684,6 +696,19 @@ watch(
             </div>
             <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
             <button @click="gameState.setQuitOpenState(true)" class="btn btn-error" type="button">Quit</button>
+
+            <div class="bg-blue-200 border text-center rounded-md">
+              Scoreboard
+              <div class="flex flex-row gap-3">
+                <div>Name</div>
+                <div>Score</div>
+              </div>
+
+              <div v-for="player in dummyPlayer" class="text-center">
+                {{ player.name }}
+                {{ player.dummyScore }}
+              </div>
+            </div>
           </div>
         </div>
       </div>
