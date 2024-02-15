@@ -15,7 +15,7 @@ export default class Game {
         }
         this.setting = {
             volume: 100,
-            isQuality: false,
+            quality: 'low',
             isMute: false,
         }
         this.level = 0
