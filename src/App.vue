@@ -746,24 +746,15 @@ watch(
     <!-- * Single player game over end --------------------------------------------------------- -->
     
     <!-- * Multi player mode start --------------------------------------------------------- -->
-    <div v-if="router.id === 201" class="h-screen flex items-center justify-center gap-24" 
+    <div v-if="router.id === 201" class="h-screen flex items-center justify-evenly" 
     :style="gameState.playerTurn === 1 ? 'background-image: linear-gradient(to right, #f55a 0%, #0000 50% 100%)' 
     : 'background-image: linear-gradient(to left, #f55a 0%, #0000 50% 100%)'">
-
-      <button
-        @click="setRouterId(100)"
-        type="button"
-        class="btn btn-warning absolute left-4 top-4"
-      >
-        <div v-html="ArrowLeftIcon"></div>
-        <div>Quit</div>
-      </button>
       <!-- {{ gameState.playerTurn }} -->
       <div 
         class="hidden xs:flex flex-col lg:flex  items-center justify-center text-mythmatch-100"
       >
-        <div class="text-3xl ">Player 1 score</div>
-        <div class="text-5xl ">{{ p1.scores }}</div>
+        <div class="text-[1rem] font-mythmatch ">Player 1 score</div>
+        <div class="text-[4rem] font-mythmatch font-bold drop-shadow-glow">{{ p1.scores }}</div>
       </div>
 
       
@@ -772,23 +763,20 @@ watch(
           <div class="w-full flex flex-col">
             <div class="my-5 flex justify-evenly w-full">
               <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />
+                
+            </div>
+            <div class="flex justify-evenly items-center gap-2">
               <div 
-              class="flex  flex-col lg:flex items-center justify-center text-mythmatch-100"
+              class="flex flex-col  lg:flex items-center justify-center text-mythmatch-100 "
               >
-                <div class="text-3xl ">Player 1 score</div>
-                <div class="text-5xl ">{{ p1.scores }}</div>
+                <div class="text-[1rem] font-mythmatch">Player 1 score</div>
+                <div class="text-[2rem] font-mythmatch drop-shadow-glow">{{ p1.scores }}</div>
               </div>
               <div 
               class="flex flex-col lg:flex text-mythmatch-100 items-center justify-center "
               >
-                <div class="text-3xl ">Player 2 score</div>
-                <div class="text-5xl font-bold ">{{ p2.scores }}</div>
-              </div>
-            </div>
-            <div class="flex justify-evenly items-center">
-              <div class="flex gap-3">
-                <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
-                <button @click="gameState.setQuitOpenState(true)" class="btn btn-error" type="button">Quit</button>
+                <div class="text-[1rem] font-mythmatch">Player 2 score</div>
+                <div class="text-[2rem] font-mythmatch drop-shadow-glow">{{ p2.scores }}</div>
               </div>
             </div>
           </div>
@@ -842,8 +830,8 @@ watch(
       <div 
         class="hidden xs:flex text-mythmatch-100  flex-col items-center justify-center "
       >
-        <div class="text-3xl ">Player 2 score</div>
-        <div class="text-5xl font-bold ">{{ p2.scores }}</div>
+        <div class="text-[1rem] font-mythmatch">Player 2 score</div>
+        <div class="text-[4rem] font-mythmatch font-bold drop-shadow-glow">{{ p2.scores }}</div>
       </div>
     </div>
     <!-- * Multi player mode end --------------------------------------------------------- -->
