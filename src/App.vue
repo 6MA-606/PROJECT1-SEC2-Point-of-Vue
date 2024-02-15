@@ -8,10 +8,14 @@ import { gotoUrl } from './utils/helperFunction.js'
 import Cards from '../data/cards.json'
 import Game from '../classes/Game'
 import Cursor from '../classes/Cursor'
+import Scoreboard from '../classes/Scoreboard'
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
 })
+
+const scoreboard = reactive(new Scoreboard())
+scoreboard.load()
 
 const isLoading = ref(false)
 
@@ -46,17 +50,17 @@ const gameState = reactive(new Game())
 const { board, players, setting } = toRefs(gameState)
 const { p1, p2 } = players.value
 
-const dummyPlayer = [
-  {
-    name: 'Title',
-    dummyScore: 500
-  },
+// const dummyPlayer = [
+//   {
+//     name: 'Title',
+//     dummyScore: 500
+//   },
 
-  {
-    name: 'Mink',
-    dummyScore: 300
-  }
-]
+//   {
+//     name: 'Mink',
+//     dummyScore: 300
+//   }
+// ]
 
 p1.accuracy = computed(() => {
   if (p1.counter.flip === 0) return 0
@@ -97,6 +101,8 @@ function startSinglePlayerMode() {
   board.value.getPairCard(2)
   board.value.shuffle()
   gameState.startTimer(3)
+  scoreboard.load()
+  scoreboard.addPlayer(p1)
 }
 
 const singlePlayerCardClick = (card) => {
@@ -111,6 +117,7 @@ const singlePlayerCardClick = (card) => {
       p1.addPairCount()
       p1.addScores(gameState.level, setting.value.volume)
       p1.clearCards()
+      scoreboard.updatePlayerScore(p1)
       if (gameState.level < 11) gameState.addTime(5)
     } else {
       setTimeout(() => {
@@ -201,6 +208,7 @@ watch(
     if (gameState.mode === 1) {
       if (!runningState && gameState.isPlaying) {
         gameState.gameOver()
+        scoreboard.save()
       } else if (!runningState && !gameState.isPlaying) {
         gameState.isPlaying = true
       }
@@ -212,7 +220,7 @@ watch(
   () => gameState.isPlaying,
   (playingState) => {
     if (playingState && gameState.mode === 1) {
-      gameState.startTimer(30500000)
+      gameState.startTimer(5)
       console.log('play')
     }
   }
@@ -704,9 +712,9 @@ watch(
                 <div>Score</div>
               </div>
 
-              <div v-for="player in dummyPlayer" class="text-center">
-                {{ player.name }}
-                {{ player.dummyScore }}
+              <div v-for="(playerScore, index) in scoreboard.data" class="text-center" :key="index">
+                {{ playerScore.name }}
+                {{ playerScore.score }}
               </div>
             </div>
           </div>
