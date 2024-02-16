@@ -41,9 +41,6 @@ export default class Player {
      */
     addScores(scores, sfxVolume = 100) {
         this.scores += scores
-        const sfx = new Audio('/sounds/pointGain.mp3')
-        sfx.volume = sfxVolume / 100
-        sfx.play()
         return this.scores
     }
     addFlipCount(){

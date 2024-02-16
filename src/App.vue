@@ -8,6 +8,7 @@ import { gotoUrl } from './utils/helperFunction.js'
 import Cards from '../data/cards.json'
 import Game from '../classes/Game'
 import Cursor from '../classes/Cursor'
+import SoundController from '../classes/SoundController.js'
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
@@ -41,6 +42,10 @@ const modes = [
 ]
 
 const cursor = reactive(new Cursor())
+const soundController = new SoundController()
+// const audioContext = new AudioContext()
+// const gainNode = audioContext.createGain()
+// gainNode.connect(audioContext.destination)
 
 const gameState = reactive(new Game())
 const { board, players, setting } = toRefs(gameState)
@@ -96,6 +101,7 @@ const singlePlayerCardClick = (card) => {
   if (p1.selectedCards.length === 2) {
     p1.addFlipCount()
     if (p1.isPaired()) {
+      soundController.playSFX('/sounds/pointGain.mp3')
       p1.addPairCount()
       p1.addScores(gameState.level, setting.value.volume)
       p1.clearCards()
@@ -150,14 +156,14 @@ const multiplayerCardsClick = (card) => {
     }
   }
   if(board.value.isAllCardFlipped()){
-            if(p1.scores !== p2.scores){
-                if(p1.scores > p2.scores){
-                    gameState.winner = 1
-                } else {
-                    gameState.winner = 2
-                }
-            }
-        }
+    if(p1.scores !== p2.scores){
+      if(p1.scores > p2.scores){
+        gameState.winner = 1
+      } else {
+        gameState.winner = 2
+      }
+    }
+  }
 }
 
 watch(
@@ -188,6 +194,7 @@ watch(
   (runningState) => {
     if (gameState.mode === 1) {
       if (!runningState && gameState.isPlaying) {
+        soundController.clearBGM()
         gameState.gameOver()
       } else if (!runningState && !gameState.isPlaying) {
         gameState.isPlaying = true
@@ -219,42 +226,50 @@ watch(
   }
 )
 
-let bgm = null
 watch(
   () => gameState.bgm,
   (newBgm) => {
-    console.log(newBgm)
-    if (bgm) bgm.pause()
-    if (newBgm === '') return
-    bgm = new Audio(`/sounds/${newBgm}.mp3`)
-    bgm.volume = setting.value.volume / 100
-    bgm.loop = true
-    bgm.play()
+    if (newBgm === '') {
+      soundController.clearBGM()
+      return
+    }
+    soundController.playBGM(`/sounds/${newBgm}.mp3`)
   }
 )
+
 watch(
-  () => gameState.setting.volume,
+  () => gameState.setting.bgmVolume,
   (newValue)=>{
-    if(!bgm) return
-    bgm.volume = newValue / 100
+    soundController.setBGMVolume(newValue / 100)
+    console.log("Sound volume is ", newValue / 100);
+  }
+)
+
+watch(
+  () => gameState.setting.sfxVolume,
+  (newValue)=>{
+    soundController.setSFXVolume(newValue / 100)
     console.log("Sound volume is ", newValue / 100);
   }
 )
 
 //handle mute function
 watch(
-  ()=> gameState.setting.isMute,
+  ()=> gameState.setting.isBgmMute,
   (newValue)=>{
-    console.log('Watch execute');
-    if(!bgm) return
-    if(newValue === true){
-      bgm.volume = 0
-    }
-    else{
-      bgm.volume = 1
-    }
+    console.log('isBgmMute executed')
+    soundController.setMute('bgm', newValue, gameState.setting.bgmVolume)
   }
 )
+
+watch(
+  ()=> gameState.setting.isSfxMute,
+  (newValue)=>{
+    console.log('isSfxMute executed')
+    soundController.setMute('sfx', newValue, gameState.setting.sfxVolume)
+  }
+)
+
 watch(
   gameState,
   ({ mode, board, players: { p1, p2 }, level, time, playerTurn }) => {
@@ -843,11 +858,21 @@ watch(
         <div class="flex flex-col items-start gap-3 px-5">
           <div class="flex items-center gap-4">
             <label class="flex items-center gap-2">
-              <div class="text-lg">Sound</div>
-              <input type="range" class="range range-sm disabled:opacity-70 disabled:cursor-not-allowed" min="0" max="100" step="10" v-model="gameState.setting.volume" :disabled="gameState.setting.isMute">
+              <div class="text-lg">Music</div>
+              <input type="range" class="range range-sm disabled:opacity-70 disabled:cursor-not-allowed" min="0" max="100" step="10" v-model="gameState.setting.bgmVolume" :disabled="gameState.setting.isBgmMute">
             </label>
-            <button @click="gameState.toggleMute()" :class="setting.isMute ? 'bg-red-400' : 'bg-base-200'" class="w-6 h-6 grid place-items-center rounded-lg">
-              <img v-if="setting.isMute" src="/setting/sound_off.svg" alt="muted">
+            <button @click="gameState.toggleMute('bgm')" :class="setting.isBgmMute ? 'bg-red-400' : 'bg-base-200'" class="w-6 h-6 grid place-items-center rounded-lg">
+              <img v-if="setting.isBgmMute" src="/setting/sound_off.svg" alt="muted">
+              <img v-else src="/setting/sound_on.svg" alt="volume">
+            </button>
+          </div>
+          <div class="flex items-center gap-4">
+            <label class="flex items-center gap-2">
+              <div class="text-lg">Effect</div>
+              <input type="range" class="range range-sm disabled:opacity-70 disabled:cursor-not-allowed" min="0" max="100" step="10" v-model="gameState.setting.sfxVolume" :disabled="gameState.setting.isSfxMute">
+            </label>
+            <button @click="gameState.toggleMute('sfx')" :class="setting.isSfxMute ? 'bg-red-400' : 'bg-base-200'" class="w-6 h-6 grid place-items-center rounded-lg">
+              <img v-if="setting.isSfxMute" src="/setting/sound_off.svg" alt="muted">
               <img v-else src="/setting/sound_on.svg" alt="volume">
             </button>
           </div>

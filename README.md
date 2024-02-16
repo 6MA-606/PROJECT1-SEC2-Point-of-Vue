@@ -1,22 +1,58 @@
-# project1-sec2-point-of-vue
+<div align="center">
+  <h2 style="font-size:24px;">Section 2 <br>
+  Team Point of Vue</h2>
+</div>
 
-This template should help get you started developing with Vue 3 in Vite.
+<!-- <img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner"> -->
+<div align="center">
+<img src = "./ReadMeImg/place-holder-2-fix.png" style = "border-radius:25px">
+<p align = "left">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
 
-## Recommended IDE Setup
+</div>
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+<div align = "center">
+  <h2 style="font-size:24px;">See Progress</h2>
+<a src = "https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1">
+Figma
+</a>
+</div>
+<div>
+Preview screenshot
+</div>
+<div>
 
-## Customize configuration
+<h1 align = "center">Team Member</h1>
+<h4 align ="center">
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+65130500089 lorem Ipsum
+<a>
+</h4>
+<h4 align ="center">
 
-## Project Setup
+65130500089 lorem Ipsum
+
+</h4>
+<h4 align ="center">
+
+65130500089 lorem Ipsum
+
+</h4>
+<h4 align ="center">
+
+65130500089 lorem Ipsum
+
+</h4 align ="center">
+</div>
+<img src = "./ReadMeImg/group-placeholder.png" style ="border-radius:16px">
+
+
+### Install package
 
 ```sh
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Compile for Development
 
 ```sh
 npm run dev

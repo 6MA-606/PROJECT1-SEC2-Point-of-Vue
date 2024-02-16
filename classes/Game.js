@@ -14,9 +14,11 @@ export default class Game {
             p2: new Player(),
         }
         this.setting = {
-            volume: 100,
-            quality: 'low',
-            isMute: false,
+            bgmVolume: 100,
+            sfxVolume: 100,
+            isBgmMute: false,
+            isSfxMute: false,
+            isQuality: false,
         }
         this.level = 0
         this.time = DEFAULT_TIME
@@ -31,13 +33,18 @@ export default class Game {
         this.isSettingOpen = false
     }
 
-    toggleMute() {
-        this.setting.isMute = !this.setting.isMute
-        console.log(this.setting.isMute);
+    toggleMute(soundType) {
+        const soundTypeProp = soundType === 'bgm' ? 'isBgmMute' : 'isSfxMute'
+        this.setting[soundTypeProp] = !this.setting[soundTypeProp]
+        console.log(this.setting[soundTypeProp]);
     }
 
-    setVolume(volume) {
-        this.setting.volume = volume
+    setVolume(volume, type) {
+        if(type === 'bgm'){
+            this.setting.bgmVolume = volume
+        } else {
+            this.setting.sfxVolume = volume
+        }
     }
 
     setSettingOpenState(openState){
