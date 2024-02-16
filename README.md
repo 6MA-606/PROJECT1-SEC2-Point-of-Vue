@@ -51,7 +51,7 @@ Screen Short
 npm install
 ```
 
-### Compile and Hot-Reload for Development
+### Compile for Development
 
 ```sh
 npm run dev
