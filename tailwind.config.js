@@ -10,12 +10,27 @@ export default {
       },
       colors: {
         mythmatch: {
+          50: '#fff3d9',
           100: '#ffc34e',
           200: '#C8952B',
+          300: '#A66708',
+          400: '#7D4F06',
+          500: '#543907',
+          600: '#2B2104',
         },
+        mythpurple: {
+          200: '#e3b8f7',
+          300: '#a64b9e',
+          400: '#6e1f7f',
+          500: '#4c0f72',
+          600: '#3f0a5f',
+          700: '#2f0847',
+          800: '#1f0630',
+        }
       },
       fontFamily: {
         mythmatch: "'Dancing Script', cursive",
+        'mythmatch-mono': "'Xanh Mono', monospace"
       },
       screens: {
         xs: '426px',
