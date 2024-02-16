@@ -1,5 +1,6 @@
 <div align="center">
-  <h2 style="font-size:24px;">Section 2</h2>
+  <h2 style="font-size:24px;">Section 2 <br>
+  Team Point of Vue</h2>
 </div>
 
 <!-- <img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner"> -->
