@@ -2,6 +2,8 @@
 import { computed, onMounted, reactive, ref, toRef, toRefs, watch } from 'vue'
 import GitHubIcon from './assets/github.svg?raw'
 import BookIcon from './assets/book.svg?raw'
+import DoorIcon from'./assets/door-open.svg?raw'
+import SettingIcon from './assets/gear.svg?raw'
 import ArrowLeftIcon from './assets/arrow-left.svg?raw'
 import InfoIcon from './assets/info-circle.svg?raw'
 import { gotoUrl } from './utils/helperFunction.js'
@@ -763,7 +765,6 @@ watch(
           <div class="w-full flex flex-col">
             <div class="my-5 flex justify-evenly w-full">
               <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />
-                
             </div>
             <div class="flex justify-evenly items-center gap-2">
               <div 
@@ -780,6 +781,17 @@ watch(
               </div>
             </div>
           </div>
+        </div>
+        <div class="hidden xs:block w-24 absolute top-3 left-5 ">
+          <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />    
+        </div>
+        <div class="absolute top-3 right-3 flex gap-3">
+          <button class="btn btn-circle" type="button">
+            <div v-html="SettingIcon"></div>
+          </button>
+          <button class="btn btn-circle" type="button">
+            <div v-html="DoorIcon"></div>
+          </button>
         </div>
         <div
           class="grid-cols-4 xs:grid-cols-6 w-fit grid grid-flow-row gap-3 "
