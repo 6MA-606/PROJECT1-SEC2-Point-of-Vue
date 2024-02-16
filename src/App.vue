@@ -314,11 +314,11 @@ watch(
     @mouseleave="cursor.reset()"
     @mousedown="cursor.mouseDown()"
     @mouseup="cursor.mouseUp()"
-    class="relative overflow-hidden h-screen"
+    class="relative overflow-hidden h-screen transition-all duration-500"
   >
     <div
       :style="`transform: translate(${cursor.x}, ${cursor.y})`"
-      class="absolute pointer-events-none z-[100]">
+      class="hidden lg:block absolute pointer-events-none z-[100]">
       <div class="absolute translate-x-[-50%] translate-y-[-250%]"></div>
       <div
         :class="cursor.isHovered ? 'opacity-50 scale-75' : ''"
@@ -346,7 +346,7 @@ watch(
             class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
           >
             <img
-              src="/cards/backcard.webp"
+              :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -377,7 +377,7 @@ watch(
     <div
       v-if="router.id === 100"
       id="landing-page"
-      class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-32"
+      class="h-svh flex flex-col justify-center items-center gap-16 sm:gap-20"
     >
       <div id="game-title" class="flex gap-2 sm:gap-6">
         <div class="hidden sm:block -rotate-12 text-[0.5rem] sm:text-[1rem]">
@@ -468,7 +468,7 @@ watch(
               class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
             >
               <img
-                src="/cards/backcard.webp"
+                :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                 alt="backcard"
                 class="w-full h-full"
               />
@@ -490,15 +490,18 @@ watch(
           </div>
         </div>
       </div>
-      <button
-        id="play-btn"
-        type="button"
-        class="btn-mythmatch"
-        alt="home-play-btn"
-        @click="routeWithTransition(101, 2000, true)"
-      >
-        Play
-      </button>
+      <div class="flex flex-col gap-5">
+        <button
+          id="play-btn"
+          type="button"
+          class="btn-mythmatch"
+          alt="home-play-btn"
+          @click="routeWithTransition(101, 2000, true)"
+        >
+          Play
+        </button>
+        <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
+      </div>
       <div
         id="corner-btn-group"
         class="absolute flex xs:flex-col gap-2 right-4 bottom-4"
@@ -644,7 +647,7 @@ watch(
                 class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100"
               >
                 <img
-                  src="/cards/backcard.webp"
+                  :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
                   class="w-full lg:h-full"
                 />
@@ -801,9 +804,9 @@ watch(
                 class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
               >
                 <img
-                  src="/cards/backcard.webp"
+                  :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
-                  class="w-full h-full"
+                  class="w-full lg:h-full"
                 />
               </div>
               <div
@@ -876,11 +879,11 @@ watch(
           <div class="flex gap-3 justify-center">
             <div>Quality</div>
             <label class="flex gap-1 items-center">
-              <input type="radio" name="quality" class="radio radio-xs">
+              <input v-model="setting.quality" type="radio" name="quality" value="low" class="radio radio-xs">
               <span>low</span>
             </label>
             <label class="flex gap-1 items-center">
-              <input type="radio" name="quality" class="radio radio-xs" checked>
+              <input v-model="setting.quality" type="radio" name="quality" value="high" class="radio radio-xs">
               <span>High</span>
             </label>
           </div>
