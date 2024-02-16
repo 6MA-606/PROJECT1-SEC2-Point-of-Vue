@@ -9,10 +9,16 @@ import Cards from '../data/cards.json'
 import Game from '../classes/Game'
 import Cursor from '../classes/Cursor'
 import SoundController from '../classes/SoundController.js'
+import Scoreboard from '../classes/Scoreboard'
+
+const SINGLEPLAYER_START_TIME = 30
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
 })
+
+const scoreboard = reactive(new Scoreboard())
+scoreboard.load()
 
 const isLoading = ref(false)
 
@@ -51,6 +57,18 @@ const gameState = reactive(new Game())
 const { board, players, setting } = toRefs(gameState)
 const { p1, p2 } = players.value
 
+// const dummyPlayer = [
+//   {
+//     name: 'Title',
+//     dummyScore: 500
+//   },
+
+//   {
+//     name: 'Mink',
+//     dummyScore: 300
+//   }
+// ]
+
 p1.accuracy = computed(() => {
   if (p1.counter.flip === 0) return 0
   return ((p1.counter.pair / p1.counter.flip) * 100).toFixed(2)
@@ -84,12 +102,15 @@ const routeWithTransition = (routerId, milliseconds, saveRoute) => {
 }
 
 function startSinglePlayerMode() {
+  if (p1.name === '') p1.name = 'Anonymous'
   gameState.mode = 1
   gameState.level = 1
   board.value.clearCards()
   board.value.getPairCard(2)
   board.value.shuffle()
   gameState.startTimer(3)
+  scoreboard.load()
+  scoreboard.addPlayer(p1)
 }
 
 const singlePlayerCardClick = (card) => {
@@ -105,6 +126,7 @@ const singlePlayerCardClick = (card) => {
       p1.addPairCount()
       p1.addScores(gameState.level, setting.value.volume)
       p1.clearCards()
+      scoreboard.updatePlayerScore(p1)
       if (gameState.level < 11) gameState.addTime(5)
     } else {
       setTimeout(() => {
@@ -124,9 +146,11 @@ const handleQuitBtn = () => {
 }
 
 const handleRestartBtn = (startModeFunction) => {
-  gameState.reset()
   routeWithTransition(200, 2000, false)
-  setTimeout(startModeFunction, 2000)
+  setTimeout(() => {
+    gameState.reset()
+    startModeFunction()
+  }, 2000)
 }
 
 function startMultiPlayerMode() {
@@ -196,6 +220,7 @@ watch(
       if (!runningState && gameState.isPlaying) {
         soundController.clearBGM()
         gameState.gameOver()
+        scoreboard.save()
       } else if (!runningState && !gameState.isPlaying) {
         gameState.isPlaying = true
       }
@@ -207,7 +232,7 @@ watch(
   () => gameState.isPlaying,
   (playingState) => {
     if (playingState && gameState.mode === 1) {
-      gameState.startTimer(30)
+      gameState.startTimer(SINGLEPLAYER_START_TIME)
       console.log('play')
     }
   }
@@ -581,15 +606,24 @@ watch(
             </div>
             <div class="text-center text-[0.875em]">{{ mode.description }}</div>
           </div>
-          <button
-            v-if="gameState.mode === index + 1"
-            type="button"
-            @click="routeWithTransition(mode.routerId, 2000, false)"
-            class="btn btn-success px-10 text-[1em] text-white font-semibold"
-            alt="play-endlessMode-button"
-          >
-            Play
-          </button>
+          <div class="flex flex-col items-center gap-4">
+            <input
+              v-if="gameState.mode === index + 1 && gameState.mode === 1"
+              v-model="p1.name"
+              type="text"
+              placeholder="Your name"
+              class="input input-bordered w-full text-center text-[1em] bg-base-200 rounded-lg"
+            />
+            <button
+              v-if="gameState.mode === index + 1"
+              type="button"
+              @click="routeWithTransition(mode.routerId, 2000, false)"
+              class="btn btn-success px-10 text-[1em] text-white font-semibold"
+              alt="play-endlessMode-button"
+            >
+              Play
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -678,31 +712,57 @@ watch(
       <div class="hidden lg:block lg:w-3/12">
         <div class="h-screen w-full relative">
           <div
-            class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col items-center"
+            class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col justify-around items-center"
           >
-            <div class="w-10/12">
-              <img src="./assets/MythMatch_logo.svg" alt="logo" />
-            </div>
-            <div class="w-full flex justify-evenly">
-              <div
-                class="text-mythmatch-100 flex flex-col items-center justify-center"
-              >
-                <div class="text-3xl">Level</div>
-                <div class="text-5xl font-bold">{{ gameState.level }}</div>
+            <div class="w-full flex flex-col items-center gap-6">
+              <div class="w-10/12">
+                <img src="./assets/MythMatch_logo.svg" alt="logo" />
               </div>
-              <div
-                class="text-mythmatch-100 flex flex-col items-center justify-center"
-              >
-                <div class="text-3xl">Your Score</div>
-                <div class="text-5xl font-bold">{{ p1.scores }}</div>
+              <div class="w-full flex justify-evenly">
+                <div class="text-mythmatch-100 flex flex-col items-center justify-center">
+                  <div class="text-3xl font-mythmatch">Level</div>
+                  <div class="text-5xl font-bold font-mythmatch">{{ gameState.level }}</div>
+                </div>
+                <div class="text-mythmatch-100 flex flex-col items-center justify-center">
+                  <div class="text-3xl font-mythmatch">Your Score</div>
+                  <div class="text-5xl font-bold font-mythmatch">{{ p1.scores }}</div>
+                </div>
+              </div>
+              <div class="text-mythmatch-100 flex flex-col items-center justify-center">
+                <div class="text-3xl font-mythmatch">Time</div>
+                <div class="text-5xl font-mythmatch-mono tracking-wide">{{ gameState.time }}</div>
               </div>
             </div>
-            <div class="text-mythmatch-100 flex flex-col items-center justify-center">
-              <div class="text-3xl">Time</div>
-              <div class="text-5xl font-semibold font-mono">{{ gameState.time }}</div>
+            <div class="rounded-lg overflow-hidden w-10/12 h-2/6 border-mythmatch-100 border-2">
+              <table class="table table-sm h-full">
+                <thead class="bg-mythpurple-500 text-mythmatch-50">
+                  <tr class="text-center border-0">
+                    <th colspan="3">Leader Board</th>
+                  </tr>
+                  <tr class="text-center">
+                    <th colspan="2">Player</th>
+                    <th>Score</th>
+                  </tr>
+                </thead>
+                <tbody class="bg-mythpurple-700 text-mythmatch-100">
+                  <tr
+                    v-for="(playerScoreObj, index) in scoreboard.data"
+                    v-show="index < 5 || playerScoreObj === scoreboard.currentPlayerScoreObjRef"
+                    :key="index"
+                    :class="scoreboard.currentPlayerScoreObjRef === playerScoreObj ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
+                    class="text-center border-mythpurple-600"
+                  >
+                    <td>{{ index + 1 }}</td>
+                    <td>{{ playerScoreObj.name }}{{ scoreboard.currentPlayerScoreObjRef === playerScoreObj ? ' (You)' : '' }}</td>
+                    <td>{{ playerScoreObj.score }}</td>
+                  </tr>
+                </tbody>
+              </table>
             </div>
-            <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
-            <button @click="gameState.setQuitOpenState(true)" class="btn btn-error" type="button">Quit</button>
+            <div class="flex gap-4">
+              <button @click="gameState.setSettingOpenState(true)" class="btn" type="button">Setting</button>
+              <button @click="gameState.setQuitOpenState(true)" class="btn btn-error" type="button">Quit</button>
+            </div>
           </div>
         </div>
       </div>
@@ -725,12 +785,12 @@ watch(
       :class="gameState.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center">
       <div class="text-3xl xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
       <div class="flex flex-col gap-3">
-        <div class="text-xl flex items-center gap-2"><div>If you want restart, you can click</div>
-          <button @click="handleRestartBtn(startSinglePlayerMode)" type="button" class="btn btn-sm btn-outline">
+        <div class="text-xl flex items-center gap-2 text-white"><div>If you want restart, you can click</div>
+          <button @click="handleRestartBtn(startSinglePlayerMode)" type="button" class="btn btn-sm btn-outline text-white btn-warning">
             <div>Restart</div>
           </button>
         </div>
-        <div class="text-xl">but you want to really quit, right?</div>
+        <div class="text-xl text-white">but you want to really quit, right?</div>
       </div>
       <div class="flex gap-8">
         <button @click="handleQuitBtn" type="button" class="btn btn-lg">
@@ -745,23 +805,60 @@ watch(
     <!-- * Single player game over start --------------------------------------------------------- -->
     <div
       v-if="router.id === 200"
-      :class="gameState.isGameOver && gameState.mode === 1 ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-center items-center text-center"
+      :class="gameState.isGameOver && gameState.mode === 1 ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'" class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-start lg:justify-center items-center text-center overflow-y-auto py-52 lg:py-0"
     >
       <div class="text-6xl xs:text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
-        <div class="flex flex-col items-center">
-          <div class="text-3xl">Score</div>
-          <div class="text-6xl font-semibold text-mythmatch-100">{{ p1.scores }}</div>
+      <div class="flex flex-col items-center lg:flex-row lg:justify-center gap-24">
+        <div class="flex flex-col gap-10 justify-center">
+          <div class="flex justify-center">
+            <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
+              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Total Score</div>
+              <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ p1.scores }}</div>
+            </div>
+            <div class="w-1 rounded-lg bg-mythmatch-200"></div>
+            <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
+              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Rank</div>
+              <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayerScoreObjRef.id) + 1 }}</div>
+            </div>
+          </div>
+          <div>
+            <div class="text-xl xs:text-2xl text-white ">You've flipped {{ p1.counter.flip }} pair(s)</div>
+            <div class="text-xl xs:text-2xl text-white">You've collected {{ p1.counter.pair }} correct pair(s)</div>
+            <div class="text-xl xs:text-2xl text-white">Accuracy {{ p1.accuracy }}%</div>
+          </div>
         </div>
-        <div>
-          <div class="text-2xl">You've flipped {{ p1.counter.flip }} times</div>
-          <div class="text-2xl">You've collected {{ p1.counter.pair }} pairs</div>
-          <div class="text-2xl">Accuracy {{ p1.accuracy }}%</div>
+        <div class="w-[90vw] lg:w-[30vw] rounded-lg border-mythmatch-100 border-2 h-96 overflow-y-auto">
+          <table class="table table-sm table-pin-rows w-full h-full">
+            <thead class="text-mythmatch-50">
+              <tr class="text-center bg-mythpurple-500 border-0">
+                <th colspan="3">Leader Board</th>
+              </tr>
+              <tr class="text-center bg-mythpurple-500">
+                <th colspan="2">Player</th>
+                <th>Score</th>
+              </tr>
+            </thead>
+            <tbody class="bg-mythpurple-700 text-mythmatch-100">
+              <tr
+                v-for="(playerScoreObj, index) in scoreboard.data"
+                :id="playerScoreObj === scoreboard.currentPlayerScoreObjRef ? 'current-player' : ''"
+                :key="index"
+                :class="scoreboard.currentPlayerScoreObjRef === playerScoreObj ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
+                class="text-center border-t-[1px] border-mythpurple-600"
+              >
+                <td>{{ index + 1 }}</td>
+                <td>{{ playerScoreObj.name }}{{ scoreboard.currentPlayerScoreObjRef === playerScoreObj ? ' (You)' : '' }}</td>
+                <td>{{ playerScoreObj.score }}</td>
+              </tr>
+            </tbody>
+          </table>
         </div>
-        <button @click="handleQuitBtn" type="button" class="btn btn-warning">
-          <div v-html="ArrowLeftIcon"></div>
-          <div>Quit</div>
-        </button>
       </div>
+      <button @click="handleQuitBtn" type="button" class="btn btn-warning">
+        <div v-html="ArrowLeftIcon"></div>
+        <div>Quit</div>
+      </button>
+    </div>
     <!-- * Single player game over end --------------------------------------------------------- -->
     
     <!-- * Multi player mode start --------------------------------------------------------- -->

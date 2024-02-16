@@ -6,7 +6,7 @@ export default class Player {
      * Create a new player
      */
     constructor () {
-        this.name = ''
+        this.name = 'Anonymous'
         this.selectedCards = []
         this.scores = 0
         this.counter = {
