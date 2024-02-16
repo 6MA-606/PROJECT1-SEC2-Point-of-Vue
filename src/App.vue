@@ -2,6 +2,8 @@
 import { computed, onMounted, reactive, ref, toRef, toRefs, watch } from 'vue'
 import GitHubIcon from './assets/github.svg?raw'
 import BookIcon from './assets/book.svg?raw'
+import DoorIcon from'./assets/door-open.svg?raw'
+import SettingIcon from './assets/gear.svg?raw'
 import ArrowLeftIcon from './assets/arrow-left.svg?raw'
 import InfoIcon from './assets/info-circle.svg?raw'
 import { gotoUrl } from './utils/helperFunction.js'
@@ -862,35 +864,60 @@ watch(
     <!-- * Single player game over end --------------------------------------------------------- -->
     
     <!-- * Multi player mode start --------------------------------------------------------- -->
-    <div v-if="router.id === 201" class="h-screen flex items-center justify-center gap-24" 
+    <div v-if="router.id === 201" class="h-screen flex items-center justify-evenly" 
     :style="gameState.playerTurn === 1 ? 'background-image: linear-gradient(to right, #f55a 0%, #0000 50% 100%)' 
     : 'background-image: linear-gradient(to left, #f55a 0%, #0000 50% 100%)'">
-
-      <button
-        @click="setRouterId(100)"
-        type="button"
-        class="btn btn-warning absolute left-4 top-4"
-      >
-        <div v-html="ArrowLeftIcon"></div>
-        <div>Quit</div>
-      </button>
       <!-- {{ gameState.playerTurn }} -->
       <div 
-        class="text-mythmatch-100 flex flex-col items-center justify-center "
+        class="hidden xs:flex flex-col lg:flex  items-center justify-center text-mythmatch-100"
       >
-        <div class="text-3xl ">Player 1 score</div>
-        <div class="text-5xl ">{{ p1.scores }}</div>
+        <div class="text-[1rem] font-mythmatch ">Player 1 score</div>
+        <div class="text-[4rem] font-mythmatch font-bold drop-shadow-glow">{{ p1.scores }}</div>
       </div>
 
-
+      
       <div class="lg:w-fit grid place-items-center">
+        <div class="xs:hidden w-full mb-4 flex flex-col items-center">
+          <div class="w-full flex flex-col">
+            <div class="my-5 flex justify-evenly w-full">
+              <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />
+            </div>
+            <div class="flex justify-evenly items-center gap-2">
+              <div 
+              class="flex flex-col  lg:flex items-center justify-center text-mythmatch-100 "
+              >
+                <div class="text-[1rem] font-mythmatch">Player 1 score</div>
+                <div class="text-[2rem] font-mythmatch drop-shadow-glow">{{ p1.scores }}</div>
+              </div>
+              <div 
+              class="flex flex-col lg:flex text-mythmatch-100 items-center justify-center "
+              >
+                <div class="text-[1rem] font-mythmatch">Player 2 score</div>
+                <div class="text-[2rem] font-mythmatch drop-shadow-glow">{{ p2.scores }}</div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="hidden xs:block w-24 absolute top-3 left-5 ">
+          <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />    
+        </div>
+        <div class="absolute top-3 right-3 flex gap-3">
+          <button class="btn btn-circle" type="button">
+            <div v-html="SettingIcon"></div>
+          </button>
+          <button class="btn btn-circle" type="button">
+            <div v-html="DoorIcon"></div>
+          </button>
+        </div>
         <div
-          class="w-fit grid grid-cols-6 grid-flow-row gap-3 "
+          class="grid-cols-4 xs:grid-cols-6 w-fit grid grid-flow-row gap-3 "
         >
           <div
             v-for="(card, index) of board.cards"
+            @mouseover="cursor.hover()"
+            @mouseleave="cursor.unHover()"
             :key="index"
-            class="lg:w-[7rem] lg:h-[9.8rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            class="cursor-pointer w-[5.5rem] h-[5.5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
             @click="multiplayerCardsClick(card)"
           >
             <div
@@ -898,7 +925,7 @@ watch(
               class="transition-transform w-full h-full duration-500 transform-style-3d relative"
             >
               <div
-                class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100"
+                class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100"
               >
                 <img
                   :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
@@ -908,9 +935,9 @@ watch(
               </div>
               <div
                 :style="`background-image: linear-gradient(135deg, ${card.color.primary} 0% 10%, #303 10% 90% , ${card.color.secondary} 90% 100%)`"
-                class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+                class="flip transition-all absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-2 lg:border-4 border-mythmatch-100"
               >
-                <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+                <div class="hidden lg:flex font-bold font-mythmatch text-xl text-mythmatch-100">
                   {{ card.name }}
                 </div>
                 <img
@@ -919,7 +946,7 @@ watch(
                   class="rounded-lg w-10/12"
                 />
                 <div
-                  class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
+                  class="hidden lg:flex rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100"
                 >
                   {{ card.name }}
                 </div>
@@ -929,10 +956,10 @@ watch(
         </div>
       </div>  
       <div 
-        class="text-mythmatch-100 flex flex-col items-center justify-center "
+        class="hidden xs:flex text-mythmatch-100  flex-col items-center justify-center "
       >
-        <div class="text-3xl ">Player 2 score</div>
-        <div class="text-5xl font-bold ">{{ p2.scores }}</div>
+        <div class="text-[1rem] font-mythmatch">Player 2 score</div>
+        <div class="text-[4rem] font-mythmatch font-bold drop-shadow-glow">{{ p2.scores }}</div>
       </div>
     </div>
     <!-- * Multi player mode end --------------------------------------------------------- -->
