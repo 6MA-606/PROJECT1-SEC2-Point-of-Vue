@@ -6,10 +6,10 @@ export default class SoundController {
         this.bgmGainNode = this.audioContext.createGain()
         this.sfxGainNode = this.audioContext.createGain()
         this.currentBgmSource = null
-
+        
         this.bgmGainNode.connect(this.audioContext.destination)
         this.sfxGainNode.connect(this.audioContext.destination)
-
+        
         this.bgmGainNode.gain.value = DEFAULT_GAIN
         this.sfxGainNode.gain.value = DEFAULT_GAIN
     }
@@ -30,6 +30,7 @@ export default class SoundController {
         const audioSource = this.audioContext.createMediaElementSource(audio)
         audioSource.connect(this.sfxGainNode)
         audio.play()
+        this.audioContext.resume()
     }
 
     setBGMVolume(volume) {
