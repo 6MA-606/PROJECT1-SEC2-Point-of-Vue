@@ -1,4 +1,4 @@
-const DEFAULT_GAIN = 1 // 1
+const DEFAULT_GAIN = 0.5 // 1
 
 export default class SoundController {
     constructor() {
@@ -34,18 +34,18 @@ export default class SoundController {
 
     setBGMVolume(volume) {
         console.log('setBGMVolume', volume)
-        this.bgmGainNode.gain.value = volume
+        this.bgmGainNode.gain.value = volume /200
     }
 
     setSFXVolume(volume) {
-        this.sfxGainNode.gain.value = volume
+        this.sfxGainNode.gain.value = volume /200
     }
 
     setMute(soundType, muteState, currentVolume) {
         if(soundType === 'bgm'){
-            this.bgmGainNode.gain.value = muteState ? 0 : currentVolume / 100
+            this.bgmGainNode.gain.value = muteState ? 0 : currentVolume / 200
         } else {
-            this.sfxGainNode.gain.value = muteState ? 0 : currentVolume / 100
+            this.sfxGainNode.gain.value = muteState ? 0 : currentVolume / 200
         }
     }
 

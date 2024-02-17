@@ -107,6 +107,7 @@ function startSinglePlayerMode() {
 const singlePlayerCardClick = (card) => {
   console.log('singlePlayerCardClick')
   if (!gameState.isPaused && gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
+    soundController.playSFX("/sounds/flipcard.mp3")
     card.isFlipped = true
     p1.addCard(card)
   } else return
@@ -136,6 +137,7 @@ const singlePlayerCardClick = (card) => {
 }
 
 function startMultiPlayerMode() {
+  gameState.bgm = "bgmMultiplayer"
   board.value.clearCards()
   board.value.getPairCard(12)
   board.value.shuffle()
@@ -145,6 +147,7 @@ function startMultiPlayerMode() {
 const multiplayerCardsClick = (card) => {
   const currentPlayer = players.value[`p${gameState.playerTurn}`]
   if (!gameState.isPaused && !card.isFlipped && currentPlayer.selectedCards.length < 2) {
+    soundController.playSFX("/sounds/flipcard.mp3")
     card.isFlipped = true
     currentPlayer.addCard(card)
   } else return
@@ -258,17 +261,19 @@ watch(
 watch(
   () => gameState.setting.bgmVolume,
   (newValue)=>{
-    soundController.setBGMVolume(newValue / 100)
-    console.log("Sound volume is ", newValue / 100);
-  }
+    soundController.setBGMVolume(newValue)
+    console.log("Sound volume is ", newValue);
+  },
+  {immediate:true}
 )
 
 watch(
   () => gameState.setting.sfxVolume,
   (newValue)=>{
-    soundController.setSFXVolume(newValue / 100)
-    console.log("Sound volume is ", newValue / 100);
-  }
+    soundController.setSFXVolume(newValue)
+    console.log("Sound volume is ", newValue);
+  },
+  {immediate:true}
 )
 
 //handle mute function
@@ -277,7 +282,8 @@ watch(
   (newValue)=>{
     console.log('isBgmMute executed')
     soundController.setMute('bgm', newValue, gameState.setting.bgmVolume)
-  }
+  },
+  {immediate:true}
 )
 
 watch(
@@ -285,7 +291,8 @@ watch(
   (newValue)=>{
     console.log('isSfxMute executed')
     soundController.setMute('sfx', newValue, gameState.setting.sfxVolume)
-  }
+  },
+  {immediate:true}
 )
 </script>
 
@@ -423,7 +430,7 @@ watch(
           :key="index"
           :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
           class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
-          @click="card.isFlipped = !card.isFlipped"
+          @click="card.isFlipped = !card.isFlipped; soundController.playSFX('/sounds/flipcard.mp3')"
         >
           <div
             :class="card.isFlipped ? 'flip' : ''"
@@ -1127,7 +1134,7 @@ watch(
                 class="range range-sm range-primary disabled:opacity-70 disabled:cursor-not-allowed"
                 min="0"
                 max="100"
-                step="10"
+                step="5"
               >
             </label>
             <button
@@ -1161,7 +1168,7 @@ watch(
                 class="range range-sm range-primary disabled:opacity-70 disabled:cursor-not-allowed"
                 min="0"
                 max="100"
-                step="10"
+                step="5"
               />
             </label>
             <button
