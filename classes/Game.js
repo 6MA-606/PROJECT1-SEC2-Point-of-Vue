@@ -18,7 +18,7 @@ export default class Game {
             sfxVolume: 100,
             isBgmMute: false,
             isSfxMute: false,
-            isQuality: false,
+            quality: 'low',
         }
         this.level = 0
         this.time = DEFAULT_TIME
