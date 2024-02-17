@@ -2,6 +2,8 @@ import Board from './Board.js';
 import Player from './Player';
 
 const DEFAULT_TIME = '30.00'
+const DEFAULT_BGM_VOLUME = 50 
+const DEFAULT_SFX_VOLUME = 50
 const MAX_LEVEL = 11
 
 export default class Game {
@@ -14,8 +16,8 @@ export default class Game {
             p2: new Player(),
         }
         this.setting = {
-            bgmVolume: 100,
-            sfxVolume: 100,
+            bgmVolume: DEFAULT_BGM_VOLUME,
+            sfxVolume: DEFAULT_SFX_VOLUME,
             isBgmMute: false,
             isSfxMute: false,
             quality: 'low',
