@@ -927,14 +927,15 @@ watch(
             <div class="text-xl xs:text-2xl text-white">Accuracy {{ p1.accuracy }}%</div>
           </div>
         </div>
-        <div class="w-[90vw] lg:w-[30vw] rounded-lg border-mythmatch-100 border-2 h-96 overflow-y-auto">
-          <table class="table table-sm table-pin-rows w-full h-full">
+        <div class="w-[90vw] lg:w-[30vw] rounded-lg border-mythmatch-100 border-2 h-96 overflow-y-auto bg-mythpurple-800">
+          <table class="table table-sm table-pin-rows w-full">
             <thead class="text-mythmatch-50">
               <tr class="text-center bg-mythpurple-500 border-0">
                 <th colspan="3">Leader Board</th>
               </tr>
               <tr class="text-center bg-mythpurple-500">
-                <th colspan="2">Player</th>
+                <th></th>
+                <th>Player</th>
                 <th>Score</th>
               </tr>
             </thead>
