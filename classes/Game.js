@@ -20,6 +20,7 @@ export default class Game {
             isSfxMute: false,
             quality: 'low',
         }
+        this.isPaused = false
         this.level = 0
         this.time = DEFAULT_TIME
         this.timerInterval = null
@@ -31,6 +32,14 @@ export default class Game {
         this.endTime = 0
         this.winner = 0
         this.isSettingOpen = false
+    }
+
+    pause() {
+        this.isPaused = true
+    }
+
+    resume() {
+        this.isPaused = false
     }
 
     toggleMute(soundType) {

@@ -6,6 +6,7 @@ import DoorIcon from'./assets/door-open.svg?raw'
 import SettingIcon from './assets/gear.svg?raw'
 import ArrowLeftIcon from './assets/arrow-left.svg?raw'
 import InfoIcon from './assets/info-circle.svg?raw'
+import BigArrow from './assets/big-arrow.svg?raw'
 import { gotoUrl } from './utils/helperFunction.js'
 import Cards from '../data/cards.json'
 import Game from '../classes/Game'
@@ -14,7 +15,6 @@ import SoundController from '../classes/SoundController.js'
 import Scoreboard from '../classes/Scoreboard'
 
 const SINGLEPLAYER_START_TIME = 3600
-
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
@@ -105,7 +105,7 @@ function startSinglePlayerMode() {
 }
 
 const singlePlayerCardClick = (card) => {
-  if (gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
+  if (!gameState.isPaused && !gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
     card.isFlipped = true
     p1.addCard(card)
   } else return
@@ -120,9 +120,11 @@ const singlePlayerCardClick = (card) => {
       scoreboard.updatePlayerScore(p1)
       if (gameState.level < 11) gameState.addTime(5)
     } else {
+      gameState.pause()
       setTimeout(() => {
         p1.setFlipSelectedCard(false)
         p1.clearCards()
+        gameState.resume()
       }, 1000)
     }
   }
@@ -141,7 +143,7 @@ function startMultiPlayerMode() {
 
 const multiplayerCardsClick = (card) => {
   const currentPlayer = players.value[`p${gameState.playerTurn}`]
-  if (!card.isFlipped && currentPlayer.selectedCards.length < 2) {
+  if (!gameState.isPaused && !card.isFlipped && currentPlayer.selectedCards.length < 2) {
     card.isFlipped = true
     currentPlayer.addCard(card)
   } else return
@@ -166,6 +168,16 @@ const multiplayerCardsClick = (card) => {
       } else {
         gameState.winner = 2
       }
+    } else {
+      gameState.pause()
+      setTimeout(() => {
+        board.value.setFlipAllCards(false)
+        setTimeout(() => {
+          board.value.clearCards()
+          board.value.getPairCard(12)
+          gameState.resume()
+        }, 1000)
+      }, 500)
     }
   }
 }
@@ -502,16 +514,18 @@ watch(
         <div v-html="ArrowLeftIcon"></div>
         <div>Back</div>
       </button>
+
       <div
-        id="mode-select"
-        class="w-full h-screen overflow-hidden y-xs:overflow-auto y-xs:lg:overflow-hidden flex flex-row y-xs:flex-col y-xs:lg:flex-row items-center justify-center y-xs:justify-start y-xs:lg:justify-center y-xs:py-36 lg:py-0 gap-20 perspective-1000"
+      id="mode-select"
+      class="w-full h-screen overflow-hidden y-xs:overflow-auto y-xs:lg:overflow-hidden flex flex-row y-xs:flex-col y-xs:lg:flex-row items-center justify-center y-xs:justify-start y-xs:lg:justify-center y-xs:py-36 lg:py-0 gap-20 perspective-1000"
       >
+        <!-- pc -->
         <div
           v-for="(mode, index) in modes"
           :key="index"
           :class="[
             gameState.mode === index + 1 && gameState.mode !== 0
-              ? 'border-2 z-10 lg:scale-110 transition-all duration-500 transform-style-3d h-[32rem] drop-shadow-2xl'
+              ? 'border-2 z-10 lg:scale-110 transform-style-3d h-[32rem] drop-shadow-2xl'
               : '',
             gameState.mode === index + 1 && gameState.mode === 1 ? 'rotate-y-12' : '',
             gameState.mode === index + 1 && gameState.mode === 2 ? '-rotate-y-12' : '',
@@ -519,7 +533,7 @@ watch(
           @mouseover="cursor.hover()"
           @mouseleave="cursor.unHover()"
           @click="gameState.mode = index + 1"
-          class="hidden y-xs:lg:flex relative w-[15rem] y-xs:w-[20rem] h-[24rem] y-xs:lg:w-[22rem] y-xs:lg:overflow-hidden px-5 py-10 flex-col justify-center items-center gap-4 bg-[#0007] backdrop-blur-sm border border-mythmatch-100 rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] cursor-pointer"
+          class="hidden y-xs:lg:flex relative w-[15rem] y-xs:w-[20rem] h-[24rem] y-xs:lg:w-[22rem] px-5 py-10 flex-col justify-center items-center gap-4 bg-[#0007] backdrop-blur-sm border border-mythmatch-100 rounded-lg hover:shadow-lg hover:shadow-[#fff5]  transition-all duration-500 linear cursor-pointer"
         >
           <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
           <div class="w-[7em] h-[7em] y-xs:w-[13rem] y-xs:h-[13rem] y-xs:lg:w-[13rem] y-xs:lg:h-[13rem]">
@@ -540,24 +554,63 @@ watch(
             <div class="text-center text-[1em] text-white">{{ mode.description }}</div>
           </div>
           <div class="flex flex-col items-center gap-4">
-            <input
-              v-if="gameState.mode === index + 1 && gameState.mode === 1"
-              v-model="p1.name"
-              type="text"
-              placeholder="Your name"
-              class="input-mythmatch w-11/12"
-            />
+            <div
+              v-if="index + 1 === 1"
+              :class="[
+                gameState.mode === index + 1
+                  ? 'h-20'
+                  : 'h-0'
+              ]"
+              class="flex flex-col items-center transition-all duration-500 linear overflow-hidden"
+            >
+              <div
+                :class="[
+                  gameState.mode === index + 1
+                    ? 'opacity-100 -translate-x-[100%] delay-500'
+                    : 'opacity-0 -translate-x-[150%]'
+                ]"
+                v-html="BigArrow"
+                class="absolute scale-75 transition-all duration-1000 linear text-mythmatch-100 -translate-y-1"
+              >
+              </div>
+              <div
+                :class="[
+                  gameState.mode === index + 1
+                    ? 'opacity-100 translate-x-[100%] delay-500'
+                    : 'opacity-0 translate-x-[150%]'
+                ]"
+                v-html="BigArrow"
+                class="absolute scale-75 rotate-180 transition-all duration-[1000ms] linear text-mythmatch-100 -translate-y-1"
+              >
+              </div>
+              <label class="flex flex-col items-center gap-2">
+                <div class="text-white self-start">Enter your name (or play as guest)</div>
+                <input
+                  v-model="p1.name"
+                  type="text"
+                  placeholder="Your name"
+                  class="input-mythmatch w-full"
+                />
+              </label>
+            </div>
             <button
-              v-if="gameState.mode === index + 1"
               type="button"
               @click="routeWithTransition(mode.routerId, 2000, false)"
-              class="btn-mythmatch-play text-[1em] font-semibold"
               alt="play-endlessMode-button"
+              :class="[
+                gameState.mode === index + 1
+                  ? 'h-12'
+                  : 'h-0'
+              ]"
+              class="btn-mythmatch-play text-[1em] font-semibold overflow-hidden"
+              style="transition: height 250ms linear, transform 150ms, border 150ms"
             >
               Play
             </button>
           </div>
         </div>
+
+        <!-- mobile -->
         <div
           v-for="(mode, index) in modes"
           :key="index"
@@ -646,7 +699,7 @@ watch(
             <div class="text-3xl text-mythmatch-100 font-bold font-mythmatch-mono tracking-wide">{{ gameState.time }}</div>
           </div>
           <div class="flex flex-col items-center">
-            <div class="text-2xl text-mythmatch-100 font-mythmatch">Rank</div>
+            <div class="text-2xl text-mythmatch-100 font-mythmatch">Your Rank</div>
             <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayerScoreObjRef.id) + 1 }}</div>
           </div>
         </div>
@@ -666,6 +719,10 @@ watch(
             <div class="flex flex-col items-center">
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
+            </div>
+            <div class="flex flex-col items-center">
+              <div class="text-2xl text-mythmatch-100 font-mythmatch">Your Rank</div>
+              <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayerScoreObjRef.id) + 1 }}</div>
             </div>
             <div class="flex flex-col text-center">
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Time</div>
@@ -918,8 +975,8 @@ watch(
     >
       <!-- {{ gameState.playerTurn }} -->
       <div class="hidden xs:flex flex-col lg:flex items-center justify-center text-mythmatch-100">
-        <div class="text-[1rem] font-mythmatch ">Player 1 score</div>
-        <div class="text-[4rem] font-mythmatch font-bold drop-shadow-glow">{{ p1.scores }}</div>
+        <div class="text-[1rem] y-xs:lg:text-[2rem] font-mythmatch ">Player 1 score</div>
+        <div class="text-[4rem] y-xs:lg:text-[8rem] font-mythmatch font-bold drop-shadow-glow">{{ p1.scores }}</div>
       </div>
       <div class="lg:w-fit grid place-items-center">
         <div class="xs:hidden w-full mb-4 flex flex-col items-center">
@@ -972,7 +1029,7 @@ watch(
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
             :key="index"
-            class="cursor-pointer w-[5.5rem] h-[5.5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
             @click="multiplayerCardsClick(card)"
           >
             <div
@@ -1009,21 +1066,33 @@ watch(
         </div>
       </div>  
       <div class="hidden xs:flex text-mythmatch-100  flex-col items-center justify-center">
-        <div class="text-[1rem] font-mythmatch">Player 2 score</div>
-        <div class="text-[4rem] font-mythmatch font-bold drop-shadow-glow">{{ p2.scores }}</div>
+        <div class="text-[1rem] y-xs:lg:text-[2rem] font-mythmatch ">Player 2 score</div>
+        <div class="text-[4rem] y-xs:lg:text-[8rem] font-mythmatch font-bold drop-shadow-glow">{{ p2.scores }}</div>
       </div>
     </section>
     <!-- * multiplayer mode section end -->
 
     <!-- * multiplayer winner section begin -->
     <section
-      v-if="router.id === 201 && gameState.winner > 0"
-      class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] grid place-items-center"
+      v-if="router.id === 201"
+      :class="gameState.winner > 0 ? 'opacity-100 translate-y-[0%]' : 'opacity-0 translate-y-[100%]'"
+      class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] backdrop-blur-sm grid place-items-center transition-opacity duration-1000"
     >
-      <div class="flex flex-col justify-center items-center gap-5">
-        <div class="text-2xl">
-          Player {{ gameState.winner }} is winner.
+      <div class="flex flex-col justify-center items-center gap-20">
+        <div class="text-6xl text-mythmatch-100 font-mythmatch">
+          Player {{ gameState.winner }} win!
         </div>
+        <div class="flex justify-center">
+            <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
+              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Player 1</div>
+              <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ p1.scores }}</div>
+            </div>
+            <div class="w-1 rounded-lg bg-mythmatch-200"></div>
+            <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
+              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Player 2</div>
+              <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ p2.scores }}</div>
+            </div>
+          </div>
         <button
           @click="handleQuitBtn"
           type="button"
@@ -1213,7 +1282,7 @@ watch(
 }
 
 .btn-mythmatch-play {
-  @apply text-2xl transition-all px-10 py-1 font-mythmatch text-mythmatch-100 bg-mythpurple-500 border-0 hover:border-2 border-mythmatch-200 rounded-lg font-bold active:scale-95 hover:scale-105 hover:bg-mythpurple-400 hover:text-mythmatch-100;
+  @apply text-2xl px-10 py-1 font-mythmatch text-mythmatch-100 bg-mythpurple-500 border-0 hover:border-2 border-mythmatch-200 rounded-lg font-bold active:scale-95 hover:scale-105 hover:bg-mythpurple-400 hover:text-mythmatch-100;
 }
 
 .btn-mythmatch-circle {
