@@ -14,7 +14,7 @@ import Cursor from '../classes/Cursor'
 import SoundController from '../classes/SoundController.js'
 import Scoreboard from '../classes/Scoreboard'
 
-const SINGLEPLAYER_START_TIME = 3600
+const SINGLEPLAYER_START_TIME = 30
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
@@ -804,14 +804,15 @@ watch(
                 <div class="text-5xl font-mythmatch-mono tracking-wide">{{ gameState.time }}</div>
               </div>
             </div>
-            <div class="rounded-lg overflow-hidden w-10/12 h-[40%] border-mythmatch-100 border-2">
-              <table class="table table-sm h-full">
+            <div class="rounded-lg overflow-hidden w-10/12 h-[40%] border-mythmatch-100 border-2 bg-mythpurple-800">
+              <table class="table table-sm">
                 <thead class="bg-mythpurple-500 text-mythmatch-50">
                   <tr class="text-center border-0">
                     <th colspan="3">Leader Board</th>
                   </tr>
                   <tr class="text-center">
-                    <th colspan="2">Player</th>
+                    <th></th>
+                    <th>Player</th>
                     <th>Score</th>
                   </tr>
                 </thead>
