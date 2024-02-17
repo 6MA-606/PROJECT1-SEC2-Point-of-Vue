@@ -89,6 +89,7 @@ export default class Game {
 
     reset() {
         this.mode = 0
+        this.isPaused = false
         this.isPlaying = false
         this.board.clearCards()
         this.players.p1.reset()

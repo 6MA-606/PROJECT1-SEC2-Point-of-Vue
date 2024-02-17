@@ -105,7 +105,8 @@ function startSinglePlayerMode() {
 }
 
 const singlePlayerCardClick = (card) => {
-  if (!gameState.isPaused && !gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
+  console.log('singlePlayerCardClick')
+  if (!gameState.isPaused && gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
     card.isFlipped = true
     p1.addCard(card)
   } else return
@@ -137,7 +138,7 @@ const singlePlayerCardClick = (card) => {
 function startMultiPlayerMode() {
   board.value.clearCards()
   board.value.getPairCard(12)
-  // board.value.shuffle()
+  board.value.shuffle()
   if(Math.random() < 0.5) gameState.switchTurn()
 }
 
