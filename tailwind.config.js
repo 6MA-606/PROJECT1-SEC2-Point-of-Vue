@@ -1,4 +1,4 @@
-import daisyui from 'daisyui';
+import daisyui from 'daisyui'
 
 /** @type {import('tailwindcss').Config} */
 export default {
@@ -26,14 +26,15 @@ export default {
           600: '#3f0a5f',
           700: '#2f0847',
           800: '#1f0630',
-        }
+        },
       },
       fontFamily: {
         mythmatch: "'Dancing Script', cursive",
-        'mythmatch-mono': "'Xanh Mono', monospace"
+        'mythmatch-mono': "'Xanh Mono', monospace",
       },
       screens: {
         xs: '426px',
+        'y-xs': { raw: '(min-height: 364px)' },
       },
     },
   },
@@ -49,8 +50,22 @@ export default {
     'xs:grid-cols-3',
     'xs:grid-cols-4',
     'xs:grid-cols-5',
-    'xs:grid-cols-6'
+    'xs:grid-cols-6',
   ],
+  // daisyui: {
+  //   styled: true,
+  //   themes: false,
+  //   base: true,
+  //   utils: true,
+  //   logs: true,
+  //   rtl: false,
+  //   themes: [
+  //     {
+  //       mytheme: {
+  //         primary: '#ffc34e',
+  //       },
+  //     },
+  //   ],
+  // },
   plugins: [daisyui],
 }
-

@@ -18,8 +18,9 @@ export default class Game {
             sfxVolume: 100,
             isBgmMute: false,
             isSfxMute: false,
-            isQuality: false,
+            quality: 'low',
         }
+        this.isPaused = false
         this.level = 0
         this.time = DEFAULT_TIME
         this.timerInterval = null
@@ -31,6 +32,14 @@ export default class Game {
         this.endTime = 0
         this.winner = 0
         this.isSettingOpen = false
+    }
+
+    pause() {
+        this.isPaused = true
+    }
+
+    resume() {
+        this.isPaused = false
     }
 
     toggleMute(soundType) {
@@ -80,6 +89,7 @@ export default class Game {
 
     reset() {
         this.mode = 0
+        this.isPaused = false
         this.isPlaying = false
         this.board.clearCards()
         this.players.p1.reset()

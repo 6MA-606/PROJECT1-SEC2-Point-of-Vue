@@ -1,0 +1,17 @@
+<svg width="170" height="120" viewBox="0 0 220 120" xmlns="http://www.w3.org/2000/svg">
+<style>
+    @keyframes slide {
+        0%, 100% {
+            transform: translateX(0);
+        }
+        50% {
+            transform: translateX(20%);
+        }
+    }
+
+    .slide {
+        animation: slide 2s infinite ease-in-out 500ms;
+    }
+</style>
+<path class="slide" d="M167.375 65.059L92.354 118.775C88.1125 121.812 82.1368 118.853 82.1368 113.716V93.4533H6.42112C2.87483 93.4533 0 90.645 0 87.1808V32.8192C0 29.355 2.87483 26.5467 6.42112 26.5467H82.1368V6.28372C82.1368 1.14658 88.1125 -1.81226 92.354 1.22472L167.375 54.941C170.875 57.4471 170.875 62.5529 167.375 65.059Z" fill="currentColor"/>
+</svg>
