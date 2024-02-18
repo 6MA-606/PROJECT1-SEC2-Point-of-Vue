@@ -345,7 +345,7 @@ watch(
         <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
           <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
             <img
-              :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+              :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -358,7 +358,7 @@ watch(
               {{ Cards[loadingCardId].name }}
             </div>
             <img
-              :src="Cards[loadingCardId].arts"
+              :src="`/cards/${gameState.setting.quality}/${Cards[loadingCardId].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[loadingCardId].name"
               class="rounded-lg w-10/12"
             />
@@ -387,7 +387,7 @@ watch(
               {{ Cards[0].name }}
             </div>
             <img
-              :src="Cards[0].arts"
+              :src="`/cards/${gameState.setting.quality}/${Cards[0].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[0].name"
               class="rounded-lg w-10/12"
             />
@@ -397,7 +397,7 @@ watch(
           </div>
           <div class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden">
             <img
-              src="/cards/backcard.webp"
+              :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -413,7 +413,7 @@ watch(
         <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
           <div class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10">
             <img
-              src="/cards/backcard.webp"
+              :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -426,7 +426,7 @@ watch(
               {{ Cards[1].name }}
             </div>
             <img
-              :src="Cards[1].arts"
+              :src="`/cards/${gameState.setting.quality}/${Cards[1].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[1].name"
               class="rounded-lg w-10/12"
             />
@@ -452,7 +452,7 @@ watch(
           >
             <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
               <img
-                :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                 alt="backcard"
                 class="w-full h-full"
               />
@@ -464,7 +464,7 @@ watch(
               <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
-              <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12" />
+              <img :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`" :alt="card.name" class="rounded-lg w-10/12" />
               <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
@@ -774,7 +774,7 @@ watch(
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
                 <img
-                  :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
                   class="w-full lg:h-full"
                 />
@@ -787,7 +787,7 @@ watch(
                   {{ card.name }}
                 </div>
                 <img
-                  :src="card.arts"
+                  :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   :alt="card.name"
                   class="rounded-lg w-10/12"
                 />
@@ -1062,7 +1062,7 @@ watch(
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
                 <img
-                  :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
                   class="w-full lg:h-full"
                 />
@@ -1075,7 +1075,7 @@ watch(
                   {{ card.name }}
                 </div>
                 <img
-                  :src="card.arts"
+                  :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   :alt="card.name"
                   class="rounded-lg w-10/12"
                 />

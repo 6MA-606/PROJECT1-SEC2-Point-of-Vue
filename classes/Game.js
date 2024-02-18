@@ -20,7 +20,7 @@ export default class Game {
             sfxVolume: DEFAULT_SFX_VOLUME,
             isBgmMute: false,
             isSfxMute: false,
-            quality: 'low',
+            quality: 'medium',
         }
         this.isPaused = false
         this.level = 0

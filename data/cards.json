@@ -2,7 +2,7 @@
     {
         "id": 0,
         "name": "Unicorn",
-        "arts": "/cards/unicorn.webp",
+        "arts": "unicorn",
         "color": {
             "primary": "#95bed2",
             "secondary": "#fdd1ce"
@@ -11,7 +11,7 @@
     {
         "id": 1,
         "name": "Dragon",
-        "arts": "/cards/dragon.webp",
+        "arts": "dragon",
         "color": {
             "primary": "#02616d",
             "secondary": "#a82f1d"
@@ -20,7 +20,7 @@
     {
         "id": 2,
         "name": "Minotaur",
-        "arts": "/cards/minotaur.webp",
+        "arts": "minotaur",
         "color": {
             "primary": "#5acee7",
             "secondary": "#f3a778"
@@ -29,7 +29,7 @@
     {
         "id": 3,
         "name": "Phoenix",
-        "arts": "/cards/phoenix.webp",
+        "arts": "phoenix",
         "color": {
             "primary": "#033d51",
             "secondary": "#f64b21"
@@ -38,7 +38,7 @@
     {
         "id": 4,
         "name": "Alicorn",
-        "arts": "/cards/alicorn.webp",
+        "arts": "alicorn",
         "color": {
             "primary": "#bcbffa",
             "secondary": "#8c72a1"
@@ -47,7 +47,7 @@
     {
         "id": 5,
         "name": "Cerberus",
-        "arts": "/cards/cerberus.webp",
+        "arts": "cerberus",
         "color": {
             "primary": "#02ba88",
             "secondary": "#fbeac9"
@@ -56,7 +56,7 @@
     {
         "id": 6,
         "name": "Jörmungandr",
-        "arts": "/cards/jormungandr.webp",
+        "arts": "jormungandr",
         "color": {
             "primary": "#3d9cb0",
             "secondary": "#fbfde8"
@@ -65,7 +65,7 @@
     {
         "id": 7,
         "name": "Kraken",
-        "arts": "/cards/kraken.webp",
+        "arts": "kraken",
         "color": {
             "primary": "#fed1ca",
             "secondary": "#87cfd9"
@@ -74,7 +74,7 @@
     {
         "id": 8,
         "name": "Pegasus",
-        "arts": "/cards/pegasus.webp",
+        "arts": "pegasus",
         "color": {
             "primary": "#aab2df",
             "secondary": "#eaaa8b"
@@ -83,7 +83,7 @@
     {
         "id": 9,
         "name": "Xuan Wu",
-        "arts": "/cards/xuan_wu.webp",
+        "arts": "xuan_wu",
         "color": {
             "primary": "#005e60",
             "secondary": "#2a2f32"
@@ -92,7 +92,7 @@
     {
         "id": 10,
         "name": "Bái Hǔ",
-        "arts": "/cards/bai_hu.webp",
+        "arts": "bai_hu",
         "color": {
             "primary": "#ebbab6",
             "secondary": "#eff4f7"
@@ -101,7 +101,7 @@
     {
         "id": 11,
         "name": "Simurgh",
-        "arts": "/cards/simurgh.webp",
+        "arts": "simurgh",
         "color": {
             "primary": "#ec79a2",
             "secondary": "#44eff2"
@@ -110,7 +110,7 @@
     {
         "id": 12,
         "name": "Naga",
-        "arts": "/cards/naga.webp",
+        "arts": "naga",
         "color": {
             "primary": "#f4bb62",
             "secondary": "#38b760"
@@ -119,7 +119,7 @@
     {
         "id": 13,
         "name": "Garuda",
-        "arts": "/cards/garuda.webp",
+        "arts": "garuda",
         "color": {
             "primary": "#fbbd8c",
             "secondary": "#fe4845"
@@ -128,7 +128,7 @@
     {
         "id": 14,
         "name": "Gajasimha",
-        "arts": "/cards/gajasimha.webp",
+        "arts": "gajasimha",
         "color": {
             "primary": "#dabba8",
             "secondary": "#88678f"
@@ -137,7 +137,7 @@
     {
         "id": 15,
         "name": "Tanuki",
-        "arts": "/cards/tanuki.webp",
+        "arts": "tanuki",
         "color": {
             "primary": "#fedeb8",
             "secondary": "#b8f480"
@@ -146,7 +146,7 @@
     {
         "id": 16,
         "name": "Basilisk",
-        "arts": "/cards/basilisk.webp",
+        "arts": "basilisk",
         "color": {
             "primary": "#72a360",
             "secondary": "#acff8e"
@@ -155,7 +155,7 @@
     {
         "id": 17,
         "name": "Harpy",
-        "arts": "/cards/harpy.webp",
+        "arts": "harpy",
         "color": {
             "primary": "#ab9adb",
             "secondary": "#70519a"
@@ -163,7 +163,7 @@
     },{
         "id": 18,
         "name": "Hippocampus",
-        "arts": "/cards/hippocampus.webp",
+        "arts": "hippocampus",
         "color": {
             "primary": "#d2bb81",
             "secondary": "#4b1890"
@@ -172,7 +172,7 @@
     {
         "id": 19,
         "name": "Horus",
-        "arts": "/cards/horus.webp",
+        "arts": "horus",
         "color": {
             "primary": "#a19a7b",
             "secondary": "#feb038"
@@ -181,7 +181,7 @@
     {
         "id": 20,
         "name": "Jade Rabbit",
-        "arts": "/cards/jaderabbit.webp",
+        "arts": "jaderabbit",
         "color": {
             "primary": "#f27f5b",
             "secondary": "#ff3eb8"
@@ -190,7 +190,7 @@
     {
         "id": 21,
         "name": "Mermaid",
-        "arts": "/cards/mermaid.webp",
+        "arts": "mermaid",
         "color": {
             "primary": "#c8beec",
             "secondary": "#f385b1"
@@ -199,7 +199,7 @@
     {
         "id": 22,
         "name": "Ninetail fox",
-        "arts": "/cards/ninetailfox.webp",
+        "arts": "ninetailfox",
         "color": {
             "primary": "#e0222c",
             "secondary": "#f3decc"
@@ -208,7 +208,7 @@
     {
         "id": 23,
         "name": "Sarimanok",
-        "arts": "/cards/sarimanok.webp",
+        "arts": "sarimanok",
         "color": {
             "primary": "#ff7612",
             "secondary": "#3ce553"
@@ -217,7 +217,7 @@
     {
         "id": 24,
         "name": "Sphinx",
-        "arts": "/cards/sphinx.webp",
+        "arts": "sphinx",
         "color": {
             "primary": "#ffdf01",
             "secondary": "#22231c"
@@ -226,7 +226,7 @@
     {
         "id": 25,
         "name": "Wukong",
-        "arts": "/cards/wukong.webp",
+        "arts": "wukong",
         "color": {
             "primary": "#f16252",
             "secondary": "#fdd068"
@@ -235,7 +235,7 @@
     {
         "id": 26,
         "name": "Griffin",
-        "arts": "/cards/griffin.webp",
+        "arts": "griffin",
         "color": {
             "primary": "#ddc3a5",
             "secondary": "#fede19"
@@ -244,7 +244,7 @@
     {
         "id": 27,
         "name": "Kirin",
-        "arts": "/cards/kirin.webp",
+        "arts": "kirin",
         "color": {
             "primary": "#9a4e64",
             "secondary": "#0af6d9"
