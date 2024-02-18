@@ -34,6 +34,7 @@ export default class Game {
         this.endTime = 0
         this.winner = 0
         this.isSettingOpen = false
+        this.scoreMutiplier = 1
     }
 
     pause() {
@@ -130,4 +131,5 @@ export default class Game {
             this.board.shuffle()
         }, 1000)
     }
+
 }
