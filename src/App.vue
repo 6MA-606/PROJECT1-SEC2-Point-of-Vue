@@ -405,7 +405,7 @@ watch(
         </div>
         <div>
           <img
-            src="./assets/MythMatch_logo.svg"
+            :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
             alt="MythMatch_logo"
             class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow animate-[pulse_2.5s_infinite_6000ms]"
           />
@@ -697,7 +697,7 @@ watch(
 
       <!-- mobile horizontal logo section (left) -->
       <div class="flex y-xs:hidden w-[20%] flex-col items-center absolute left-0 top-5">
-        <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-32" />
+        <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-32" />
       </div>
 
       <!-- mobile horizontal score section (left) -->
@@ -731,7 +731,7 @@ watch(
       <div class="hidden y-xs:flex y-xs:lg:hidden w-full mb-4 flex-col items-center">
         <div class="w-full flex flex-col">
           <div class="my-5 flex justify-evenly w-full">
-            <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />
+            <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-40" />
           </div>
           <div class="flex justify-evenly items-center">
             <div class="flex flex-col items-center">
@@ -808,7 +808,7 @@ watch(
           <div class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col justify-around items-center">
             <div class="w-full flex flex-col items-center gap-6">
               <div class="w-10/12">
-                <img src="./assets/MythMatch_logo.svg" alt="logo" />
+                <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" />
               </div>
               <div class="w-full flex justify-evenly">
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
@@ -1007,7 +1007,7 @@ watch(
           <div class="w-full flex flex-col">
             <div class="my-5 flex justify-evenly w-full">
               <img
-                src="./assets/MythMatch_logo.svg"
+                :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
                 alt="logo"
                 class="w-40"
               />
@@ -1026,7 +1026,7 @@ watch(
         </div>
         <div class="hidden xs:block w-24 absolute top-3 left-5">
           <img
-            src="./assets/MythMatch_logo.svg"
+            :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
             alt="logo"
             class="w-40" 
           />    
