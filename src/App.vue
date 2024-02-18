@@ -1229,6 +1229,20 @@ watch(
                 v-model="gameState.setting.quality"
                 type="radio"
                 name="quality"
+                value="medium"
+                class="radio radio-xs radio-primary"
+              >
+              <span class="text-white">Medium</span>
+            </label>
+            <label
+              @mouseover="cursor.hover()"
+              @mouseleave="cursor.unHover()"
+              class="flex gap-1 items-center"
+            >
+              <input
+                v-model="gameState.setting.quality"
+                type="radio"
+                name="quality"
                 value="high"
                 class="radio radio-xs radio-primary"
               >
