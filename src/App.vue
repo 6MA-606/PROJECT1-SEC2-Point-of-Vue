@@ -14,7 +14,7 @@ import Cursor from '../classes/Cursor'
 import SoundController from '../classes/SoundController.js'
 import Scoreboard from '../classes/Scoreboard'
 
-const SINGLEPLAYER_START_TIME = 30
+const SINGLEPLAYER_START_TIME = 3600
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
@@ -117,11 +117,12 @@ const singlePlayerCardClick = (card) => {
     if (p1.isPaired()) {
       soundController.playSFX('/sounds/pointGain.mp3')
       p1.addPairCount()
-      p1.addScores(gameState.level, setting.value.volume)
+      p1.addScores(gameState.level * gameState.scoreMutiplier++)
       p1.clearCards()
       scoreboard.updatePlayerScore(p1)
       if (gameState.level < 11) gameState.addTime(5)
     } else {
+      gameState.scoreMutiplier = 1
       gameState.pause()
       setTimeout(() => {
         p1.setFlipSelectedCard(false)
