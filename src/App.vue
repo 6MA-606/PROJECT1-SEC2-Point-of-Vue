@@ -53,6 +53,10 @@ const cursor = reactive(new Cursor())
 const soundController = new SoundController()
 
 const gameState = reactive(new Game())
+if (!gameState.loadSetting()) gameState.saveSetting()
+
+
+
 const { board, players, setting } = toRefs(gameState)
 const { p1, p2 } = players.value
 
@@ -199,10 +203,12 @@ watch(
       case 200:
         console.log('single player mode start')
         startSinglePlayerMode()
+        
         break
       case 201:
         console.log('multiplayer mode start')
         startMultiPlayerMode()
+        
         break
     }
   },
@@ -250,6 +256,7 @@ watch(
 watch(
   () => gameState.bgm,
   (newBgm) => {
+    
     if (newBgm === '') {
       soundController.clearBGM()
       return
@@ -294,6 +301,13 @@ watch(
   },
   {immediate:true}
 )
+
+watch(
+  () => gameState.setting,
+  () => { gameState.saveSetting() },
+  { deep: true }
+)
+
 </script>
 
 <template>

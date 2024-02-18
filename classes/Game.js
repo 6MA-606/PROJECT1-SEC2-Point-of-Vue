@@ -61,6 +61,17 @@ export default class Game {
     setSettingOpenState(openState){
         this.isSettingOpen = openState
     }
+    saveSetting(){
+        localStorage.setItem('setting', JSON.stringify(this.setting))
+    }
+    loadSetting(){
+        const loadedSetting = JSON.parse(localStorage.getItem('setting'))
+        if (loadedSetting) {
+            this.setting = loadedSetting
+            return true
+        }
+        return false
+    }
 
     setQuitOpenState(openState){
         this.isQuitOpen = openState
