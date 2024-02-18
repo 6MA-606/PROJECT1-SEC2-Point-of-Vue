@@ -697,6 +697,7 @@ watch(
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
             <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
+            <div v-show="gameState.scoreMutiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameState.scoreMutiplier }}</div>
           </div>
         </div>
       </div>
@@ -726,6 +727,7 @@ watch(
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameState.level }}</div>
             </div>
             <div class="flex flex-col items-center">
+              <div v-show="gameState.scoreMutiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
             </div>
@@ -803,6 +805,7 @@ watch(
                   <div class="text-5xl font-bold font-mythmatch">{{ gameState.level }}</div>
                 </div>
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
+                  <div v-show="gameState.scoreMutiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
                   <div class="text-3xl font-mythmatch">Your Score</div>
                   <div class="text-5xl font-bold font-mythmatch">{{ p1.scores }}</div>
                 </div>
