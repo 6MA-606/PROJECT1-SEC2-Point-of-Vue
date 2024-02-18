@@ -121,11 +121,12 @@ const singlePlayerCardClick = (card) => {
     if (p1.isPaired()) {
       soundController.playSFX('/sounds/pointGain.mp3')
       p1.addPairCount()
-      p1.addScores(gameState.level, setting.value.volume)
+      p1.addScores(gameState.level * gameState.scoreMutiplier++)
       p1.clearCards()
       scoreboard.updatePlayerScore(p1)
       if (gameState.level < 11) gameState.addTime(5)
     } else {
+      gameState.scoreMutiplier = 1
       gameState.pause()
       setTimeout(() => {
         p1.setFlipSelectedCard(false)
@@ -658,13 +659,18 @@ watch(
             <div class="text-center text-[0.875em] text-white opacity-50">{{ mode.description }}</div>
           </div>
           <div v-show="gameState.mode === index + 1" class="flex flex-col justify-center h-[40%] w-full items-center gap-3 absolute bottom-0 bg-mythpurple-800 rounded-lg">
-            <input
-              v-if="gameState.mode === index + 1 && gameState.mode === 1"
-              v-model="p1.name"
-              type="text"
-              placeholder="Your name"
-              class="input-mythmatch w-10/12"
-            />
+            <div
+              v-if="gameState.mode === index + 1 && gameState.mode === 1" 
+              class="flex flex-col items-center gap-2"
+            >
+              <div>Enter your name</div>
+              <input
+                v-model="p1.name"
+                type="text"
+                placeholder="Your name"
+                class="input-mythmatch w-10/12"
+              />
+            </div>
             <button
               type="button"
               @click="routeWithTransition(mode.routerId, 2000, false)"
@@ -710,6 +716,7 @@ watch(
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
             <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
+            <div v-show="gameState.scoreMutiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameState.scoreMutiplier }}</div>
           </div>
         </div>
       </div>
@@ -728,7 +735,7 @@ watch(
       </div>
 
       <!-- mobile vertical score section -->
-      <div class="hidden y-xs:flex y-xs:lg:hidden w-full mb-4 flex-col items-center">
+      <div class=" y-xs:flex y-xs:lg:hidden w-full mb-4 flex-col items-center">
         <div class="w-full flex flex-col">
           <div class="my-5 flex justify-evenly w-full">
             <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-40" />
@@ -739,6 +746,7 @@ watch(
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameState.level }}</div>
             </div>
             <div class="flex flex-col items-center">
+              <div v-show="gameState.scoreMutiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
             </div>
@@ -765,7 +773,7 @@ watch(
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
             :key="index"
-            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[7.6rem] xl:h-[10.64rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
             @click="singlePlayerCardClick(card)"
           >
             <div
@@ -816,6 +824,7 @@ watch(
                   <div class="text-5xl font-bold font-mythmatch">{{ gameState.level }}</div>
                 </div>
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
+                  <div v-show="gameState.scoreMutiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
                   <div class="text-3xl font-mythmatch">Your Score</div>
                   <div class="text-5xl font-bold font-mythmatch">{{ p1.scores }}</div>
                 </div>
@@ -889,7 +898,7 @@ watch(
       :class="gameState.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'"
       class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] backdrop-blur-sm flex flex-col gap-16 justify-center items-center text-center"
     >
-      <div class="text-3xl xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
+      <div class="text-6xl y-xs:text-5xl y-xs:xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
       <div class="flex flex-col gap-3">
         <div class="text-xl flex items-center gap-2 text-white">
           <div>If you want restart, you can click</div>
@@ -998,12 +1007,12 @@ watch(
       )"
     >
       <!-- {{ gameState.playerTurn }} -->
-      <div class="hidden xs:flex flex-col lg:flex items-center justify-center text-mythmatch-100">
+      <div class="hidden sm:flex flex-col lg:flex items-center justify-center text-mythmatch-100">
         <div class="text-[1rem] y-xs:lg:text-[2rem] font-mythmatch ">Player 1 score</div>
         <div class="text-[4rem] y-xs:lg:text-[8rem] font-mythmatch font-bold drop-shadow-glow">{{ p1.scores }}</div>
       </div>
       <div class="lg:w-fit grid place-items-center">
-        <div class="xs:hidden w-full mb-4 flex flex-col items-center">
+        <div class="sm:hidden w-full mb-4 flex flex-col items-center">
           <div class="w-full flex flex-col">
             <div class="my-5 flex justify-evenly w-full">
               <img
@@ -1024,7 +1033,7 @@ watch(
             </div>
           </div>
         </div>
-        <div class="hidden xs:block w-24 absolute top-3 left-5">
+        <div class="hidden sm:block w-24 absolute top-3 left-5">
           <img
             :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
             alt="logo"
@@ -1047,13 +1056,13 @@ watch(
             <div v-html="DoorIcon"></div>
           </button>
         </div>
-        <div class="grid-cols-4 xs:grid-cols-6 w-fit grid grid-flow-row gap-3 " >
+        <div class="grid-cols-4 sm:grid-cols-6 w-fit grid grid-flow-row gap-3 " >
           <div
             v-for="(card, index) of board.cards"
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
             :key="index"
-            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[7.6rem] xl:h-[10.64rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
             @click="multiplayerCardsClick(card)"
           >
             <div
@@ -1089,7 +1098,7 @@ watch(
           </div>
         </div>
       </div>  
-      <div class="hidden xs:flex text-mythmatch-100  flex-col items-center justify-center">
+      <div class="hidden sm:flex text-mythmatch-100  flex-col items-center justify-center">
         <div class="text-[1rem] y-xs:lg:text-[2rem] font-mythmatch ">Player 2 score</div>
         <div class="text-[4rem] y-xs:lg:text-[8rem] font-mythmatch font-bold drop-shadow-glow">{{ p2.scores }}</div>
       </div>

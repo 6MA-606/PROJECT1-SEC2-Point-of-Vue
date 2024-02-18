@@ -39,7 +39,7 @@ export default class Player {
      * @param {Number} scores 
      * @returns {Number} Return the total scores of the player
      */
-    addScores(scores, sfxVolume = 100) {
+    addScores(scores) {
         this.scores += scores
         return this.scores
     }
