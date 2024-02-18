@@ -14,7 +14,7 @@ import Cursor from '../classes/Cursor'
 import SoundController from '../classes/SoundController.js'
 import Scoreboard from '../classes/Scoreboard'
 
-const SINGLEPLAYER_START_TIME = 3600
+const SINGLEPLAYER_START_TIME = 30
 
 const router = reactive({
   id: parseInt(localStorage.getItem('router_id')) || 100,
