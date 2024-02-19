@@ -112,7 +112,7 @@ const singlePlayerCardClick = (card) => {
   console.log('singlePlayerCardClick')
   if (!gameState.isPaused && gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
-    card.isFlipped = true
+    card.flip()
     p1.addCard(card)
   } else return
   
@@ -129,7 +129,7 @@ const singlePlayerCardClick = (card) => {
       gameState.scoreMutiplier = 1
       gameState.pause()
       setTimeout(() => {
-        p1.setFlipSelectedCard(false)
+        p1.foldAllSelectedCard()
         p1.clearCards()
         gameState.resume()
       }, 1000)
@@ -153,7 +153,7 @@ const multiplayerCardsClick = (card) => {
   const currentPlayer = players.value[`p${gameState.playerTurn}`]
   if (!gameState.isPaused && !card.isFlipped && currentPlayer.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
-    card.isFlipped = true
+    card.flip()
     currentPlayer.addCard(card)
   } else return
 
@@ -164,7 +164,7 @@ const multiplayerCardsClick = (card) => {
       soundController.playSFX('/sounds/pointGain.mp3')
     } else {
       setTimeout(() => {
-        currentPlayer.setFlipSelectedCard(false)
+        currentPlayer.foldAllSelectedCard()
         currentPlayer.clearCards()
         gameState.switchTurn()
       }, 1000)
@@ -180,7 +180,7 @@ const multiplayerCardsClick = (card) => {
     } else {
       gameState.pause()
       setTimeout(() => {
-        board.value.setFlipAllCards(false)
+        board.value.foldAllSelectedCard()
         setTimeout(() => {
           board.value.clearCards()
           board.value.getPairCard(12)

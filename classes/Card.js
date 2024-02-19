@@ -28,12 +28,12 @@ export default class Card{
         this.isFlipped = false
     }
 
-    /**
-     * Set flip state of the card
-     * @param {Boolean} flipState - Flip state of the card
-     */
-    setFlip(flipState){
-        this.isFlipped = flipState
+    flip(){
+        this.isFlipped = true
+    }
+    
+    fold(){
+        this.isFlipped = false
     }
 
 }

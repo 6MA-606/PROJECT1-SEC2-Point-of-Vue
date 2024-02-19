@@ -87,9 +87,15 @@ export default class Player {
         return this.selectedCards[0].id === this.selectedCards[1].id
     }
 
-    setFlipSelectedCard(flipState) {
+    flipAllSelectedCard(){
         this.selectedCards.forEach((card) => {
-            card.isFlipped = flipState
+            card.flip()
+        })
+    }
+
+    foldAllSelectedCard(){
+        this.selectedCards.forEach((card) => {
+            card.fold()
         })
     }
 }
