@@ -13,6 +13,7 @@
     "vue": "^3.3.11"
   },
   "devDependencies": {
+    "@tailwindcss/typography": "^0.5.10",
     "@vitejs/plugin-vue": "^4.5.2",
     "autoprefixer": "^10.4.17",
     "daisyui": "^4.6.0",

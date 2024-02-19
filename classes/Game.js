@@ -34,6 +34,7 @@ export default class Game {
         this.endTime = 0
         this.winner = 0
         this.isSettingOpen = false
+        this.isManualOpen = false
     }
 
     pause() {
@@ -64,6 +65,10 @@ export default class Game {
 
     setQuitOpenState(openState){
         this.isQuitOpen = openState
+    }
+
+    setManualOpenState(openState) {
+        this.isManualOpen = openState
     }
 
     switchTurn() {

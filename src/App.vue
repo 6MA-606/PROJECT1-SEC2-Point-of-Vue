@@ -488,7 +488,7 @@ watch(
           class="tooltip hover:tooltip-open tooltip-left tooltip-info"
           data-tip="How to play?"
         >
-          <button type="button" class="btn btn-circle btn-neutral btn-lg">
+          <button @click="gameState.setManualOpenState(true)" type="button" class="btn btn-circle btn-neutral btn-lg">
             <div v-html="BookIcon" class="scale-[1.75]"></div>
           </button>
         </div>
@@ -1234,6 +1234,48 @@ watch(
       </div>
     </section>
     <!-- * setting modal section end -->
+    <section v-show="gameState.isManualOpen" class="flex justify-center z-40 w-full h-screen bg-[#000c] absolute translate-y-[-100%]">
+      <div class="h-screen bg-white w-9/12 overflow-y-auto p-[3.5rem] relative">
+        <button @click="gameState.setManualOpenState(false)" class="btn-mythmatch-circle bg-red-400 text-white absolute top-4 right-4">X</button>
+        <article class="prose max-w-none prose-invert">
+          <h1>How to Play</h1>
+          <h2>Single player (Endless)</h2>
+        <ul>
+          <li>The game will display a grid of facedown cards.</li>
+          <li>The player clicks on two cards to reveal their pictures.</li>
+          <li>If the two cards match, they’ll remain face up and the player earns points (equals current level multiplied by combo*) and gains additional time (+5 seconds).</li>
+          <li>If the two cards do not match, they’ll flipped back face down and the player has to try again.</li>
+          <li>If you match all pairs before time runs out, you’ll progress to the next level.</li>
+          <li>If the board is full (12 pairs), the background will change to red color and you can’t gain additional time even though you get the corrected pairs.</li>
+          <li>When time runs out the game will end and show your score and rank on leader board.</li>
+        </ul>
+        
+        <h2>Combo</h2>
+        <blockquote>
+          The combo will help you gain additional points when you get corrected pairs simultaneously.
+          For example, When you get the first corrected pairs you will gain points equal to the current level and you will see “Combo x2” above your score section. That means the next corrected pairs will make you gain double points and combos will increase to 3 (you can stack up combos if you continue to get corrected pairs and lost combos if you lost your streak).
+        </blockquote>
+        
+        
+        
+        <h2>Versus Mode (2 player)</h2>
+        <blockquote>
+          In versus mode, you can play with your friends locally
+          When starts in versus mode, the game will random the player to plays in first round. The player who can play in first round is the player who has red color on his/her side.
+        </blockquote>
+        
+        
+        <h3>Playing in Your Turn</h3>
+        <ul>
+          <li>The game will display a grid of facedown cards.</li>
+          <li>In your turn, you must clicks on two cards to reveal their pictures.</li>
+          <li>If you are successfully able to match a pair of cards on your turn, you’ll gain 1 point and can continue your turn until you chose the wrong pairs.</li>
+          <li>When you choose the wrong pair your turn will end and switch to another player.</li>
+          <li>Repeats above process until all cards flipped. The game will compare score of each player to find the winner but if draws all card will be flipped to face down and each player must continue playing until all cards flipped again to find the winner if draws again repeats.</li>
+        </ul>
+        </article>
+      </div>
+    </section>
   </main>
 </template>
 
