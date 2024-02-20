@@ -24,6 +24,7 @@ export default class Game {
         }
         this.isPaused = false
         this.level = 0
+        this.scoreMutiplier = 1
         this.time = DEFAULT_TIME
         this.timerInterval = null
         this.isTimerRunning = false
@@ -34,7 +35,7 @@ export default class Game {
         this.endTime = 0
         this.winner = 0
         this.isSettingOpen = false
-        this.scoreMutiplier = 1
+        this.isManualOpen = false
     }
 
     pause() {
@@ -76,6 +77,10 @@ export default class Game {
 
     setQuitOpenState(openState){
         this.isQuitOpen = openState
+    }
+
+    setManualOpenState(openState) {
+        this.isManualOpen = openState
     }
 
     switchTurn() {
