@@ -1235,45 +1235,41 @@ watch(
     </section>
     <!-- * setting modal section end -->
     <section v-show="gameState.isManualOpen" class="flex justify-center z-40 w-full h-screen bg-[#000c] absolute translate-y-[-100%]">
-      <div class="h-screen bg-white w-9/12 overflow-y-auto p-[3.5rem] relative">
+      <div class="h-screen bg-white w-11/12 md:w-10/12 lg:w-9/12 overflow-y-auto p-[1rem] sm:p-[3.5rem] relative">
         <button @click="gameState.setManualOpenState(false)" class="btn-mythmatch-circle bg-red-400 text-white absolute top-4 right-4">X</button>
-        <article class="prose max-w-none prose-invert">
-          <h1>How to Play</h1>
-          <h2>Single player (Endless)</h2>
-        <ul>
-          <li>The game will display a grid of facedown cards.</li>
-          <li>The player clicks on two cards to reveal their pictures.</li>
-          <li>If the two cards match, they’ll remain face up and the player earns points (equals current level multiplied by combo*) and gains additional time (+5 seconds).</li>
-          <li>If the two cards do not match, they’ll flipped back face down and the player has to try again.</li>
-          <li>If you match all pairs before time runs out, you’ll progress to the next level.</li>
-          <li>If the board is full (12 pairs), the background will change to red color and you can’t gain additional time even though you get the corrected pairs.</li>
-          <li>When time runs out the game will end and show your score and rank on leader board.</li>
-        </ul>
-        
-        <h2>Combo</h2>
-        <blockquote>
-          The combo will help you gain additional points when you get corrected pairs simultaneously.
-          For example, When you get the first corrected pairs you will gain points equal to the current level and you will see “Combo x2” above your score section. That means the next corrected pairs will make you gain double points and combos will increase to 3 (you can stack up combos if you continue to get corrected pairs and lost combos if you lost your streak).
-        </blockquote>
-        
-        
-        
-        <h2>Versus Mode (2 player)</h2>
-        <blockquote>
-          In versus mode, you can play with your friends locally
-          When starts in versus mode, the game will random the player to plays in first round. The player who can play in first round is the player who has red color on his/her side.
-        </blockquote>
-        
-        
-        <h3>Playing in Your Turn</h3>
-        <ul>
-          <li>The game will display a grid of facedown cards.</li>
-          <li>In your turn, you must clicks on two cards to reveal their pictures.</li>
-          <li>If you are successfully able to match a pair of cards on your turn, you’ll gain 1 point and can continue your turn until you chose the wrong pairs.</li>
-          <li>When you choose the wrong pair your turn will end and switch to another player.</li>
-          <li>Repeats above process until all cards flipped. The game will compare score of each player to find the winner but if draws all card will be flipped to face down and each player must continue playing until all cards flipped again to find the winner if draws again repeats.</li>
-        </ul>
-        </article>
+        <article class="prose prose-sm xs:prose-base max-w-none prose-invert">
+            <h1>Unleash Your Memory Magic: Mastering Memory Match!</h1>
+  <p>Ready to test your memory and challenge your friends? Dive into the thrilling world of Memory Match! This guide will equip you with the knowledge to conquer both single-player and versus modes, turning you into a memory maestro.</p>
+
+  <h2>Single Player Journey (Endless Mode)</h2>
+  <ol>
+    <li><b>Picture Perfect Grid:</b> The game starts with a grid of cards, all facing down, hiding various pictures.</li>
+    <li><b>Memory Mayhem:</b> Click on two cards to reveal their hidden images. Remember, it's a race against time!</li>
+    <li><b>Match Made in Memory Heaven:</b> If the two cards are identical, they stay face up, and you score points (current level x combo*) and bonus time (+5 seconds). Your memory bank increases, and the excitement builds!</li>
+    <li><b>Memory Mishap:</b> Not an identical pair? No worries! Flip them back down and try again. Keep your focus sharp!</li>
+    <li><b>Level Up!</b> Clear all pairs before time runs out, and you'll be whisked away to a new level, where your memory will be further challenged.</li>
+    <li><b>Gridlock Alert!</b> If the board fills up (12 pairs), the tension rises with a red background. While you won't get extra time for correct matches, keep scoring those points!</li>
+    <li><b>Time's Up!</b> When the clock strikes zero, the game ends, showcasing your score and ranking on the leaderboard. Did you become the memory champion?</li>
+  </ol>
+  <h2>Combo Power-Up!</h2>
+  <p>The combo system is your secret weapon for racking up points. Here's how it works:</p>
+
+  <ul>
+    <li><b>Double the Joy:</b> With each correct match, your combo increases (Combo x2, x3, and so on). This multiplies your points, making your memory prowess truly shine!</li>
+    <li><b>Streak Saver:</b> Keep the correct matches coming, and your combo keeps climbing. But remember, a wrong match resets your combo, so stay focused!</li>
+  </ul>
+  <h2>Versus Mode: Face-Off Fun!</h2>
+  <p>Ready to challenge your friends? Versus mode is your battleground!</p>
+
+  <ol>
+    <li><b>Randomized Rounds:</b> The game randomly picks who starts, indicated by the red side. Remember, the first one to strike wins the round!</li>
+    <li><b>Your Turn to Shine:</b> On your turn, reveal two cards. Match them correctly, and you earn a point and keep going until you miss.</li>
+    <li><b>Turnover Time:</b> Make a mistake, and your turn ends, passing the spotlight to your opponent.</li>
+    <li><b>Memory Marathon:</b> Keep playing until all cards are flipped. The player with the highest score wins! But wait, there's a twist...</li>
+    <li><b>Draw? No Problem!</b> If it's a tie, all cards flip back down, and the memory battle continues! The player with the most points after this second round is the ultimate memory champion.</li>
+  </ol>
+  So, are you ready to embark on this exciting memory adventure? With these tips and tricks, you'll be a Memory Match master in no time!
+          </article>
       </div>
     </section>
   </main>

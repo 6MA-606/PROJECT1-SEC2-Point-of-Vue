@@ -53,20 +53,5 @@ export default {
     'xs:grid-cols-5',
     'xs:grid-cols-6',
   ],
-  // daisyui: {
-  //   styled: true,
-  //   themes: false,
-  //   base: true,
-  //   utils: true,
-  //   logs: true,
-  //   rtl: false,
-  //   themes: [
-  //     {
-  //       mytheme: {
-  //         primary: '#ffc34e',
-  //       },
-  //     },
-  //   ],
-  // },
   plugins: [daisyui, typography],
 }
