@@ -53,12 +53,12 @@ const modes = [
 const cursor = reactive(new Cursor())
 const soundController = new SoundController()
 
-const gameState = reactive(new Game())
-if (!gameState.loadSetting()) gameState.saveSetting()
+const gameContext = reactive(new Game())
+if (!gameContext.loadSetting()) gameContext.saveSetting()
 
 
 
-const { board, players, setting } = toRefs(gameState)
+const { board, players, setting } = toRefs(gameContext)
 const { p1, p2 } = players.value
 
 p1.accuracy = computed(() => {
@@ -69,7 +69,7 @@ p1.accuracy = computed(() => {
 /** @param {Event} e */
 const handleBgClick = (e) => {
   if (e.target.id !== 'mode-select') return
-  gameState.mode = 0
+  gameContext.mode = 0
 }
 
 let loadingCardId = 0
@@ -92,26 +92,26 @@ const handleQuitBtn = () => {
 const handleRestartBtn = (startModeFunction) => {
   routeWithTransition(200, 2000, false)
   setTimeout(() => {
-    gameState.reset()
+    gameContext.reset()
     startModeFunction()
   }, 2000)
 }
 
 function startSinglePlayerMode() {
   if (p1.name === '') p1.name = 'Anonymous'
-  gameState.mode = 1
-  gameState.level = 1
+  gameContext.mode = 1
+  gameContext.level = 1
   board.value.clearCards()
   board.value.getPairCard(2)
   board.value.shuffle()
-  gameState.startTimer(3)
+  gameContext.startTimer(3)
   scoreboard.load()
   scoreboard.addPlayer(p1)
 }
 
 const singlePlayerCardClick = (card) => {
   console.log('singlePlayerCardClick')
-  if (!gameState.isPaused && gameState.isPlaying && !card.isRevealed && p1.selectedCards.length < 2) {
+  if (!gameContext.isPaused && gameContext.isPlaying && !card.isRevealed && p1.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
     card.reveal()
     p1.addCard(card)
@@ -122,37 +122,37 @@ const singlePlayerCardClick = (card) => {
     if (p1.isPaired()) {
       soundController.playSFX('/sounds/pointGain.mp3')
       p1.addPairCount()
-      p1.addScores(gameState.level * gameState.scoreMutiplier++)
+      p1.addScores(gameContext.level * gameContext.scoreMulltiplier++)
       p1.clearCards()
       scoreboard.updatePlayerScore(p1)
-      if (gameState.level < 11) gameState.addTime(5)
+      if (gameContext.level < 11) gameContext.addTime(5)
     } else {
-      gameState.scoreMutiplier = 1
-      gameState.pause()
+      gameContext.scoreMulltiplier = 1
+      gameContext.pause()
       setTimeout(() => {
         p1.concealAllSelectedCard()
         p1.clearCards()
-        gameState.resume()
+        gameContext.resume()
       }, 1000)
     }
   }
 
   if (board.value.isAllCardRevealed()) {
-    gameState.nextLevel()
+    gameContext.nextLevel()
   }
 }
 
 function startMultiPlayerMode() {
-  gameState.bgm = "bgmMultiplayer"
+  gameContext.bgm = "bgmMultiplayer"
   board.value.clearCards()
   board.value.getPairCard(12)
   board.value.shuffle()
-  if(Math.random() < 0.5) gameState.switchTurn()
+  if(Math.random() < 0.5) gameContext.switchTurn()
 }
 
 const multiplayerCardsClick = (card) => {
-  const currentPlayer = players.value[`p${gameState.playerTurn}`]
-  if (!gameState.isPaused && !card.isRevealed && currentPlayer.selectedCards.length < 2) {
+  const currentPlayer = players.value[`p${gameContext.playerTurn}`]
+  if (!gameContext.isPaused && !card.isRevealed && currentPlayer.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
     card.reveal()
     currentPlayer.addCard(card)
@@ -167,25 +167,25 @@ const multiplayerCardsClick = (card) => {
       setTimeout(() => {
         currentPlayer.concealAllSelectedCard()
         currentPlayer.clearCards()
-        gameState.switchTurn()
+        gameContext.switchTurn()
       }, 1000)
     }
   }
   if(board.value.isAllCardRevealed()){
     if(p1.scores !== p2.scores){
       if(p1.scores > p2.scores){
-        gameState.winner = 1
+        gameContext.winner = 1
       } else {
-        gameState.winner = 2
+        gameContext.winner = 2
       }
     } else {
-      gameState.pause()
+      gameContext.pause()
       setTimeout(() => {
         board.value.concealAllSelectedCard()
         setTimeout(() => {
           board.value.clearCards()
           board.value.getPairCard(12)
-          gameState.resume()
+          gameContext.resume()
         }, 1000)
       }, 500)
     }
@@ -198,7 +198,7 @@ watch(
     console.log(newRouterId)
     switch (newRouterId) {
       case 100:
-        gameState.reset()
+        gameContext.reset()
         board.value.getPairCard(2)
         board.value.shuffle()
         break
@@ -218,45 +218,45 @@ watch(
 )
 
 watch(
-  () => gameState.isTimerRunning,
+  () => gameContext.isTimerRunning,
   (runningState) => {
-    if (gameState.mode === 1) {
-      if (!runningState && gameState.isPlaying) {
+    if (gameContext.mode === 1) {
+      if (!runningState && gameContext.isPlaying) {
         soundController.clearBGM()
-        gameState.gameOver()
+        gameContext.gameOver()
         scoreboard.save()
-      } else if (!runningState && !gameState.isPlaying) {
-        gameState.isPlaying = true
+      } else if (!runningState && !gameContext.isPlaying) {
+        gameContext.isPlaying = true
       }
     }
   }
 )
 
 watch(
-  () => gameState.isPlaying,
+  () => gameContext.isPlaying,
   (playingState) => {
-    if (playingState && gameState.mode === 1) {
-      gameState.startTimer(SINGLEPLAYER_START_TIME)
+    if (playingState && gameContext.mode === 1) {
+      gameContext.startTimer(SINGLEPLAYER_START_TIME)
       console.log('play')
     }
   }
 )
 
 watch(
-  () => gameState.level,
+  () => gameContext.level,
   (newLevel) => {
     if (newLevel === 1) {
-      gameState.bgm = 'bgmPhase1'
+      gameContext.bgm = 'bgmPhase1'
     } else if (newLevel === 5) {
-      gameState.bgm = 'bgmPhase2'
+      gameContext.bgm = 'bgmPhase2'
     } else if (newLevel === 11) {
-      gameState.bgm = 'bgmPhase3'
+      gameContext.bgm = 'bgmPhase3'
     }
   }
 )
 
 watch(
-  () => gameState.bgm,
+  () => gameContext.bgm,
   (newBgm) => {
     
     if (newBgm === '') {
@@ -268,7 +268,7 @@ watch(
 )
 
 watch(
-  () => gameState.setting.bgmVolume,
+  () => gameContext.setting.bgmVolume,
   (newValue)=>{
     soundController.setBGMVolume(newValue)
     console.log("Sound volume is ", newValue);
@@ -277,7 +277,7 @@ watch(
 )
 
 watch(
-  () => gameState.setting.sfxVolume,
+  () => gameContext.setting.sfxVolume,
   (newValue)=>{
     soundController.setSFXVolume(newValue)
     console.log("Sound volume is ", newValue);
@@ -287,26 +287,26 @@ watch(
 
 //handle mute function
 watch(
-  ()=> gameState.setting.isBgmMute,
+  ()=> gameContext.setting.isBgmMute,
   (newValue)=>{
     console.log('isBgmMute executed')
-    soundController.setMute('bgm', newValue, gameState.setting.bgmVolume)
+    soundController.setMute('bgm', newValue, gameContext.setting.bgmVolume)
   },
   {immediate:true}
 )
 
 watch(
-  ()=> gameState.setting.isSfxMute,
+  ()=> gameContext.setting.isSfxMute,
   (newValue)=>{
     console.log('isSfxMute executed')
-    soundController.setMute('sfx', newValue, gameState.setting.sfxVolume)
+    soundController.setMute('sfx', newValue, gameContext.setting.sfxVolume)
   },
   {immediate:true}
 )
 
 watch(
-  () => gameState.setting,
-  () => { gameState.saveSetting() },
+  () => gameContext.setting,
+  () => { gameContext.saveSetting() },
   { deep: true }
 )
 
@@ -354,7 +354,7 @@ watch(
               {{ Cards[0].name }}
             </div>
             <img
-              :src="`/cards/${gameState.setting.quality}/${Cards[0].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
+              :src="`/cards/${gameContext.setting.quality}/${Cards[0].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[0].name"
               class="rounded-lg w-10/12"
             />
@@ -364,7 +364,7 @@ watch(
           </div>
           <div class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden">
             <img
-              :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+              :src="`/cards/${gameContext.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -372,7 +372,7 @@ watch(
         </div>
         <div>
           <img
-            :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
+            :src="`/logo/${gameContext.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
             alt="MythMatch_logo"
             class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow animate-[pulse_2.5s_infinite_6000ms]"
           />
@@ -380,7 +380,7 @@ watch(
         <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
           <div class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10">
             <img
-              :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+              :src="`/cards/${gameContext.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -393,7 +393,7 @@ watch(
               {{ Cards[1].name }}
             </div>
             <img
-              :src="`/cards/${gameState.setting.quality}/${Cards[1].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
+              :src="`/cards/${gameContext.setting.quality}/${Cards[1].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[1].name"
               class="rounded-lg w-10/12"
             />
@@ -419,7 +419,7 @@ watch(
           >
             <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
               <img
-                :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                :src="`/cards/${gameContext.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                 alt="backcard"
                 class="w-full h-full"
               />
@@ -431,7 +431,7 @@ watch(
               <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
-              <img :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`" :alt="card.name" class="rounded-lg w-10/12" />
+              <img :src="`/cards/${gameContext.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`" :alt="card.name" class="rounded-lg w-10/12" />
               <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
@@ -454,7 +454,7 @@ watch(
         <button
           @mouseover="cursor.hover()"
           @mouseleave="cursor.unHover()"
-          @click="gameState.setSettingOpenState(true)"
+          @click="gameContext.setSettingOpenState(true)"
           class="btn bg-gray-800 text-white hover:bg-gray-800 border-0 w-10/12"
           type="button"
         >
@@ -472,7 +472,7 @@ watch(
           <button
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
-            @click="gameState.setManualOpenState(true)"
+            @click="gameContext.setManualOpenState(true)"
             type="button"
             class="btn btn-circle bg-mythpurple-600 border-2 border-mythmatch-100 hover:border-mythmatch-100 btn-lg hover:bg-mythpurple-700 text-mythmatch-100"
           >
@@ -521,22 +521,22 @@ watch(
           v-for="(mode, index) in modes"
           :key="index"
           :class="[
-            gameState.mode === index + 1 && gameState.mode !== 0
+            gameContext.mode === index + 1 && gameContext.mode !== 0
               ? 'border-2 z-10 lg:scale-110 transform-style-3d h-[32rem] drop-shadow-2xl'
               : '',
-            gameState.mode === index + 1 && gameState.mode === 1 ? 'rotate-y-12' : '',
-            gameState.mode === index + 1 && gameState.mode === 2 ? '-rotate-y-12' : '',
+            gameContext.mode === index + 1 && gameContext.mode === 1 ? 'rotate-y-12' : '',
+            gameContext.mode === index + 1 && gameContext.mode === 2 ? '-rotate-y-12' : '',
           ]"
           @mouseover="cursor.hover()"
           @mouseleave="cursor.unHover()"
-          @click="gameState.mode = index + 1"
+          @click="gameContext.mode = index + 1"
           class="hidden y-xs:lg:flex relative w-[15rem] y-xs:w-[20rem] h-[24rem] y-xs:lg:w-[22rem] px-5 py-10 flex-col justify-center items-center gap-4 bg-[#0007] backdrop-blur-sm border border-mythmatch-100 rounded-lg hover:shadow-lg hover:shadow-[#fff5]  transition-all duration-500 linear cursor-pointer"
         >
           <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
           <div class="w-[7em] h-[7em] y-xs:w-[13rem] y-xs:h-[13rem] y-xs:lg:w-[13rem] y-xs:lg:h-[13rem]">
             <img
               :src="(
-                gameState.mode === index + 1 && gameState.mode !== 0
+                gameContext.mode === index + 1 && gameContext.mode !== 0
                   ? mode.gif
                   : mode.thumbnail + '.webp'
               )"
@@ -554,7 +554,7 @@ watch(
             <div
               v-if="index + 1 === 1"
               :class="[
-                gameState.mode === index + 1
+                gameContext.mode === index + 1
                   ? 'h-20'
                   : 'h-0'
               ]"
@@ -562,7 +562,7 @@ watch(
             >
               <div
                 :class="[
-                  gameState.mode === index + 1
+                  gameContext.mode === index + 1
                     ? 'opacity-100 -translate-x-[100%] delay-500'
                     : 'opacity-0 -translate-x-[150%]'
                 ]"
@@ -572,7 +572,7 @@ watch(
               </div>
               <div
                 :class="[
-                  gameState.mode === index + 1
+                  gameContext.mode === index + 1
                     ? 'opacity-100 translate-x-[100%] delay-500'
                     : 'opacity-0 translate-x-[150%]'
                 ]"
@@ -595,7 +595,7 @@ watch(
               @click="routeWithTransition(mode.routerId, 2000, false)"
               alt="play-endlessMode-button"
               :class="[
-                gameState.mode === index + 1
+                gameContext.mode === index + 1
                   ? 'h-12'
                   : 'h-0'
               ]"
@@ -612,11 +612,11 @@ watch(
           v-for="(mode, index) in modes"
           :key="index"
           :class="[
-            gameState.mode === index + 1 && gameState.mode !== 0
+            gameContext.mode === index + 1 && gameContext.mode !== 0
               ? 'border-2 z-10 transition-all duration-500 drop-shadow-2xl'
               : ''
           ]"
-          @click="gameState.mode = index + 1"
+          @click="gameContext.mode = index + 1"
           class="flex y-xs:lg:hidden relative w-[15rem] y-xs:w-[20rem] px-5 py-10 flex-col justify-center items-center gap-4 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] bg-mythpurple-800 border-mythmatch-100"
         >
           <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
@@ -632,9 +632,9 @@ watch(
             </div>
             <div class="text-center text-[0.875em] text-white opacity-50">{{ mode.description }}</div>
           </div>
-          <div v-show="gameState.mode === index + 1" class="flex flex-col justify-center h-[40%] w-full items-center gap-3 absolute bottom-0 bg-mythpurple-800 rounded-lg">
+          <div v-show="gameContext.mode === index + 1" class="flex flex-col justify-center h-[40%] w-full items-center gap-3 absolute bottom-0 bg-mythpurple-800 rounded-lg">
             <div
-              v-if="gameState.mode === index + 1 && gameState.mode === 1" 
+              v-if="gameContext.mode === index + 1 && gameContext.mode === 1" 
               class="flex flex-col items-center gap-2"
             >
               <div>Enter your name</div>
@@ -662,22 +662,22 @@ watch(
     <!-- * single player mode section begin -->
     <section
       v-if="router.id === 200"
-      :style="`background-image: url(/bg/bg${gameState.level >= 11 ? '2' : ''}.svg); background-size: cover; background-position: center; background-repeat: no-repeat;`"
+      :style="`background-image: url(/bg/bg${gameContext.level >= 11 ? '2' : ''}.svg); background-size: cover; background-position: center; background-repeat: no-repeat;`"
       class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
     >
       <!-- mobile setting section (top right) -->
       <div class="flex y-xs:lg:hidden absolute top-3 right-3 gap-3 z-10">
-        <button @click="gameState.setSettingOpenState(true)" class="btn-mythmatch-circle bg-mythpurple-800 text-white" type="button">
+        <button @click="gameContext.setSettingOpenState(true)" class="btn-mythmatch-circle bg-mythpurple-800 text-white" type="button">
           <div v-html="SettingIcon"></div>
         </button>
-        <button @click="gameState.setQuitOpenState(true)" class="btn-mythmatch-circle bg-red-400 text-white" type="button">
+        <button @click="gameContext.setQuitOpenState(true)" class="btn-mythmatch-circle bg-red-400 text-white" type="button">
           <div v-html="DoorIcon"></div>
         </button>
       </div>
 
       <!-- mobile horizontal logo section (left) -->
       <div class="flex y-xs:hidden w-[20%] flex-col items-center absolute left-0 top-5">
-        <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-32" />
+        <img :src="`/logo/${gameContext.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-32" />
       </div>
 
       <!-- mobile horizontal score section (left) -->
@@ -685,12 +685,12 @@ watch(
         <div class="h-3/6 flex flex-col gap-10">
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Level</div>
-            <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameState.level }}</div>
+            <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameContext.level }}</div>
           </div>
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
             <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
-            <div v-show="gameState.scoreMutiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameState.scoreMutiplier }}</div>
+            <div v-show="gameContext.scoreMulltiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
           </div>
         </div>
       </div>
@@ -699,7 +699,7 @@ watch(
         <div class="h-3/6 flex flex-col gap-10">
           <div class="flex flex-col text-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Time</div>
-            <div class="text-3xl text-mythmatch-100 font-bold font-mythmatch-mono tracking-wide">{{ gameState.time }}</div>
+            <div class="text-3xl text-mythmatch-100 font-bold font-mythmatch-mono tracking-wide">{{ gameContext.time }}</div>
           </div>
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Your Rank</div>
@@ -712,15 +712,15 @@ watch(
       <div class="hidden y-xs:flex y-xs:xs:hidden w-full mb-4 flex-col items-center">
         <div class="w-full flex flex-col">
           <div class="my-5 flex justify-evenly w-full">
-            <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-40" />
+            <img :src="`/logo/${gameContext.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-40" />
           </div>
           <div class="flex justify-evenly items-center">
             <div class="flex flex-col items-center">
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Level</div>
-              <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameState.level }}</div>
+              <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameContext.level }}</div>
             </div>
             <div class="flex flex-col items-center">
-              <div v-show="gameState.scoreMutiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
+              <div v-show="gameContext.scoreMulltiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
             </div>
@@ -730,7 +730,7 @@ watch(
             </div>
             <div class="flex flex-col text-center">
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Time</div>
-              <div class="text-3xl text-mythmatch-100 font-bold font-mythmatch-mono tracking-wide">{{ gameState.time }}</div>
+              <div class="text-3xl text-mythmatch-100 font-bold font-mythmatch-mono tracking-wide">{{ gameContext.time }}</div>
             </div>
           </div>
         </div>
@@ -739,7 +739,7 @@ watch(
       <!-- card section -->
       <div class="w-full h-full y-xs:h-auto lg:w-9/12 grid place-items-center">
         <div
-          :class="`grid-cols-${gameState.level < 4 ? gameState.level + 1 : 4} xs:grid-cols-${gameState.level < 6 ? gameState.level + 1 : 6}`"
+          :class="`grid-cols-${gameContext.level < 4 ? gameContext.level + 1 : 4} xs:grid-cols-${gameContext.level < 6 ? gameContext.level + 1 : 6}`"
           class="w-fit grid grid-flow-row gap-1 xs:gap-2"
         >
           <div
@@ -756,7 +756,7 @@ watch(
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
                 <img
-                  :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameContext.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
                   class="w-full lg:h-full"
                 />
@@ -769,7 +769,7 @@ watch(
                   {{ card.name }}
                 </div>
                 <img
-                  :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameContext.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   :alt="card.name"
                   class="rounded-lg w-10/12"
                 />
@@ -790,22 +790,22 @@ watch(
           <div class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col justify-around items-center">
             <div class="w-full flex flex-col items-center gap-6">
               <div class="w-10/12">
-                <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" />
+                <img :src="`/logo/${gameContext.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" />
               </div>
               <div class="w-full flex justify-evenly">
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
                   <div class="text-3xl font-mythmatch">Level</div>
-                  <div class="text-5xl font-bold font-mythmatch">{{ gameState.level }}</div>
+                  <div class="text-5xl font-bold font-mythmatch">{{ gameContext.level }}</div>
                 </div>
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
-                  <div v-show="gameState.scoreMutiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
+                  <div v-show="gameContext.scoreMulltiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
                   <div class="text-3xl font-mythmatch">Your Score</div>
                   <div class="text-5xl font-bold font-mythmatch">{{ p1.scores }}</div>
                 </div>
               </div>
               <div class="text-mythmatch-100 flex flex-col items-center justify-center">
                 <div class="text-3xl font-mythmatch">Time</div>
-                <div class="text-5xl font-mythmatch-mono tracking-wide">{{ gameState.time }}</div>
+                <div class="text-5xl font-mythmatch-mono tracking-wide">{{ gameContext.time }}</div>
               </div>
             </div>
             <div class="rounded-lg overflow-hidden w-10/12 h-[40%] border-mythmatch-100 border-2 bg-mythpurple-800">
@@ -837,14 +837,14 @@ watch(
             </div>
             <div class="flex gap-4">
               <button
-                @click="gameState.setSettingOpenState(true)"
+                @click="gameContext.setSettingOpenState(true)"
                 type="button"
                 class="btn"
               >
                 Setting
               </button>
               <button
-                @click="gameState.setQuitOpenState(true)"
+                @click="gameContext.setQuitOpenState(true)"
                 type="button"
                 class="btn btn-error"
               >
@@ -859,17 +859,17 @@ watch(
 
     <!-- * single player countdown section begin -->
     <section
-      v-if="gameState.mode === 1 && !gameState.isPlaying && gameState.isTimerRunning"
+      v-if="gameContext.mode === 1 && !gameContext.isPlaying && gameContext.isTimerRunning"
       class="absolute top-0 left-0 z-40 w-full h-screen bg-[#000c] flex flex-col justify-center items-center"
     >
-      <div class="text-6xl font-mythmatch text-mythmatch-100">{{ Math.round(gameState.time) }}</div>
+      <div class="text-6xl font-mythmatch text-mythmatch-100">{{ Math.round(gameContext.time) }}</div>
     </section>
     <!-- * single player countdown section end -->
     
     <!-- * single player quit section begin -->
     <section
       v-if="router.id === 200"
-      :class="gameState.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'"
+      :class="gameContext.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'"
       class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] backdrop-blur-sm flex flex-col gap-16 justify-center items-center text-center"
     >
       <div class="text-6xl y-xs:text-5xl y-xs:xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
@@ -895,7 +895,7 @@ watch(
           <div>Yes</div>
         </button>
         <button
-          @click="gameState.setQuitOpenState(false)"
+          @click="gameContext.setQuitOpenState(false)"
           type="button"
           class="btn btn-lg btn-warning"
         >
@@ -908,7 +908,7 @@ watch(
     <!-- * single player game over begin -->
     <section
       v-if="router.id === 200"
-      :class="gameState.isGameOver && gameState.mode === 1 ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'"
+      :class="gameContext.isGameOver && gameContext.mode === 1 ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'"
       class="absolute transition-opacity duration-[2.5s] z-40 w-full h-screen bg-[#000c] flex flex-col gap-16 justify-start lg:justify-center items-center text-center overflow-y-auto py-32 lg:py-0"
     >
       <div class="text-6xl xs:text-8xl font-mythmatch text-mythmatch-100">Game Over</div>
@@ -975,12 +975,12 @@ watch(
       v-if="router.id === 201"
       class="h-screen flex items-center justify-evenly" 
       :style="(
-        gameState.playerTurn === 1
+        gameContext.playerTurn === 1
           ? 'background-image: linear-gradient(to right, #f55a 0%, #0000 50% 100%)' 
           : 'background-image: linear-gradient(to left, #f55a 0%, #0000 50% 100%)'
       )"
     >
-      <!-- {{ gameState.playerTurn }} -->
+      <!-- {{ gameContext.playerTurn }} -->
       <div class="hidden sm:flex flex-col lg:flex items-center justify-center text-mythmatch-100">
         <div class="text-[1rem] y-xs:lg:text-[2rem] font-mythmatch ">Player 1 score</div>
         <div class="text-[4rem] y-xs:lg:text-[8rem] font-mythmatch font-bold drop-shadow-glow">{{ p1.scores }}</div>
@@ -990,7 +990,7 @@ watch(
           <div class="w-full flex flex-col">
             <div class="my-5 flex justify-evenly w-full">
               <img
-                :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
+                :src="`/logo/${gameContext.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
                 alt="logo"
                 class="w-40"
               />
@@ -1009,14 +1009,14 @@ watch(
         </div>
         <div class="hidden sm:block w-24 absolute top-3 left-5">
           <img
-            :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
+            :src="`/logo/${gameContext.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
             alt="logo"
             class="w-40" 
           />    
         </div>
         <div class="absolute top-3 right-3 flex gap-3">
           <button
-            @click="gameState.setSettingOpenState(true)"
+            @click="gameContext.setSettingOpenState(true)"
             class="btn-mythmatch-circle bg-mythpurple-800 text-white"
             type="button"
           >
@@ -1045,7 +1045,7 @@ watch(
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
                 <img
-                  :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameContext.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
                   class="w-full lg:h-full"
                 />
@@ -1058,7 +1058,7 @@ watch(
                   {{ card.name }}
                 </div>
                 <img
-                  :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameContext.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   :alt="card.name"
                   class="rounded-lg w-10/12"
                 />
@@ -1082,12 +1082,12 @@ watch(
     <!-- * multiplayer winner section begin -->
     <section
       v-if="router.id === 201"
-      :class="gameState.winner > 0 ? 'opacity-100 translate-y-[0%]' : 'opacity-0 translate-y-[100%]'"
+      :class="gameContext.winner > 0 ? 'opacity-100 translate-y-[0%]' : 'opacity-0 translate-y-[100%]'"
       class="absolute top-0 left-0 w-full h-screen z-40 bg-[#000c] backdrop-blur-sm grid place-items-center transition-opacity duration-1000"
     >
       <div class="flex flex-col justify-center items-center gap-20">
         <div class="text-6xl text-mythmatch-100 font-mythmatch">
-          Player {{ gameState.winner }} win!
+          Player {{ gameContext.winner }} win!
         </div>
         <div class="flex justify-center">
             <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
@@ -1113,7 +1113,7 @@ watch(
 
     <!-- * setting section begin -->
     <section
-      v-show="gameState.isSettingOpen"
+      v-show="gameContext.isSettingOpen"
       class="absolute w-full h-screen translate-y-[-100%] bg-[#0005] backdrop-blur-sm flex justify-center items-center z-30"
     >
       <div class="relative min-w-fit w-3/12 h-[15rem] flex flex-col items-center bg-mythpurple-800 border border-mythmatch-100 rounded-lg">
@@ -1125,8 +1125,8 @@ watch(
               <input
                 @mouseover="cursor.hover()"
                 @mouseleave="cursor.unHover()"
-                v-model="gameState.setting.bgmVolume"
-                :disabled="gameState.setting.isBgmMute"
+                v-model="gameContext.setting.bgmVolume"
+                :disabled="gameContext.setting.isBgmMute"
                 type="range"
                 class="range range-sm range-primary disabled:opacity-70 disabled:cursor-not-allowed"
                 min="0"
@@ -1137,7 +1137,7 @@ watch(
             <button
               @mouseover="cursor.hover()"
               @mouseleave="cursor.unHover()"
-              @click="gameState.toggleMute('bgm')"
+              @click="gameContext.toggleMute('bgm')"
               :class="setting.isBgmMute ? 'bg-red-400' : 'bg-[#222]'"
               class="w-6 h-6 grid place-items-center rounded-lg"
             >
@@ -1159,8 +1159,8 @@ watch(
               <input
                 @mouseover="cursor.hover()"
                 @mouseleave="cursor.unHover()" 
-                v-model="gameState.setting.sfxVolume" 
-                :disabled="gameState.setting.isSfxMute"
+                v-model="gameContext.setting.sfxVolume" 
+                :disabled="gameContext.setting.isSfxMute"
                 type="range"
                 class="range range-sm range-primary disabled:opacity-70 disabled:cursor-not-allowed"
                 min="0"
@@ -1171,7 +1171,7 @@ watch(
             <button
               @mouseover="cursor.hover()"
               @mouseleave="cursor.unHover()"
-              @click="gameState.toggleMute('sfx')"
+              @click="gameContext.toggleMute('sfx')"
               :class="setting.isSfxMute ? 'bg-red-400' : 'bg-[#222]'"
               class="w-6 h-6 grid place-items-center rounded-lg"
             >
@@ -1195,7 +1195,7 @@ watch(
               class="flex gap-1 items-center"
             >
               <input
-                v-model="gameState.setting.quality"
+                v-model="gameContext.setting.quality"
                 type="radio"
                 name="quality"
                 value="low"
@@ -1209,7 +1209,7 @@ watch(
               class="flex gap-1 items-center"
             >
               <input
-                v-model="gameState.setting.quality"
+                v-model="gameContext.setting.quality"
                 type="radio"
                 name="quality"
                 value="medium"
@@ -1223,7 +1223,7 @@ watch(
               class="flex gap-1 items-center"
             >
               <input
-                v-model="gameState.setting.quality"
+                v-model="gameContext.setting.quality"
                 type="radio"
                 name="quality"
                 value="high"
@@ -1237,7 +1237,7 @@ watch(
           <button
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
-            @click="gameState.setSettingOpenState(false)"
+            @click="gameContext.setSettingOpenState(false)"
             class="btn btn-sm btn-circle bg-gray-800 hover:bg-gray-700 text-white border-0">
             <div>X</div>
           </button>
@@ -1249,7 +1249,7 @@ watch(
     <!-- * manual section begin -->
     <section
       v-if="router.id === 100"
-      :class="gameState.isManualOpen ? 'opacity-100 translate-y-[-100%]' : 'opacity-0 translate-y-[0%]'"
+      :class="gameContext.isManualOpen ? 'opacity-100 translate-y-[-100%]' : 'opacity-0 translate-y-[0%]'"
       class="flex justify-center z-40 w-full h-screen absolute transition-all duration-1000 backdrop-blur-sm overflow-y-auto"
     >
       <div class="relative h-screen bg-slate-900 w-11/12 md:w-10/12 lg:w-9/12 overflow-y-auto scroll-smooth p-[1rem] sm:p-[3.5rem] rounded-lg">
@@ -1258,7 +1258,7 @@ watch(
             <button 
               @mouseover="cursor.hover()"
               @mouseleave="cursor.unHover()"
-              @click="gameState.setManualOpenState(false)" 
+              @click="gameContext.setManualOpenState(false)" 
               class="btn-mythmatch-circle bg-slate-400 text-slate-800 grid place-items-center"
               >
                 <div v-html="XIcon"></div>
@@ -1348,7 +1348,7 @@ watch(
         <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
           <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
             <img
-              :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+              :src="`/cards/${gameContext.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -1361,7 +1361,7 @@ watch(
               {{ Cards[loadingCardId].name }}
             </div>
             <img
-              :src="Cards[loadingCardId].arts"
+              :src="`/cards/${gameContext.setting.quality}/${Cards[loadingCardId].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[loadingCardId].name"
               class="rounded-lg w-10/12"
             />

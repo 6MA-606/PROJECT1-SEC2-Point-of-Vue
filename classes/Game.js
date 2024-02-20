@@ -24,7 +24,7 @@ export default class Game {
         }
         this.isPaused = false
         this.level = 0
-        this.scoreMutiplier = 1
+        this.scoreMulltiplier = 1
         this.time = DEFAULT_TIME
         this.timerInterval = null
         this.isTimerRunning = false
