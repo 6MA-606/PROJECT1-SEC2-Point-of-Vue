@@ -54,6 +54,10 @@ const cursor = reactive(new Cursor())
 const soundController = new SoundController()
 
 const gameState = reactive(new Game())
+if (!gameState.loadSetting()) gameState.saveSetting()
+
+
+
 const { board, players, setting } = toRefs(gameState)
 const { p1, p2 } = players.value
 
@@ -107,9 +111,9 @@ function startSinglePlayerMode() {
 
 const singlePlayerCardClick = (card) => {
   console.log('singlePlayerCardClick')
-  if (!gameState.isPaused && gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
+  if (!gameState.isPaused && gameState.isPlaying && !card.isRevealed && p1.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
-    card.isFlipped = true
+    card.reveal()
     p1.addCard(card)
   } else return
   
@@ -118,21 +122,22 @@ const singlePlayerCardClick = (card) => {
     if (p1.isPaired()) {
       soundController.playSFX('/sounds/pointGain.mp3')
       p1.addPairCount()
-      p1.addScores(gameState.level, setting.value.volume)
+      p1.addScores(gameState.level * gameState.scoreMutiplier++)
       p1.clearCards()
       scoreboard.updatePlayerScore(p1)
       if (gameState.level < 11) gameState.addTime(5)
     } else {
+      gameState.scoreMutiplier = 1
       gameState.pause()
       setTimeout(() => {
-        p1.setFlipSelectedCard(false)
+        p1.concealAllSelectedCard()
         p1.clearCards()
         gameState.resume()
       }, 1000)
     }
   }
 
-  if (board.value.isAllCardFlipped()) {
+  if (board.value.isAllCardRevealed()) {
     gameState.nextLevel()
   }
 }
@@ -147,9 +152,9 @@ function startMultiPlayerMode() {
 
 const multiplayerCardsClick = (card) => {
   const currentPlayer = players.value[`p${gameState.playerTurn}`]
-  if (!gameState.isPaused && !card.isFlipped && currentPlayer.selectedCards.length < 2) {
+  if (!gameState.isPaused && !card.isRevealed && currentPlayer.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
-    card.isFlipped = true
+    card.reveal()
     currentPlayer.addCard(card)
   } else return
 
@@ -160,13 +165,13 @@ const multiplayerCardsClick = (card) => {
       soundController.playSFX('/sounds/pointGain.mp3')
     } else {
       setTimeout(() => {
-        currentPlayer.setFlipSelectedCard(false)
+        currentPlayer.concealAllSelectedCard()
         currentPlayer.clearCards()
         gameState.switchTurn()
       }, 1000)
     }
   }
-  if(board.value.isAllCardFlipped()){
+  if(board.value.isAllCardRevealed()){
     if(p1.scores !== p2.scores){
       if(p1.scores > p2.scores){
         gameState.winner = 1
@@ -176,7 +181,7 @@ const multiplayerCardsClick = (card) => {
     } else {
       gameState.pause()
       setTimeout(() => {
-        board.value.setFlipAllCards(false)
+        board.value.concealAllSelectedCard()
         setTimeout(() => {
           board.value.clearCards()
           board.value.getPairCard(12)
@@ -200,10 +205,12 @@ watch(
       case 200:
         console.log('single player mode start')
         startSinglePlayerMode()
+        
         break
       case 201:
         console.log('multiplayer mode start')
         startMultiPlayerMode()
+        
         break
     }
   },
@@ -251,6 +258,7 @@ watch(
 watch(
   () => gameState.bgm,
   (newBgm) => {
+    
     if (newBgm === '') {
       soundController.clearBGM()
       return
@@ -295,6 +303,13 @@ watch(
   },
   {immediate:true}
 )
+
+watch(
+  () => gameState.setting,
+  () => { gameState.saveSetting() },
+  { deep: true }
+)
+
 </script>
 
 <template>
@@ -339,7 +354,7 @@ watch(
               {{ Cards[0].name }}
             </div>
             <img
-              :src="Cards[0].arts"
+              :src="`/cards/${gameState.setting.quality}/${Cards[0].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[0].name"
               class="rounded-lg w-10/12"
             />
@@ -349,7 +364,7 @@ watch(
           </div>
           <div class="bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden">
             <img
-              src="/cards/backcard.webp"
+              :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -357,7 +372,7 @@ watch(
         </div>
         <div>
           <img
-            src="./assets/MythMatch_logo.svg"
+            :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
             alt="MythMatch_logo"
             class="w-[22rem] lg:w-[30rem] filter drop-shadow-glow animate-[pulse_2.5s_infinite_6000ms]"
           />
@@ -365,7 +380,7 @@ watch(
         <div class="hidden sm:block rotate-12 text-[0.5rem] sm:text-[1rem]">
           <div class="absolute bg-black w-[4em] h-[5.6em] lg:w-[5em] lg:h-[7em] flex justify-center items-center rounded-lg border-2 border-mythmatch-100 overflow-hidden origin-bottom rotate-45 z-10">
             <img
-              src="/cards/backcard.webp"
+              :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
               alt="backcard"
               class="w-full h-full"
             />
@@ -378,7 +393,7 @@ watch(
               {{ Cards[1].name }}
             </div>
             <img
-              :src="Cards[1].arts"
+              :src="`/cards/${gameState.setting.quality}/${Cards[1].arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
               :alt="Cards[1].name"
               class="rounded-lg w-10/12"
             />
@@ -396,15 +411,15 @@ watch(
           :key="index"
           :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
           class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
-          @click="card.isFlipped = !card.isFlipped; soundController.playSFX('/sounds/flipcard.mp3')"
+          @click="card.isRevealed = !card.isRevealed; soundController.playSFX('/sounds/flipcard.mp3')"
         >
           <div
-            :class="card.isFlipped ? 'flip' : ''"
+            :class="card.isRevealed ? 'flip' : ''"
             class="transition-transform w-full h-full duration-500 transform-style-3d relative"
           >
             <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
               <img
-                :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                 alt="backcard"
                 class="w-full h-full"
               />
@@ -416,7 +431,7 @@ watch(
               <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
-              <img :src="card.arts" :alt="card.name" class="rounded-lg w-10/12" />
+              <img :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`" :alt="card.name" class="rounded-lg w-10/12" />
               <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">
                 {{ card.name }}
               </div>
@@ -618,13 +633,18 @@ watch(
             <div class="text-center text-[0.875em] text-white opacity-50">{{ mode.description }}</div>
           </div>
           <div v-show="gameState.mode === index + 1" class="flex flex-col justify-center h-[40%] w-full items-center gap-3 absolute bottom-0 bg-mythpurple-800 rounded-lg">
-            <input
-              v-if="gameState.mode === index + 1 && gameState.mode === 1"
-              v-model="p1.name"
-              type="text"
-              placeholder="Your name"
-              class="input-mythmatch w-10/12"
-            />
+            <div
+              v-if="gameState.mode === index + 1 && gameState.mode === 1" 
+              class="flex flex-col items-center gap-2"
+            >
+              <div>Enter your name</div>
+              <input
+                v-model="p1.name"
+                type="text"
+                placeholder="Your name"
+                class="input-mythmatch w-10/12"
+              />
+            </div>
             <button
               type="button"
               @click="routeWithTransition(mode.routerId, 2000, false)"
@@ -642,7 +662,7 @@ watch(
     <!-- * single player mode section begin -->
     <section
       v-if="router.id === 200"
-      :style="`background-image: url(/bg/bg${gameState.level >= 11 ? '2' : ''}.svg)`"
+      :style="`background-image: url(/bg/bg${gameState.level >= 11 ? '2' : ''}.svg); background-size: cover; background-position: center; background-repeat: no-repeat;`"
       class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
     >
       <!-- mobile setting section (top right) -->
@@ -657,7 +677,7 @@ watch(
 
       <!-- mobile horizontal logo section (left) -->
       <div class="flex y-xs:hidden w-[20%] flex-col items-center absolute left-0 top-5">
-        <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-32" />
+        <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-32" />
       </div>
 
       <!-- mobile horizontal score section (left) -->
@@ -670,6 +690,7 @@ watch(
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
             <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
+            <div v-show="gameState.scoreMutiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameState.scoreMutiplier }}</div>
           </div>
         </div>
       </div>
@@ -688,10 +709,10 @@ watch(
       </div>
 
       <!-- mobile vertical score section -->
-      <div class="hidden y-xs:flex y-xs:lg:hidden w-full mb-4 flex-col items-center">
+      <div class="hidden y-xs:flex y-xs:xs:hidden w-full mb-4 flex-col items-center">
         <div class="w-full flex flex-col">
           <div class="my-5 flex justify-evenly w-full">
-            <img src="./assets/MythMatch_logo.svg" alt="logo" class="w-40" />
+            <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-40" />
           </div>
           <div class="flex justify-evenly items-center">
             <div class="flex flex-col items-center">
@@ -699,6 +720,7 @@ watch(
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameState.level }}</div>
             </div>
             <div class="flex flex-col items-center">
+              <div v-show="gameState.scoreMutiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
             </div>
@@ -725,16 +747,16 @@ watch(
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
             :key="index"
-            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[7.6rem] xl:h-[10.64rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
             @click="singlePlayerCardClick(card)"
           >
             <div
-              :class="card.isFlipped ? 'flip' : ''"
+              :class="card.isRevealed ? 'flip' : ''"
               class="transition-transform w-full h-full duration-500 transform-style-3d relative"
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
                 <img
-                  :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
                   class="w-full lg:h-full"
                 />
@@ -747,7 +769,7 @@ watch(
                   {{ card.name }}
                 </div>
                 <img
-                  :src="card.arts"
+                  :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   :alt="card.name"
                   class="rounded-lg w-10/12"
                 />
@@ -768,7 +790,7 @@ watch(
           <div class="absolute inset-4 bg-[#0003] rounded-lg border-2 border-mythmatch-100 backdrop-blur-md flex flex-col justify-around items-center">
             <div class="w-full flex flex-col items-center gap-6">
               <div class="w-10/12">
-                <img src="./assets/MythMatch_logo.svg" alt="logo" />
+                <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" />
               </div>
               <div class="w-full flex justify-evenly">
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
@@ -776,6 +798,7 @@ watch(
                   <div class="text-5xl font-bold font-mythmatch">{{ gameState.level }}</div>
                 </div>
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
+                  <div v-show="gameState.scoreMutiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameState.scoreMutiplier }}</div>
                   <div class="text-3xl font-mythmatch">Your Score</div>
                   <div class="text-5xl font-bold font-mythmatch">{{ p1.scores }}</div>
                 </div>
@@ -849,7 +872,7 @@ watch(
       :class="gameState.isQuitOpen ? 'translate-y-[-100%] opacity-100' : 'translate-y-[0%] opacity-0'"
       class="absolute transition-opacity z-40 w-full h-screen bg-[#000c] backdrop-blur-sm flex flex-col gap-16 justify-center items-center text-center"
     >
-      <div class="text-3xl xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
+      <div class="text-6xl y-xs:text-5xl y-xs:xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
       <div class="flex flex-col gap-3">
         <div class="text-xl flex items-center gap-2 text-white">
           <div>If you want restart, you can click</div>
@@ -958,16 +981,16 @@ watch(
       )"
     >
       <!-- {{ gameState.playerTurn }} -->
-      <div class="hidden xs:flex flex-col lg:flex items-center justify-center text-mythmatch-100">
+      <div class="hidden sm:flex flex-col lg:flex items-center justify-center text-mythmatch-100">
         <div class="text-[1rem] y-xs:lg:text-[2rem] font-mythmatch ">Player 1 score</div>
         <div class="text-[4rem] y-xs:lg:text-[8rem] font-mythmatch font-bold drop-shadow-glow">{{ p1.scores }}</div>
       </div>
       <div class="lg:w-fit grid place-items-center">
-        <div class="xs:hidden w-full mb-4 flex flex-col items-center">
+        <div class="sm:hidden w-full mb-4 flex flex-col items-center">
           <div class="w-full flex flex-col">
             <div class="my-5 flex justify-evenly w-full">
               <img
-                src="./assets/MythMatch_logo.svg"
+                :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
                 alt="logo"
                 class="w-40"
               />
@@ -984,9 +1007,9 @@ watch(
             </div>
           </div>
         </div>
-        <div class="hidden xs:block w-24 absolute top-3 left-5">
+        <div class="hidden sm:block w-24 absolute top-3 left-5">
           <img
-            src="./assets/MythMatch_logo.svg"
+            :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`"
             alt="logo"
             class="w-40" 
           />    
@@ -1007,22 +1030,22 @@ watch(
             <div v-html="DoorIcon"></div>
           </button>
         </div>
-        <div class="grid-cols-4 xs:grid-cols-6 w-fit grid grid-flow-row gap-3 " >
+        <div class="grid-cols-4 sm:grid-cols-6 w-fit grid grid-flow-row gap-3 " >
           <div
             v-for="(card, index) of board.cards"
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
             :key="index"
-            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[8rem] xl:h-[11.2rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
+            class="cursor-pointer w-[5rem] h-[5rem] lg:w-[7rem] lg:h-[9.8rem] xl:w-[7.6rem] xl:h-[10.64rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
             @click="multiplayerCardsClick(card)"
           >
             <div
-              :class="card.isFlipped ? 'flip' : ''"
+              :class="card.isRevealed ? 'flip' : ''"
               class="transition-transform w-full h-full duration-500 transform-style-3d relative"
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
                 <img
-                  :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+                  :src="`/cards/${gameState.setting.quality}/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   alt="backcard"
                   class="w-full lg:h-full"
                 />
@@ -1035,7 +1058,7 @@ watch(
                   {{ card.name }}
                 </div>
                 <img
-                  :src="card.arts"
+                  :src="`/cards/${gameState.setting.quality}/${card.arts}.${setting.quality === 'high' ? 'png' : 'webp'}`"
                   :alt="card.name"
                   class="rounded-lg w-10/12"
                 />
@@ -1049,7 +1072,7 @@ watch(
           </div>
         </div>
       </div>  
-      <div class="hidden xs:flex text-mythmatch-100  flex-col items-center justify-center">
+      <div class="hidden sm:flex text-mythmatch-100  flex-col items-center justify-center">
         <div class="text-[1rem] y-xs:lg:text-[2rem] font-mythmatch ">Player 2 score</div>
         <div class="text-[4rem] y-xs:lg:text-[8rem] font-mythmatch font-bold drop-shadow-glow">{{ p2.scores }}</div>
       </div>
@@ -1179,6 +1202,20 @@ watch(
                 class="radio radio-xs radio-primary"
               />
               <span class="text-white">low</span>
+            </label>
+            <label
+              @mouseover="cursor.hover()"
+              @mouseleave="cursor.unHover()"
+              class="flex gap-1 items-center"
+            >
+              <input
+                v-model="gameState.setting.quality"
+                type="radio"
+                name="quality"
+                value="medium"
+                class="radio radio-xs radio-primary"
+              >
+              <span class="text-white">Medium</span>
             </label>
             <label
               @mouseover="cursor.hover()"

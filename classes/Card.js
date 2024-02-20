@@ -25,15 +25,15 @@ export default class Card{
         this.name = name
         this.arts = arts
         this.color = color
-        this.isFlipped = false
+        this.isRevealed = false
     }
 
-    /**
-     * Set flip state of the card
-     * @param {Boolean} flipState - Flip state of the card
-     */
-    setFlip(flipState){
-        this.isFlipped = flipState
+    reveal(){
+        this.isRevealed = true
+    }
+    
+    conceal(){
+        this.isRevealed = false
     }
 
 }

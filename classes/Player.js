@@ -39,7 +39,7 @@ export default class Player {
      * @param {Number} scores 
      * @returns {Number} Return the total scores of the player
      */
-    addScores(scores, sfxVolume = 100) {
+    addScores(scores) {
         this.scores += scores
         return this.scores
     }
@@ -87,9 +87,15 @@ export default class Player {
         return this.selectedCards[0].id === this.selectedCards[1].id
     }
 
-    setFlipSelectedCard(flipState) {
+    revealAllSelectedCard(){
         this.selectedCards.forEach((card) => {
-            card.isFlipped = flipState
+            card.reveal()
+        })
+    }
+
+    concealAllSelectedCard(){
+        this.selectedCards.forEach((card) => {
+            card.conceal()
         })
     }
 }

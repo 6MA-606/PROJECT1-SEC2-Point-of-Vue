@@ -68,11 +68,16 @@ export default class Board {
     }
   }
 
-  isAllCardFlipped() {
-    return this.cards.every((card) => card.isFlipped)
+  isAllCardRevealed() {
+    return this.cards.every((card) => card.isRevealed)
   }
 
-  setFlipAllCards(flipState) {
-    this.cards.forEach((card) => card.setFlip(flipState))
+  revealAllCard(){
+    this.cards.forEach((card) => card.reveal())
   }
+
+  concealAllCard(){
+    this.cards.forEach((card) => card.conceal())
+  }
+
 } 

@@ -20,10 +20,11 @@ export default class Game {
             sfxVolume: DEFAULT_SFX_VOLUME,
             isBgmMute: false,
             isSfxMute: false,
-            quality: 'low',
+            quality: 'medium',
         }
         this.isPaused = false
         this.level = 0
+        this.scoreMutiplier = 1
         this.time = DEFAULT_TIME
         this.timerInterval = null
         this.isTimerRunning = false
@@ -61,6 +62,17 @@ export default class Game {
 
     setSettingOpenState(openState){
         this.isSettingOpen = openState
+    }
+    saveSetting(){
+        localStorage.setItem('setting', JSON.stringify(this.setting))
+    }
+    loadSetting(){
+        const loadedSetting = JSON.parse(localStorage.getItem('setting'))
+        if (loadedSetting) {
+            this.setting = loadedSetting
+            return true
+        }
+        return false
     }
 
     setQuitOpenState(openState){
@@ -126,7 +138,7 @@ export default class Game {
 
     nextLevel() {
         setTimeout(() => {
-            this.board.setFlipAllCards(false)
+            this.board.concealAllCard()
         }, 500)
         setTimeout(() => {
             this.level++
@@ -135,4 +147,5 @@ export default class Game {
             this.board.shuffle()
         }, 1000)
     }
+
 }
