@@ -133,7 +133,7 @@ export default class Game {
 
     nextLevel() {
         setTimeout(() => {
-            this.board.setFlipAllCards(false)
+            this.board.concealAllCard()
         }, 500)
         setTimeout(() => {
             this.level++

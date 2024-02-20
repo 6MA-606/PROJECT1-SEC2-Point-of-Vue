@@ -110,9 +110,9 @@ function startSinglePlayerMode() {
 
 const singlePlayerCardClick = (card) => {
   console.log('singlePlayerCardClick')
-  if (!gameState.isPaused && gameState.isPlaying && !card.isFlipped && p1.selectedCards.length < 2) {
+  if (!gameState.isPaused && gameState.isPlaying && !card.isRevealed && p1.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
-    card.isFlipped = true
+    card.reveal()
     p1.addCard(card)
   } else return
   
@@ -129,14 +129,14 @@ const singlePlayerCardClick = (card) => {
       gameState.scoreMutiplier = 1
       gameState.pause()
       setTimeout(() => {
-        p1.setFlipSelectedCard(false)
+        p1.concealAllSelectedCard()
         p1.clearCards()
         gameState.resume()
       }, 1000)
     }
   }
 
-  if (board.value.isAllCardFlipped()) {
+  if (board.value.isAllCardRevealed()) {
     gameState.nextLevel()
   }
 }
@@ -151,9 +151,9 @@ function startMultiPlayerMode() {
 
 const multiplayerCardsClick = (card) => {
   const currentPlayer = players.value[`p${gameState.playerTurn}`]
-  if (!gameState.isPaused && !card.isFlipped && currentPlayer.selectedCards.length < 2) {
+  if (!gameState.isPaused && !card.isRevealed && currentPlayer.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
-    card.isFlipped = true
+    card.reveal()
     currentPlayer.addCard(card)
   } else return
 
@@ -164,13 +164,13 @@ const multiplayerCardsClick = (card) => {
       soundController.playSFX('/sounds/pointGain.mp3')
     } else {
       setTimeout(() => {
-        currentPlayer.setFlipSelectedCard(false)
+        currentPlayer.concealAllSelectedCard()
         currentPlayer.clearCards()
         gameState.switchTurn()
       }, 1000)
     }
   }
-  if(board.value.isAllCardFlipped()){
+  if(board.value.isAllCardRevealed()){
     if(p1.scores !== p2.scores){
       if(p1.scores > p2.scores){
         gameState.winner = 1
@@ -180,7 +180,7 @@ const multiplayerCardsClick = (card) => {
     } else {
       gameState.pause()
       setTimeout(() => {
-        board.value.setFlipAllCards(false)
+        board.value.concealAllSelectedCard()
         setTimeout(() => {
           board.value.clearCards()
           board.value.getPairCard(12)
@@ -445,10 +445,10 @@ watch(
           :key="index"
           :class="index > 0 ? 'hidden sm:block w-[8rem] h-[11.2rem]' : 'w-[10rem] h-[14rem] sm:w-[8rem] sm:h-[11.2rem]'"
           class="lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95"
-          @click="card.isFlipped = !card.isFlipped; soundController.playSFX('/sounds/flipcard.mp3')"
+          @click="card.isRevealed = !card.isRevealed; soundController.playSFX('/sounds/flipcard.mp3')"
         >
           <div
-            :class="card.isFlipped ? 'flip' : ''"
+            :class="card.isRevealed ? 'flip' : ''"
             class="transition-transform w-full h-full duration-500 transform-style-3d relative"
           >
             <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
@@ -777,7 +777,7 @@ watch(
             @click="singlePlayerCardClick(card)"
           >
             <div
-              :class="card.isFlipped ? 'flip' : ''"
+              :class="card.isRevealed ? 'flip' : ''"
               class="transition-transform w-full h-full duration-500 transform-style-3d relative"
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
@@ -1066,7 +1066,7 @@ watch(
             @click="multiplayerCardsClick(card)"
           >
             <div
-              :class="card.isFlipped ? 'flip' : ''"
+              :class="card.isRevealed ? 'flip' : ''"
               class="transition-transform w-full h-full duration-500 transform-style-3d relative"
             >
               <div class="absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-2 lg:border-4 border-mythmatch-100">
