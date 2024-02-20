@@ -122,12 +122,12 @@ const singlePlayerCardClick = (card) => {
     if (p1.isPaired()) {
       soundController.playSFX('/sounds/pointGain.mp3')
       p1.addPairCount()
-      p1.addScores(gameContext.level * gameContext.scoreMulltiplier++)
+      p1.addScores(gameContext.level * gameContext.scoreMultiplier++)
       p1.clearCards()
       scoreboard.updatePlayerScore(p1)
       if (gameContext.level < 11) gameContext.addTime(5)
     } else {
-      gameContext.scoreMulltiplier = 1
+      gameContext.scoreMultiplier = 1
       gameContext.pause()
       setTimeout(() => {
         p1.concealAllSelectedCard()
@@ -181,10 +181,11 @@ const multiplayerCardsClick = (card) => {
     } else {
       gameContext.pause()
       setTimeout(() => {
-        board.value.concealAllSelectedCard()
+        board.value.concealAllCard()
         setTimeout(() => {
           board.value.clearCards()
           board.value.getPairCard(12)
+          board.value.shuffle()
           gameContext.resume()
         }, 1000)
       }, 500)
@@ -205,12 +206,10 @@ watch(
       case 200:
         console.log('single player mode start')
         startSinglePlayerMode()
-        
         break
       case 201:
         console.log('multiplayer mode start')
         startMultiPlayerMode()
-        
         break
     }
   },
@@ -690,7 +689,7 @@ watch(
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
             <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
-            <div v-show="gameContext.scoreMulltiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
+            <div v-show="gameContext.scoreMultiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameContext.scoreMultiplier }}</div>
           </div>
         </div>
       </div>
@@ -720,7 +719,7 @@ watch(
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameContext.level }}</div>
             </div>
             <div class="flex flex-col items-center">
-              <div v-show="gameContext.scoreMulltiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
+              <div v-show="gameContext.scoreMultiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameContext.scoreMultiplier }}</div>
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
             </div>
@@ -798,7 +797,7 @@ watch(
                   <div class="text-5xl font-bold font-mythmatch">{{ gameContext.level }}</div>
                 </div>
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
-                  <div v-show="gameContext.scoreMulltiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
+                  <div v-show="gameContext.scoreMultiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameContext.scoreMultiplier }}</div>
                   <div class="text-3xl font-mythmatch">Your Score</div>
                   <div class="text-5xl font-bold font-mythmatch">{{ p1.scores }}</div>
                 </div>
