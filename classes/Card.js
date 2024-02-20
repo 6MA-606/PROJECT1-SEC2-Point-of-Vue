@@ -25,15 +25,15 @@ export default class Card{
         this.name = name
         this.arts = arts
         this.color = color
-        this.isFlipped = false
+        this.isRevealed = false
     }
 
-    flip(){
-        this.isFlipped = true
+    reveal(){
+        this.isRevealed = true
     }
     
-    fold(){
-        this.isFlipped = false
+    conceal(){
+        this.isRevealed = false
     }
 
 }
