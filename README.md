@@ -6,7 +6,7 @@
 <!-- <img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner"> -->
 <div align="center">
 <img src = "./ReadMeImg/placeholder-final.png" style = "border-radius:25px">
-<p align = "left">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.</p>
+
 
 </div>
 
@@ -16,48 +16,46 @@
 
 
 </div>
-
-[Figma](https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1)
+<a href="https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1"><img height="30px" src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" /></a>
 <div>
-<img src = "/ReadMeImg/screen-short-3.png">
-<img src = "/ReadMeImg/screen-short-1.png">
-<img src = "/ReadMeImg/screen-short-2.png">
-
-
-
-
+<img src="/ReadMeImg/screen-short-3.png">
+<img src="/ReadMeImg/screen-short-1.png">
+<img src="/ReadMeImg/screen-short-2.png">
 </div>
-<div>
 
 <h1 align = "center">Team Member</h1>
-<h4 align >
 
-65130500080 SIRIWAN HOSAREE
-
-</h4>
-
-<h4 align >
-
-65130500084 SITTHA MANITTAYAKUL
-
-</h4>
-<h4 align >
-
-65130500089 AKKARAWIT SITTIPRAKAN
-
-
-</h4>
-<h4 align >
-
-65130500108 BUNYAKORN PORNSOMBATPAIBOOL
-
-
-</h4>
-<h4 align >
-
-65130500114 METHUS DUMRONGMONGKHOLKUL
-
-</h4>
+<div align="center">
+<table>
+<thead>
+<tr>
+<th width="20%">Student ID</th>
+<th width="50%">Member name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>65130500080</td>
+<td>SIRIWAN HOSAREE</td>
+</tr>
+<tr>
+<td>65130500084</td>
+<td>SITTHA MANITTAYAKUL</td>
+</tr>
+<tr>
+<td>65130500089</td>
+<td>AKKARAWIT SITTIPRAKAN</td>
+</tr>
+<tr>
+<td>65130500108</td>
+<td>BUNYAKORN PORNSOMBATPAIBOOL</td>
+</tr>
+<tr>
+<td>65130500114</td>
+<td>METHUS DUMRONGMONGKHOLKUL</td>
+</tr>
+</tbody>
+</table>
 
 </div>
 <img src = "./ReadMeImg/group-final.png" style ="border-radius:16px">
