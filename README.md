@@ -56,7 +56,7 @@ Figma
 </h4>
 
 </div>
-<img src = "./ReadMeImg/group-placeholder.png" style ="border-radius:16px">
+<img src = "./ReadMeImg/group-final.png" style ="border-radius:16px">
 
 
 ### Install package
