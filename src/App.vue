@@ -688,7 +688,7 @@ watch(
     <!-- * single player mode section begin -->
     <section
       v-if="router.id === 200"
-      :style="`background-image: url(/bg/bg${gameState.level >= 11 ? '2' : ''}.svg)`"
+      :style="`background-image: url(/bg/bg${gameState.level >= 11 ? '2' : ''}.svg); background-size: cover; background-position: center; background-repeat: no-repeat;`"
       class="h-screen flex flex-col lg:flex-row lg:justify-center items-center"
     >
       <!-- mobile setting section (top right) -->
@@ -735,7 +735,7 @@ watch(
       </div>
 
       <!-- mobile vertical score section -->
-      <div class=" y-xs:flex y-xs:lg:hidden w-full mb-4 flex-col items-center">
+      <div class="hidden y-xs:flex y-xs:xs:hidden w-full mb-4 flex-col items-center">
         <div class="w-full flex flex-col">
           <div class="my-5 flex justify-evenly w-full">
             <img :src="`/logo/${gameState.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-40" />
