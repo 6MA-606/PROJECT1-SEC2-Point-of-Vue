@@ -1,5 +1,5 @@
 <script setup>
-import { computed, onMounted, reactive, ref, toRef, toRefs, watch } from 'vue'
+import { computed, reactive, ref, toRefs, watch } from 'vue'
 import GitHubIcon from './assets/github.svg?raw'
 import BookIcon from './assets/book.svg?raw'
 import DoorIcon from'./assets/door-open.svg?raw'
@@ -7,6 +7,7 @@ import SettingIcon from './assets/gear.svg?raw'
 import ArrowLeftIcon from './assets/arrow-left.svg?raw'
 import InfoIcon from './assets/info-circle.svg?raw'
 import BigArrow from './assets/big-arrow.svg?raw'
+import XIcon from './assets/x.svg?raw'
 import { gotoUrl } from './utils/helperFunction.js'
 import Cards from '../data/cards.json'
 import Game from '../classes/Game'
@@ -307,7 +308,7 @@ watch(
     <!-- * mouse cursor -->
     <div
       :style="`transform: translate(${cursor.x}, ${cursor.y})`"
-      class="hidden lg:block absolute pointer-events-none z-[100]"
+      class="hidden lg:block absolute pointer-events-none z-[100] filter drop-shadow-glow"
     >
       <div class="absolute translate-x-[-50%] translate-y-[-250%]"></div>
       <div
@@ -321,41 +322,6 @@ watch(
       >
       </div>
     </div>
-
-    <!-- * loading screen section begin -->
-    <section
-      :class="isLoading ? 'translate-y-[0%]' : 'translate-y-[100%]'"
-      class="absolute grid place-items-center transition-transform duration-1000 w-full h-screen bg-purple-950 z-50"
-    >
-      <div class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95">
-        <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
-          <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
-            <img
-              :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
-              alt="backcard"
-              class="w-full h-full"
-            />
-          </div>
-          <div
-            :style="`background-image: linear-gradient(135deg, ${Cards[loadingCardId].color.primary} 0% 10%, #303 10% 90% , ${Cards[loadingCardId].color.secondary} 90% 100%)`"
-            class="front-load-card absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
-          >
-            <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
-              {{ Cards[loadingCardId].name }}
-            </div>
-            <img
-              :src="Cards[loadingCardId].arts"
-              :alt="Cards[loadingCardId].name"
-              class="rounded-lg w-10/12"
-            />
-            <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">
-              {{ Cards[loadingCardId].name }}
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-    <!-- * loading screen section end -->
 
     <!-- * landing page section begin -->
     <section
@@ -485,21 +451,29 @@ watch(
         class="absolute flex xs:flex-col gap-2 right-4 bottom-4"
       >
         <div
-          class="tooltip hover:tooltip-open tooltip-left tooltip-info"
+          class="lg:tooltip hover:tooltip-open lg:tooltip-left tooltip-info"
           data-tip="How to play?"
         >
-          <button @click="gameState.setManualOpenState(true)" type="button" class="btn btn-circle btn-neutral btn-lg">
+          <button
+            @mouseover="cursor.hover()"
+            @mouseleave="cursor.unHover()"
+            @click="gameState.setManualOpenState(true)"
+            type="button"
+            class="btn btn-circle bg-mythpurple-600 border-2 border-mythmatch-100 hover:border-mythmatch-100 btn-lg hover:bg-mythpurple-700 text-mythmatch-100"
+          >
             <div v-html="BookIcon" class="scale-[1.75]"></div>
           </button>
         </div>
         <div
-          class="tooltip hover:tooltip-open tooltip-left tooltip-info"
+          class="lg:tooltip hover:tooltip-open lg:tooltip-left tooltip-info"
           data-tip="This project on GitHub"
         >
           <button
+            @mouseover="cursor.hover()"
+            @mouseleave="cursor.unHover()"
             @click="gotoUrl('https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/', true)"
             type="button"
-            class="btn btn-circle btn-neutral btn-lg"
+            class="btn btn-circle border-2 border-mythmatch-100 hover:border-mythmatch-100 btn-lg bg-gray-800 hover:bg-gray-600 text-mythmatch-100"
           >
             <div v-html="GitHubIcon" class="scale-[2]"></div>
           </button>
@@ -1234,44 +1208,134 @@ watch(
       </div>
     </section>
     <!-- * setting modal section end -->
-    <section v-show="gameState.isManualOpen" class="flex justify-center z-40 w-full h-screen bg-[#000c] absolute translate-y-[-100%]">
-      <div class="h-screen bg-white w-11/12 md:w-10/12 lg:w-9/12 overflow-y-auto p-[1rem] sm:p-[3.5rem] relative">
-        <button @click="gameState.setManualOpenState(false)" class="btn-mythmatch-circle bg-red-400 text-white absolute top-4 right-4">X</button>
-        <article class="prose prose-sm xs:prose-base max-w-none prose-invert">
-            <h1>Unleash Your Memory Magic: Mastering Memory Match!</h1>
-  <p>Ready to test your memory and challenge your friends? Dive into the thrilling world of Memory Match! This guide will equip you with the knowledge to conquer both single-player and versus modes, turning you into a memory maestro.</p>
 
-  <h2>Single Player Journey (Endless Mode)</h2>
-  <ol>
-    <li><b>Picture Perfect Grid:</b> The game starts with a grid of cards, all facing down, hiding various pictures.</li>
-    <li><b>Memory Mayhem:</b> Click on two cards to reveal their hidden images. Remember, it's a race against time!</li>
-    <li><b>Match Made in Memory Heaven:</b> If the two cards are identical, they stay face up, and you score points (current level x combo*) and bonus time (+5 seconds). Your memory bank increases, and the excitement builds!</li>
-    <li><b>Memory Mishap:</b> Not an identical pair? No worries! Flip them back down and try again. Keep your focus sharp!</li>
-    <li><b>Level Up!</b> Clear all pairs before time runs out, and you'll be whisked away to a new level, where your memory will be further challenged.</li>
-    <li><b>Gridlock Alert!</b> If the board fills up (12 pairs), the tension rises with a red background. While you won't get extra time for correct matches, keep scoring those points!</li>
-    <li><b>Time's Up!</b> When the clock strikes zero, the game ends, showcasing your score and ranking on the leaderboard. Did you become the memory champion?</li>
-  </ol>
-  <h2>Combo Power-Up!</h2>
-  <p>The combo system is your secret weapon for racking up points. Here's how it works:</p>
+    <!-- * manual section begin -->
+    <section
+      v-if="router.id === 100"
+      :class="gameState.isManualOpen ? 'opacity-100 translate-y-[-100%]' : 'opacity-0 translate-y-[0%]'"
+      class="flex justify-center z-40 w-full h-screen absolute transition-all duration-1000 backdrop-blur-sm overflow-y-auto"
+    >
+      <div class="relative h-screen bg-slate-900 w-11/12 md:w-10/12 lg:w-9/12 overflow-y-auto scroll-smooth p-[1rem] sm:p-[3.5rem] rounded-lg">
+        <div class="absolute right-[4rem] top-[2rem]">
+          <div class="flex justify-end fixed">
+            <button 
+              @mouseover="cursor.hover()"
+              @mouseleave="cursor.unHover()"
+              @click="gameState.setManualOpenState(false)" 
+              class="btn-mythmatch-circle bg-slate-400 text-slate-800 grid place-items-center"
+              >
+                <div v-html="XIcon"></div>
+              </button>
+          </div>
+        </div>
+        <article class="prose prose-sm xs:prose-base max-w-none">
+          <h1>Unleash Your Memory Magic: Mastering Memory Match!</h1>
+          <p>Ready to test your memory and challenge your friends? Dive into the thrilling world of Memory Match! This guide will equip you with the knowledge to conquer both single-player and versus modes, turning you into a memory maestro.</p>
 
-  <ul>
-    <li><b>Double the Joy:</b> With each correct match, your combo increases (Combo x2, x3, and so on). This multiplies your points, making your memory prowess truly shine!</li>
-    <li><b>Streak Saver:</b> Keep the correct matches coming, and your combo keeps climbing. But remember, a wrong match resets your combo, so stay focused!</li>
-  </ul>
-  <h2>Versus Mode: Face-Off Fun!</h2>
-  <p>Ready to challenge your friends? Versus mode is your battleground!</p>
+          <h3>Table of Contents</h3>
+          <ul>
+            <li>
+              <a
+                @mouseover="cursor.hover()"
+                @mouseleave="cursor.unHover()"
+                href="#endless"
+              >
+                Endless Mode
+              </a>
+            </li>
+            <ul>
+              <li>
+                <a
+                @mouseover="cursor.hover()"
+                @mouseleave="cursor.unHover()"
+                  href="#combo"
+                >
+                  Combo Power-Up!
+                </a>
+              </li>
+            </ul>
+            <li>
+              <a
+                @mouseover="cursor.hover()"
+                @mouseleave="cursor.unHover()"
+                href="#versus"
+              >
+                Versus Mode
+              </a>
+            </li>
+          </ul>
 
-  <ol>
-    <li><b>Randomized Rounds:</b> The game randomly picks who starts, indicated by the red side. Remember, the first one to strike wins the round!</li>
-    <li><b>Your Turn to Shine:</b> On your turn, reveal two cards. Match them correctly, and you earn a point and keep going until you miss.</li>
-    <li><b>Turnover Time:</b> Make a mistake, and your turn ends, passing the spotlight to your opponent.</li>
-    <li><b>Memory Marathon:</b> Keep playing until all cards are flipped. The player with the highest score wins! But wait, there's a twist...</li>
-    <li><b>Draw? No Problem!</b> If it's a tie, all cards flip back down, and the memory battle continues! The player with the most points after this second round is the ultimate memory champion.</li>
-  </ol>
-  So, are you ready to embark on this exciting memory adventure? With these tips and tricks, you'll be a Memory Match master in no time!
-          </article>
+          <hr />
+
+          <h2 id="endless">Endless Mode: A Memory Match Marathon! (Single player)</h2>
+          <ol>
+            <li><b>Picture Perfect Grid:</b> The game starts with a grid of cards, all facing down, hiding various pictures.</li>
+            <li><b>Memory Mayhem:</b> Click on two cards to reveal their hidden images. Remember, it's a race against time!</li>
+            <li><b>Match Made in Memory Heaven:</b> If the two cards are identical, they stay face up, and you score points (current level x combo*) and bonus time (+5 seconds). Your memory bank increases, and the excitement builds!</li>
+            <li><b>Memory Mishap:</b> Not an identical pair? No worries! Flip them back down and try again. Keep your focus sharp!</li>
+            <li><b>Level Up!</b> Clear all pairs before time runs out, and you'll be whisked away to a new level, where your memory will be further challenged.</li>
+            <li><b>Gridlock Alert!</b> If the board fills up (12 pairs), the tension rises with a red background. While you won't get extra time for correct matches, keep scoring those points!</li>
+            <li><b>Time's Up!</b> When the clock strikes zero, the game ends, showcasing your score and ranking on the leaderboard. Did you become the memory champion?</li>
+          </ol>
+
+          <h3 id="combo">Combo Power-Up!</h3>
+          <p>The combo system is your secret weapon for racking up points. Here's how it works:</p>
+
+          <ul>
+            <li><b>Double the Joy:</b> With each correct match, your combo increases (Combo x2, x3, and so on). This multiplies your points, making your memory prowess truly shine!</li>
+            <li><b>Streak Saver:</b> Keep the correct matches coming, and your combo keeps climbing. But remember, a wrong match resets your combo, so stay focused!</li>
+          </ul>
+
+          <h2 id="versus">Versus Mode: Face-Off Fun! (Multiplayer)</h2>
+          <p>Ready to challenge your friends? Versus mode is your battleground!</p>
+
+          <ol>
+            <li><b>Randomized Rounds:</b> The game randomly picks who starts, indicated by the red side. Remember, the first one to strike wins the round!</li>
+            <li><b>Your Turn to Shine:</b> On your turn, reveal two cards. Match them correctly, and you earn a point and keep going until you miss.</li>
+            <li><b>Turnover Time:</b> Make a mistake, and your turn ends, passing the spotlight to your opponent.</li>
+            <li><b>Memory Marathon:</b> Keep playing until all cards are flipped. The player with the highest score wins! But wait, there's a twist...</li>
+            <li><b>Draw? No Problem!</b> If it's a tie, all cards flip back down, and the memory battle continues! The player with the most points after this second round is the ultimate memory champion.</li>
+          </ol>
+          So, are you ready to embark on this exciting memory adventure? With these tips and tricks, you'll be a Memory Match master in no time!
+        </article>
       </div>
     </section>
+    <!-- * manual section end -->
+
+    <!-- * loading screen section begin -->
+    <section
+      :class="isLoading ? 'translate-y-[-100%]' : 'translate-y-[0%]'"
+      class="fixed grid place-items-center transition-transform duration-1000 w-full h-screen bg-purple-950 z-50"
+    >
+      <div class="absolute w-[8rem] h-[11.2rem] lg:w-[10rem] lg:h-[14rem] bg-transparent transition-all duration-500 perspective-1000 filter hover:drop-shadow-glow active:scale-95">
+        <div class="animate-con-flip transition-transform w-full h-full duration-500 transform-style-3d relative">
+          <div class="back-load-card absolute bg-black w-full h-full flex justify-center items-center rounded-lg overflow-hidden border-4 border-mythmatch-100">
+            <img
+              :src="`/cards/backcard.${setting.quality === 'high' ? 'png' : 'webp'}`"
+              alt="backcard"
+              class="w-full h-full"
+            />
+          </div>
+          <div
+            :style="`background-image: linear-gradient(135deg, ${Cards[loadingCardId].color.primary} 0% 10%, #303 10% 90% , ${Cards[loadingCardId].color.secondary} 90% 100%)`"
+            class="front-load-card absolute w-full h-full flex flex-col gap-1 justify-center items-center rounded-lg border-4 border-mythmatch-100"
+          >
+            <div class="font-bold font-mythmatch text-xl text-mythmatch-100">
+              {{ Cards[loadingCardId].name }}
+            </div>
+            <img
+              :src="Cards[loadingCardId].arts"
+              :alt="Cards[loadingCardId].name"
+              class="rounded-lg w-10/12"
+            />
+            <div class="rotate-180 font-bold font-mythmatch text-xl text-mythmatch-100">
+              {{ Cards[loadingCardId].name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+    <!-- * loading screen section end -->
   </main>
 </template>
 
