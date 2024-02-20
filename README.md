@@ -17,7 +17,11 @@ Figma
 </a>
 </div>
 <div>
-Preview screenshot
+<img src = "/ReadMeImg/screen-short-1.png">
+<img src = "/ReadMeImg/screen-short-1.png">
+
+
+
 </div>
 <div>
 
