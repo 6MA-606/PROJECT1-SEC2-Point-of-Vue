@@ -15,6 +15,9 @@ body {
     height: 100vh;
     /* background-image: linear-gradient(to bottom, #642375 0% 60%, #3c1846 70% 100%); */
     background-image: url(/bg/bg.svg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
 }
 
 @media (min-width: 1024px) {
