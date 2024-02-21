@@ -31,7 +31,6 @@
 <tr>
 <th width="20%">Student ID</th>
 <th width="50%">Member name</th>
-<th width="50%">Percentage Contribute</th>
 
 </tr>
 </thead>
@@ -92,6 +91,7 @@
 </ul>
 </td>
 <td>SITTHA MANITTAYAKUL</td>
+<td>100</td>
 </tr>
 <tr>
 <td>
@@ -109,6 +109,7 @@
 </ul>
 </td>
 <td>AKKARAWIT SITTIPRAKAN</td>
+  <td>100</td>
 </tr>
 <tr>
 <td>
@@ -119,6 +120,7 @@
 </ul>
 </td>
 <td>BUNYAKORN PORNSOMBATPAIBOOL</td>
+  <td>100</td>
 </tr>
 <tr>
 <td>
@@ -130,6 +132,7 @@
 </ul>
 </td>
 <td>METHUS DUMRONGMONGKHOLKUL</td>
+  <td>100</td>
 </tr>
 </tbody>
 </table>
