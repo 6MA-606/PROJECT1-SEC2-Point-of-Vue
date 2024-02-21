@@ -22,6 +22,7 @@ const router = reactive({
 })
 const scoreboard = reactive(new Scoreboard())
 const isLoading = ref(false)
+const pNameErrorMsg = ref('')
 
 scoreboard.load()
 
@@ -97,8 +98,23 @@ const handleRestartBtn = (startModeFunction) => {
   }, 2000)
 }
 
+const handlePlayBtn = (routerId) => {
+  if(routerId === 200){
+    const errMsg = p1.isNameInvalid()
+    if(errMsg.length > 0){
+      pNameErrorMsg.value = errMsg
+      return
+    } else{
+      routeWithTransition(routerId, 2000, false)
+    }
+  } else {
+    routeWithTransition(routerId, 2000, false)
+  }
+}
+
 function startSinglePlayerMode() {
-  if (p1.name === '') p1.name = 'Anonymous'
+  // if (p1.name === '') p1.name = 'Guest'
+
   gameContext.mode = 1
   gameContext.level = 1
   board.value.clearCards()
@@ -580,7 +596,7 @@ watch(
               >
               </div>
               <label class="flex flex-col items-center gap-2">
-                <div class="text-white self-start">Enter your name (or play as guest)</div>
+                <div class="text-white self-start">{{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}</div>
                 <input
                   v-model="p1.name"
                   type="text"
@@ -591,7 +607,7 @@ watch(
             </div>
             <button
               type="button"
-              @click="routeWithTransition(mode.routerId, 2000, false)"
+              @click="handlePlayBtn(mode.routerId)"
               alt="play-endlessMode-button"
               :class="[
                 gameContext.mode === index + 1
@@ -646,7 +662,7 @@ watch(
             </div>
             <button
               type="button"
-              @click="routeWithTransition(mode.routerId, 2000, false)"
+              @click="handlePlayBtn(mode.routerId)"
               class="btn-mythmatch-play text-[1em] text-white font-semibold"
               alt="play-endlessMode-button"
             >
