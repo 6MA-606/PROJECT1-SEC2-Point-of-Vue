@@ -18,39 +18,33 @@
 </div>
 <a href="https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1"><img height="30px" src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" /></a>
 <div>
-<div align="center" >
-<img src="/ReadMeImg/screenshort/home.png" width="450px">
-
-</div>
-<div align="center">
-<img src="/ReadMeImg/screenshort/gamemode.png" width="450px">
-
-
-</div>
-<div align="center">
-<img src="/ReadMeImg/screenshort/singeplayer.png" width="450px">
-
-</div>
-<div align="center">
-<img src="/ReadMeImg/screenshort/gameover.png" width="450px">
-
-</div>
-<div align="center">
-<img src="/ReadMeImg/screenshort/setting.png" width="450px">
-
-</div>
-<div align="center">
-<img src="/ReadMeImg/screenshort/multiplayer.png" width="450px">
-
-</div>
-<div align="center">
-<img src="/ReadMeImg/screenshort/gameover-multiplayer.png" width="450px">
-
-</div>
-<div align="center">
-<img src="/ReadMeImg/screenshort/localstorage.png" width ="450px">
-</div>
-
+  <div align="center" >
+    <img src="/ReadMeImg/screenshort/home.png" width="450px">
+  </div>
+  <div align="center" >
+    <img src="/ReadMeImg/screenshort/manual.png" width="450px">
+  </div>
+  <div align="center">
+    <img src="/ReadMeImg/screenshort/gamemode.png" width="450px">
+  </div>
+  <div align="center">
+    <img src="/ReadMeImg/screenshort/singeplayer.png" width="450px">
+  </div>
+  <div align="center">
+    <img src="/ReadMeImg/screenshort/gameover.png" width="450px">
+  </div>
+  <div align="center">
+    <img src="/ReadMeImg/screenshort/setting.png" width="450px">
+  </div>
+  <div align="center">
+    <img src="/ReadMeImg/screenshort/multiplayer.png" width="450px">
+  </div>
+  <div align="center">
+    <img src="/ReadMeImg/screenshort/gameover-multiplayer.png" width="450px">
+  </div>
+  <div align="center">
+    <img src="/ReadMeImg/screenshort/localstorage.png" width ="450px">
+  </div>
 </div>
 
 <h1 align = "center">Team Member</h1>
