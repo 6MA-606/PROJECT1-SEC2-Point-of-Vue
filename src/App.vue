@@ -107,6 +107,7 @@ function startSinglePlayerMode() {
   gameContext.startTimer(3)
   scoreboard.load()
   scoreboard.addPlayer(p1)
+  scoreboard.sliceScoreboard(5)
 }
 
 const singlePlayerCardClick = (card) => {
@@ -125,6 +126,7 @@ const singlePlayerCardClick = (card) => {
       p1.addScores(gameContext.level * gameContext.scoreMultiplier++)
       p1.clearCards()
       scoreboard.updatePlayerScore(p1)
+      scoreboard.sliceScoreboard(5)
       if (gameContext.level < 11) gameContext.addTime(5)
     } else {
       gameContext.scoreMultiplier = 1
@@ -808,7 +810,7 @@ watch(
               </div>
             </div>
             <div class="rounded-lg overflow-hidden w-10/12 h-[40%] border-mythmatch-100 border-2 bg-mythpurple-800">
-              <table class="table table-sm">
+              <table class="table table-sm h-full">
                 <thead class="bg-mythpurple-500 text-mythmatch-50">
                   <tr class="text-center border-0">
                     <th colspan="3">Leader Board</th>
@@ -821,15 +823,14 @@ watch(
                 </thead>
                 <tbody class="bg-mythpurple-700 text-mythmatch-100">
                   <tr
-                    v-for="(playerScoreObj, index) in scoreboard.data"
-                    v-show="index < 5 || playerScoreObj === scoreboard.currentPlayer"
+                    v-for="(playerScore, index) in scoreboard.sliceData"
                     :key="index"
-                    :class="scoreboard.currentPlayer === playerScoreObj ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
+                    :class="playerScore.id === scoreboard.currentPlayer.id ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
                     class="text-center border-mythpurple-600"
                   >
-                    <td>{{ index + 1 }}</td>
-                    <td>{{ playerScoreObj.name }}{{ scoreboard.currentPlayer === playerScoreObj ? ' (You)' : '' }}</td>
-                    <td>{{ playerScoreObj.score }}</td>
+                    <td>{{ playerScore.rank }}</td>
+                    <td>{{ playerScore.name }}{{ playerScore.id === scoreboard.currentPlayer.id ? ' (You)' : '' }}</td>
+                    <td>{{ playerScore.score }}</td>
                   </tr>
                 </tbody>
               </table>

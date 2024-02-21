@@ -144,7 +144,7 @@ export default class Game {
             this.level++
             this.board.clearCards()
             this.board.getPairCard(this.level < 11 ? this.level + 1 : 12)
-            this.board.shuffle()
+            // this.board.shuffle()
         }, 1000)
     }
 

@@ -9,9 +9,8 @@ export function encrypt(obj) {
         return accumulator+element+'f'
     }, '')
     return encryptedString
-
-
 }
+
 export function decrypt(str) {
     try {
         const decryptStr = str.split("f").reverse()
