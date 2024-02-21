@@ -1,6 +1,6 @@
 <div align="center">
-  <h2 style="font-size:24px;">Section 2 <br>
-  Team Point of Vue</h2>
+  <h1 style="font-size:24px;">Section 2 <br>
+  Team Point of Vue</h1>
 </div>
 
 <!-- <img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner"> -->
@@ -59,27 +59,27 @@
 <tbody>
 <tr>
 <td>65130500080</td>
-<td>SIRIWAN HOSAREE</td>
+<td><h2>SIRIWAN HOSAREE</h2></td>
 <td><img src="/ReadMeImg/avatar/mook.png"></td>
 </tr>
 <tr>
 <td>65130500084</td>
-<td>SITTHA MANITTAYAKUL</td>
+<td><h2>SITTHA MANITTAYAKUL</h2></td>
 <td><img src="/ReadMeImg//avatar/mink.png"></td>
 </tr>
 <tr>
 <td>65130500089</td>
-<td>AKKARAWIT SITTIPRAKAN</td>
-<td><img src = "/ReadMeImg/avatar/title.png"> </td>
+<td><h2>AKKARAWIT SITTIPRAKAN</h2></td>
+<td><img src="/ReadMeImg/avatar/title.png"> </td>
 </tr>
 <tr>
 <td>65130500108</td>
-<td>BUNYAKORN PORNSOMBATPAIBOOL</td>
+<td><h2>BUNYAKORN PORNSOMBATPAIBOOL</h2></td>
 <td><img src="/ReadMeImg/avatar/goko.png"></td>
 </tr>
 <tr>
 <td>65130500114</td>
-<td>METHUS DUMRONGMONGKHOLKUL</td>
+<td><h2>METHUS DUMRONGMONGKHOLKUL</h2></td>
 <td><img src="/ReadMeImg/avatar/tae.png"></td>
 </tr>
 </tbody>
@@ -107,18 +107,23 @@
 </ul>
 </td>
 <td>SIRIWAN HOSAREE</td>
-<td>100
+<td>16.67
 
 </td>
 </tr>
 <tr>
 <td>
 <ul>
-<li></li>
+<li>Responsive UI design</li>
+<li>Challenge mode algorithm</li>
+<li>Graphic design</li>
+<li>Code review</li>
+<li>Sound system</li>
+<li>Game infrastructure</li>
 </ul>
 </td>
 <td>SITTHA MANITTAYAKUL</td>
-<td>100</td>
+<td>30</td>
 </tr>
 <tr>
 <td>
@@ -136,7 +141,7 @@
 </ul>
 </td>
 <td>AKKARAWIT SITTIPRAKAN</td>
-  <td>100</td>
+  <td>20</td>
 </tr>
 <tr>
 <td>
@@ -147,7 +152,7 @@
 </ul>
 </td>
 <td>BUNYAKORN PORNSOMBATPAIBOOL</td>
-  <td>100</td>
+  <td>16.67</td>
 </tr>
 <tr>
 <td>
@@ -159,7 +164,7 @@
 </ul>
 </td>
 <td>METHUS DUMRONGMONGKHOLKUL</td>
-  <td>100</td>
+  <td>16.66</td>
 </tr>
 </tbody>
 </table>
