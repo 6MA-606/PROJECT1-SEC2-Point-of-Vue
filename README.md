@@ -31,6 +31,8 @@
 <tr>
 <th width="20%">Student ID</th>
 <th width="50%">Member name</th>
+<th width="50%">Percentage Contribute</th>
+
 </tr>
 </thead>
 <tbody>
@@ -61,6 +63,8 @@
 <tr>
 <th width="50%">Contributed</th>
 <th width="50%">Member name</th>
+<th width="50%">Percentage Contribute</th>
+
 </tr>
 </thead>
 <tbody>
@@ -77,6 +81,9 @@
 </ul>
 </td>
 <td>SIRIWAN HOSAREE</td>
+<td>100
+
+</td>
 </tr>
 <tr>
 <td>
