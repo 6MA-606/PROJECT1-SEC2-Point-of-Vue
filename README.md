@@ -38,10 +38,12 @@
 <tr>
 <td>65130500080</td>
 <td>SIRIWAN HOSAREE</td>
+<td><img src="/ReadMeImg/avatar/mook.png"></td>
 </tr>
 <tr>
 <td>65130500084</td>
 <td>SITTHA MANITTAYAKUL</td>
+<td><img src="/ReadMeImg//avatar/mink.png"></td>
 </tr>
 <tr>
 <td>65130500089</td>
@@ -51,10 +53,12 @@
 <tr>
 <td>65130500108</td>
 <td>BUNYAKORN PORNSOMBATPAIBOOL</td>
+<td><img src="/ReadMeImg/avatar/goko.png"></td>
 </tr>
 <tr>
 <td>65130500114</td>
 <td>METHUS DUMRONGMONGKHOLKUL</td>
+<td><img src="/ReadMeImg/avatar/tae.png"></td>
 </tr>
 </tbody>
 </table>
