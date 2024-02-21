@@ -3,7 +3,7 @@ import { encrypt, decrypt } from '../src/utils/encryptionFunction'
 export default class Scoreboard {
     constructor() {
         this.data = []
-        this.currentPlayerScoreObjRef = null
+        this.currentPlayer = null
     }
 
     load() {
@@ -14,7 +14,6 @@ export default class Scoreboard {
             } catch (error) {
                 return
             }
-            
         } else return
     }
 
@@ -27,13 +26,13 @@ export default class Scoreboard {
             id: this.data.length,
             name: player.name,
             score: 0
-          }
+        }
         this.data.push(currentPlayerScoreObj)
-        this.currentPlayerScoreObjRef = currentPlayerScoreObj
+        this.currentPlayer = currentPlayerScoreObj
     }
 
     updatePlayerScore(player) {
-        this.currentPlayerScoreObjRef.score = player.scores
+        this.currentPlayer.score = player.scores
         this.data.sort((current, next) => next.score - current.score)
     }
 }

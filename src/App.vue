@@ -122,12 +122,12 @@ const singlePlayerCardClick = (card) => {
     if (p1.isPaired()) {
       soundController.playSFX('/sounds/pointGain.mp3')
       p1.addPairCount()
-      p1.addScores(gameContext.level * gameContext.scoreMulltiplier++)
+      p1.addScores(gameContext.level * gameContext.scoreMultiplier++)
       p1.clearCards()
       scoreboard.updatePlayerScore(p1)
       if (gameContext.level < 11) gameContext.addTime(5)
     } else {
-      gameContext.scoreMulltiplier = 1
+      gameContext.scoreMultiplier = 1
       gameContext.pause()
       setTimeout(() => {
         p1.concealAllSelectedCard()
@@ -181,10 +181,11 @@ const multiplayerCardsClick = (card) => {
     } else {
       gameContext.pause()
       setTimeout(() => {
-        board.value.concealAllSelectedCard()
+        board.value.concealAllCard()
         setTimeout(() => {
           board.value.clearCards()
           board.value.getPairCard(12)
+          board.value.shuffle()
           gameContext.resume()
         }, 1000)
       }, 500)
@@ -205,12 +206,10 @@ watch(
       case 200:
         console.log('single player mode start')
         startSinglePlayerMode()
-        
         break
       case 201:
         console.log('multiplayer mode start')
         startMultiPlayerMode()
-        
         break
     }
   },
@@ -690,7 +689,7 @@ watch(
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
             <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
-            <div v-show="gameContext.scoreMulltiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
+            <div v-show="gameContext.scoreMultiplier > 1" class="text-mythmatch-100 font-mythmatch self-end">Combo x {{ gameContext.scoreMultiplier }}</div>
           </div>
         </div>
       </div>
@@ -703,7 +702,7 @@ watch(
           </div>
           <div class="flex flex-col items-center">
             <div class="text-2xl text-mythmatch-100 font-mythmatch">Your Rank</div>
-            <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayerScoreObjRef.id) + 1 }}</div>
+            <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayer.id) + 1 }}</div>
           </div>
         </div>
       </div>
@@ -720,13 +719,13 @@ watch(
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ gameContext.level }}</div>
             </div>
             <div class="flex flex-col items-center">
-              <div v-show="gameContext.scoreMulltiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
+              <div v-show="gameContext.scoreMultiplier > 1" class="absolute text-xs text-mythmatch-100 font-mythmatch -translate-y-[90%] self-end">Combo x {{ gameContext.scoreMultiplier }}</div>
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Scores</div>
               <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ p1.scores }}</div>
             </div>
             <div class="flex flex-col items-center">
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Your Rank</div>
-              <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayerScoreObjRef.id) + 1 }}</div>
+              <div class="text-3xl text-mythmatch-100 font-semibold font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayer.id) + 1 }}</div>
             </div>
             <div class="flex flex-col text-center">
               <div class="text-2xl text-mythmatch-100 font-mythmatch">Time</div>
@@ -798,7 +797,7 @@ watch(
                   <div class="text-5xl font-bold font-mythmatch">{{ gameContext.level }}</div>
                 </div>
                 <div class="text-mythmatch-100 flex flex-col items-center justify-center">
-                  <div v-show="gameContext.scoreMulltiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameContext.scoreMulltiplier }}</div>
+                  <div v-show="gameContext.scoreMultiplier > 1" class="absolute font-mythmatch -translate-y-[215%] self-end">Combo x {{ gameContext.scoreMultiplier }}</div>
                   <div class="text-3xl font-mythmatch">Your Score</div>
                   <div class="text-5xl font-bold font-mythmatch">{{ p1.scores }}</div>
                 </div>
@@ -823,13 +822,13 @@ watch(
                 <tbody class="bg-mythpurple-700 text-mythmatch-100">
                   <tr
                     v-for="(playerScoreObj, index) in scoreboard.data"
-                    v-show="index < 5 || playerScoreObj === scoreboard.currentPlayerScoreObjRef"
+                    v-show="index < 5 || playerScoreObj === scoreboard.currentPlayer"
                     :key="index"
-                    :class="scoreboard.currentPlayerScoreObjRef === playerScoreObj ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
+                    :class="scoreboard.currentPlayer === playerScoreObj ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
                     class="text-center border-mythpurple-600"
                   >
                     <td>{{ index + 1 }}</td>
-                    <td>{{ playerScoreObj.name }}{{ scoreboard.currentPlayerScoreObjRef === playerScoreObj ? ' (You)' : '' }}</td>
+                    <td>{{ playerScoreObj.name }}{{ scoreboard.currentPlayer === playerScoreObj ? ' (You)' : '' }}</td>
                     <td>{{ playerScoreObj.score }}</td>
                   </tr>
                 </tbody>
@@ -922,11 +921,11 @@ watch(
             <div class="w-1 rounded-lg bg-mythmatch-200"></div>
             <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
               <div class="text-2xl xs:text-3xl text-white font-mythmatch">Rank</div>
-              <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayerScoreObjRef.id) + 1 }}</div>
+              <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayer.id) + 1 }}</div>
             </div>
           </div>
           <div>
-            <div class="text-xl xs:text-2xl text-white ">You've flipped {{ p1.counter.flip }} pair(s)</div>
+            <div class="text-xl xs:text-2xl text-white">You've flipped {{ p1.counter.flip }} pair(s)</div>
             <div class="text-xl xs:text-2xl text-white">You've collected {{ p1.counter.pair }} correct pair(s)</div>
             <div class="text-xl xs:text-2xl text-white">Accuracy {{ p1.accuracy }}%</div>
           </div>
@@ -945,15 +944,15 @@ watch(
             </thead>
             <tbody class="bg-mythpurple-700 text-mythmatch-100">
               <tr
-                v-for="(playerScoreObj, index) in scoreboard.data"
-                :id="playerScoreObj === scoreboard.currentPlayerScoreObjRef ? 'current-player' : ''"
+                v-for="(playerScore, index) in scoreboard.data"
+                :id="playerScore === scoreboard.currentPlayer ? 'current-player' : ''"
                 :key="index"
-                :class="scoreboard.currentPlayerScoreObjRef === playerScoreObj ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
+                :class="scoreboard.currentPlayer === playerScore ? 'bg-mythpurple-800' : 'bg-mythpurple-700'"
                 class="text-center border-t-[1px] border-mythpurple-600"
               >
                 <td>{{ index + 1 }}</td>
-                <td>{{ playerScoreObj.name }}{{ scoreboard.currentPlayerScoreObjRef === playerScoreObj ? ' (You)' : '' }}</td>
-                <td>{{ playerScoreObj.score }}</td>
+                <td>{{ playerScore.name }}{{ scoreboard.currentPlayer === playerScore ? ' (You)' : '' }}</td>
+                <td>{{ playerScore.score }}</td>
               </tr>
             </tbody>
           </table>
