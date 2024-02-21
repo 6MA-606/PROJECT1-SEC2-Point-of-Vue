@@ -17,16 +17,30 @@
 
 </div>
 <a href="https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1"><img height="30px" src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" /></a>
+
+<h1 align="center">Feature</h1>
+
 <div>
   <div align="center" >
     <img src="/readme_src/screenshot/home.png" width="450px">
   </div>
+
+  <h2>Manual</h2>
   <div align="center" >
     <img src="/readme_src/screenshot/manual.png" width="450px">
   </div>
+
+  <h2>Setting Option</h2>
+  <div align="center">
+    <img src="/readme_src/screenshot/setting.png" width="450px">
+  </div>
+  
+  <h2>Mode Selection</h2>
   <div align="center">
     <img src="/readme_src/screenshot/gamemode.png" width="450px">
   </div>
+
+  <h2>Challenge Mode (Single player)</h2>
   <div align="center">
     <img src="/readme_src/screenshot/singeplayer.png" width="450px">
   </div>
@@ -34,16 +48,15 @@
     <img src="/readme_src/screenshot/gameover.png" width="450px">
   </div>
   <div align="center">
-    <img src="/readme_src/screenshot/setting.png" width="450px">
+    <img src="/readme_src/screenshot/localstorage.png" width ="450px">
   </div>
+
+  <h2>Versus Mode (Two player)</h2>
   <div align="center">
     <img src="/readme_src/screenshot/multiplayer.png" width="450px">
   </div>
   <div align="center">
     <img src="/readme_src/screenshot/gameover-multiplayer.png" width="450px">
-  </div>
-  <div align="center">
-    <img src="/readme_src/screenshot/localstorage.png" width ="450px">
   </div>
 </div>
 
@@ -86,6 +99,9 @@
 </tr>
 </tbody>
 </table>
+
+<h1>Contribution</h1>
+
 <table>
 <thead>
 <tr>
@@ -99,12 +115,11 @@
 <tr>
 <td>
 <ul>
-<li>Scoreboard</li>
-<li>Combo</li>
+<li>Leader board</li>
+<li>Challenge mode: Combo</li>
 <li>Class Board</li>
-<li>Random Card in loading page</li>
-
-<li>Multiplayer algorithm</li>
+<li>Loading screen: Random card</li>
+<li>Versus mode algorithm</li>
 
 </ul>
 </td>
@@ -148,9 +163,9 @@
 <tr>
 <td>
 <ul>
-<li>Multiplayer ui</li>
-<li>Single player ui</li>
-<li>Multiplayer algorithm</li>
+<li>Versus mode responsive UI</li>
+<li>Challenge mode player responsive UI</li>
+<li>Versus mode algorithm</li>
 </ul>
 </td>
 <td>BUNYAKORN PORNSOMBATPAIBOOL</td>
