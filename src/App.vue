@@ -729,7 +729,7 @@ watch(
       </div>
 
       <!-- mobile vertical score section -->
-      <div class="hidden y-xs:flex y-xs:xs:hidden w-full mb-4 flex-col items-center">
+      <div class="hidden y-xs:flex y-xs:lg:hidden w-full mb-4 flex-col items-center">
         <div class="w-full flex flex-col">
           <div class="my-5 flex justify-evenly w-full">
             <img :src="`/logo/${gameContext.setting.quality === 'low' ? 'MythMatch_logo_low.svg':'MythMatch_logo.svg'}`" alt="logo" class="w-40" />
