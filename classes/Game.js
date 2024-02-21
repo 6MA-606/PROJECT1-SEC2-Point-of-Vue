@@ -49,7 +49,6 @@ export default class Game {
     toggleMute(soundType) {
         const soundTypeProp = soundType === 'bgm' ? 'isBgmMute' : 'isSfxMute'
         this.setting[soundTypeProp] = !this.setting[soundTypeProp]
-        console.log(this.setting[soundTypeProp]);
     }
 
     setVolume(volume, type) {
@@ -124,8 +123,6 @@ export default class Game {
         clearInterval(this.timerInterval)
         this.isTimerRunning = false
         this.winner = 0
-
-        console.log('Game has been reset!')
     }
 
     gameOver() {
@@ -144,7 +141,7 @@ export default class Game {
             this.level++
             this.board.clearCards()
             this.board.getPairCard(this.level < 11 ? this.level + 1 : 12)
-            // this.board.shuffle()
+            this.board.shuffle()
         }, 1000)
     }
 

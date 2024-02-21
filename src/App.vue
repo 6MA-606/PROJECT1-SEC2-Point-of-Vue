@@ -126,7 +126,6 @@ function startSinglePlayerMode() {
 }
 
 const singlePlayerCardClick = (card) => {
-  console.log('singlePlayerCardClick')
   if (!gameContext.isPaused && gameContext.isPlaying && !card.isRevealed && p1.selectedCards.length < 2) {
     soundController.playSFX("/sounds/flipcard.mp3")
     card.reveal()
@@ -209,7 +208,6 @@ const multiplayerCardsClick = (card) => {
 watch(
   () => router.id,
   (newRouterId) => {
-    console.log(newRouterId)
     switch (newRouterId) {
       case 100:
         gameContext.reset()
@@ -217,11 +215,9 @@ watch(
         board.value.shuffle()
         break
       case 200:
-        console.log('single player mode start')
         startSinglePlayerMode()
         break
       case 201:
-        console.log('multiplayer mode start')
         startMultiPlayerMode()
         break
     }
@@ -249,7 +245,6 @@ watch(
   (playingState) => {
     if (playingState && gameContext.mode === 1) {
       gameContext.startTimer(SINGLEPLAYER_START_TIME)
-      console.log('play')
     }
   }
 )
@@ -283,7 +278,6 @@ watch(
   () => gameContext.setting.bgmVolume,
   (newValue)=>{
     soundController.setBGMVolume(newValue)
-    console.log("Sound volume is ", newValue);
   },
   {immediate:true}
 )
@@ -292,7 +286,6 @@ watch(
   () => gameContext.setting.sfxVolume,
   (newValue)=>{
     soundController.setSFXVolume(newValue)
-    console.log("Sound volume is ", newValue);
   },
   {immediate:true}
 )
@@ -301,7 +294,6 @@ watch(
 watch(
   ()=> gameContext.setting.isBgmMute,
   (newValue)=>{
-    console.log('isBgmMute executed')
     soundController.setMute('bgm', newValue, gameContext.setting.bgmVolume)
   },
   {immediate:true}
@@ -310,7 +302,6 @@ watch(
 watch(
   ()=> gameContext.setting.isSfxMute,
   (newValue)=>{
-    console.log('isSfxMute executed')
     soundController.setMute('sfx', newValue, gameContext.setting.sfxVolume)
   },
   {immediate:true}

@@ -34,7 +34,6 @@ export default class SoundController {
     }
 
     setBGMVolume(volume) {
-        console.log('setBGMVolume', volume)
         this.bgmGainNode.gain.value = volume /200
     }
 

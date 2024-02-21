@@ -47,6 +47,5 @@ export default class Scoreboard {
                 rank: this.data.findIndex((dataScore) => dataScore.id === playerScore.id) + 1,
                 ...playerScore }
             })
-        console.log(this)
     }
 }

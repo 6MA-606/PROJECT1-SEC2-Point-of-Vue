@@ -17,7 +17,6 @@ export function decrypt(str) {
         decryptStr.shift()
         let stringDecrypt = ''
         decryptStr.forEach(e=>stringDecrypt +=String.fromCharCode(e))
-        // console.log(stringDecrypt);
         return JSON.parse(stringDecrypt)
     } catch (error) {
         throw new Error('Decryption error')
