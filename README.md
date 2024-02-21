@@ -56,7 +56,76 @@
 </tr>
 </tbody>
 </table>
+<table>
+<thead>
+<tr>
+<th width="50%">Contributed</th>
+<th width="50%">Member name</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>
+<ul>
+<li>Scoreboard</li>
+<li>Combo</li>
+<li>Class Board</li>
+<li>Random Card in loading page</li>
 
+<li>Multiplayer algorithm</li>
+
+</ul>
+</td>
+<td>SIRIWAN HOSAREE</td>
+</tr>
+<tr>
+<td>
+<ul>
+<li></li>
+</ul>
+</td>
+<td>SITTHA MANITTAYAKUL</td>
+</tr>
+<tr>
+<td>
+<ul>
+<li>Animation Logo
+</li>
+<li>Quality Setting</li>
+<li>Refactor to oop phase 1</li>
+<li>Encryption</li>
+<li>Save setting to localStorage</li>
+<li>Generate AI image</li>
+<li>Find sound assets</li>
+<li>Readme</li>
+<li>Misc.helper</li>
+</ul>
+</td>
+<td>AKKARAWIT SITTIPRAKAN</td>
+</tr>
+<tr>
+<td>
+<ul>
+<li>Multiplayer ui</li>
+<li>Single player ui</li>
+<li>Multiplayer algorithm</li>
+</ul>
+</td>
+<td>BUNYAKORN PORNSOMBATPAIBOOL</td>
+</tr>
+<tr>
+<td>
+<ul>
+<li>Encryption</li>
+<li>Generate AI image</li>
+<li>Shuffle algorithm</li>
+<li>Write how to play</li>
+</ul>
+</td>
+<td>METHUS DUMRONGMONGKHOLKUL</td>
+</tr>
+</tbody>
+</table>
 </div>
 <img src = "./ReadMeImg/group-final.png" style ="border-radius:16px">
 
