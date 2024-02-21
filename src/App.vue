@@ -565,7 +565,7 @@ watch(
             </div>
             <div class="text-center text-[1em] text-white">{{ mode.description }}</div>
           </div>
-          <div class="flex flex-col items-center gap-4">
+          <div class="flex flex-col items-center gap-4 w-full">
             <div
               v-if="index + 1 === 1"
               :class="[
@@ -573,7 +573,7 @@ watch(
                   ? 'h-20'
                   : 'h-0'
               ]"
-              class="flex flex-col items-center transition-all duration-500 linear overflow-hidden"
+              class="flex flex-col items-center transition-all duration-500 linear w-full overflow-hidden"
             >
               <div
                 :class="[
@@ -596,12 +596,18 @@ watch(
               >
               </div>
               <label class="flex flex-col items-center gap-2">
-                <div class="text-white self-start">{{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}</div>
+                <div
+                  :class="pNameErrorMsg ? 'text-red-500' : 'text-white'"
+                  class="text-xs"
+                >
+                  {{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}
+                </div>
                 <input
                   v-model="p1.name"
                   type="text"
                   placeholder="Your name"
-                  class="input-mythmatch w-full"
+                  :class="pNameErrorMsg ? 'border border-red-500 bg-red-500' : ''"
+                  class="input-mythmatch max-w-[13rem]"
                 />
               </label>
             </div>
@@ -652,7 +658,7 @@ watch(
               v-if="gameContext.mode === index + 1 && gameContext.mode === 1" 
               class="flex flex-col items-center gap-2"
             >
-              <div>Enter your name</div>
+              <div>{{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}</div>
               <input
                 v-model="p1.name"
                 type="text"
