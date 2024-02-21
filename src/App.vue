@@ -35,7 +35,7 @@ function setRouterId(id, saveRoute) {
 
 const modes = [
   {
-    title: "Endless Mode (1P)",
+    title: "Challenge Mode (1P)",
     description: "More quick, more score",
     thumbnail: "/gamemode/singleplayer",
     gif: "https://media.giphy.com/media/CjmvTCZf2U3p09Cn0h/giphy.gif?cid=ecf05e475c1xpfvg5yn3inqfpb2ua5sn0l9jievwe1j3p4c4&ep=v1_gifs_search&rid=giphy.gif&ct=g",
@@ -465,7 +465,7 @@ watch(
           @mouseover="cursor.hover()"
           @mouseleave="cursor.unHover()"
           @click="gameContext.setSettingOpenState(true)"
-          class="btn bg-gray-800 text-white hover:bg-gray-800 border-0 w-10/12"
+          class="btn bg-gray-800 text-stone-100 hover:bg-gray-800 border-0 w-10/12"
           type="button"
         >
           Setting
@@ -554,10 +554,10 @@ watch(
             />
           </div>
           <div class="flex flex-col gap-2">
-            <div class="text-center text-[2em] font-bold font-mythmatch text-white">
+            <div class="text-center text-[2em] font-bold font-mythmatch text-stone-100">
               {{ mode.title }}
             </div>
-            <div class="text-center text-[1em] text-white">{{ mode.description }}</div>
+            <div class="text-center text-[1em] text-stone-100">{{ mode.description }}</div>
           </div>
           <div class="flex flex-col items-center gap-4 w-full">
             <div
@@ -591,7 +591,7 @@ watch(
               </div>
               <label class="flex flex-col items-center gap-2">
                 <div
-                  :class="pNameErrorMsg ? 'text-red-500' : 'text-white'"
+                  :class="pNameErrorMsg ? 'text-red-500' : 'text-stone-100'"
                   class="text-xs"
                 >
                   {{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}
@@ -607,7 +607,7 @@ watch(
             <button
               type="button"
               @click="handlePlayBtn(mode.routerId)"
-              alt="play-endlessMode-button"
+              alt="play-challengeMode-button"
               :class="[
                 gameContext.mode === index + 1
                   ? 'h-12'
@@ -640,10 +640,10 @@ watch(
             />
           </div>
           <div class="flex flex-col gap-2">
-            <div class="text-center text-[1.5em] text-white font-bold font-mythmatch">
+            <div class="text-center text-[1.5em] text-stone-100 font-bold font-mythmatch">
               {{ mode.title }}
             </div>
-            <div class="text-center text-[0.875em] text-white opacity-50">{{ mode.description }}</div>
+            <div class="text-center text-[0.875em] text-stone-100 opacity-50">{{ mode.description }}</div>
           </div>
           <div v-show="gameContext.mode === index + 1" class="flex flex-col justify-center h-[50%] y-xs:h-[40%] w-full items-center gap-[0.45rem] absolute bottom-0 bg-mythpurple-800 rounded-lg">
             <div
@@ -651,7 +651,7 @@ watch(
               class="flex flex-col items-center gap-2 text-sm"
             >
               <div
-                :class="pNameErrorMsg ? 'text-red-400' : 'text-white'"
+                :class="pNameErrorMsg ? 'text-red-400' : 'text-stone-100'"
                 class="text-xs text-center"
               >
                 {{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}
@@ -660,14 +660,14 @@ watch(
                 v-model="p1.name"
                 type="text"
                 placeholder="Your name"
-                class="w-10/12 h-[2rem] text-center bg-mythpurple-900 text-white rounded-lg"
+                class="w-10/12 h-[2rem] text-center bg-mythpurple-900 text-stone-100 rounded-lg"
               />
             </div>
             <button
               type="button"
               @click="handlePlayBtn(mode.routerId)"
-              class="btn-mythmatch-play text-[1em] text-white font-semibold"
-              alt="play-endlessMode-button"
+              class="btn-mythmatch-play text-[1em] text-stone-100 font-semibold"
+              alt="play-challengeMode-button"
             >
               Play
             </button>
@@ -685,10 +685,10 @@ watch(
     >
       <!-- mobile setting section (top right) -->
       <div class="flex y-xs:lg:hidden absolute top-3 right-3 gap-3 z-10">
-        <button @click="gameContext.setSettingOpenState(true)" class="btn-mythmatch-circle bg-mythpurple-800 text-white" type="button">
+        <button @click="gameContext.setSettingOpenState(true)" class="btn-mythmatch-circle bg-mythpurple-800 text-stone-100" type="button">
           <div v-html="SettingIcon"></div>
         </button>
-        <button @click="gameContext.setQuitOpenState(true)" class="btn-mythmatch-circle bg-red-400 text-white" type="button">
+        <button @click="gameContext.setQuitOpenState(true)" class="btn-mythmatch-circle bg-red-400 text-stone-100" type="button">
           <div v-html="DoorIcon"></div>
         </button>
       </div>
@@ -892,17 +892,17 @@ watch(
     >
       <div class="text-6xl y-xs:text-5xl y-xs:xs:text-8xl font-mythmatch text-mythmatch-100">You wanna exit?!</div>
       <div class="flex flex-col gap-3">
-        <div class="text-xl flex items-center gap-2 text-white">
+        <div class="text-xl flex items-center gap-2 text-stone-100">
           <div>If you want restart, you can click</div>
           <button
             @click="handleRestartBtn(startSinglePlayerMode)"
             type="button"
-            class="btn btn-sm btn-outline text-white btn-warning"
+            class="btn btn-sm btn-outline text-stone-100 btn-warning"
           >
             <div>Restart</div>
           </button>
         </div>
-        <div class="text-xl text-white">but you want to really quit, right?</div>
+        <div class="text-xl text-stone-100">but you want to really quit, right?</div>
       </div>
       <div class="flex gap-8">
         <button
@@ -934,19 +934,19 @@ watch(
         <div class="flex flex-col gap-10 justify-center">
           <div class="flex justify-center">
             <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
-              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Total Score</div>
+              <div class="text-2xl xs:text-3xl text-stone-100 font-mythmatch">Total Score</div>
               <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ p1.scores }}</div>
             </div>
             <div class="w-1 rounded-lg bg-mythmatch-200"></div>
             <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
-              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Rank</div>
+              <div class="text-2xl xs:text-3xl text-stone-100 font-mythmatch">Rank</div>
               <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ scoreboard.data.findIndex((player) => player.id === scoreboard.currentPlayer.id) + 1 }}</div>
             </div>
           </div>
           <div>
-            <div class="text-xl xs:text-2xl text-white">You've flipped {{ p1.counter.flip }} pair(s)</div>
-            <div class="text-xl xs:text-2xl text-white">You've collected {{ p1.counter.pair }} correct pair(s)</div>
-            <div class="text-xl xs:text-2xl text-white">Accuracy {{ p1.accuracy }}%</div>
+            <div class="text-xl xs:text-2xl text-stone-100">You've flipped {{ p1.counter.flip }} pair(s)</div>
+            <div class="text-xl xs:text-2xl text-stone-100">You've collected {{ p1.counter.pair }} correct pair(s)</div>
+            <div class="text-xl xs:text-2xl text-stone-100">Accuracy {{ p1.accuracy }}%</div>
           </div>
         </div>
         <div class="w-[90vw] lg:w-[30vw] rounded-lg border-mythmatch-100 border-2 h-96 overflow-y-auto bg-mythpurple-800">
@@ -1035,14 +1035,14 @@ watch(
         <div class="absolute top-3 right-3 flex gap-3">
           <button
             @click="gameContext.setSettingOpenState(true)"
-            class="btn-mythmatch-circle bg-mythpurple-800 text-white"
+            class="btn-mythmatch-circle bg-mythpurple-800 text-stone-100"
             type="button"
           >
             <div v-html="SettingIcon"></div>
           </button>
           <button
             @click="handleQuitBtn"
-            class="btn-mythmatch-circle bg-red-400 text-white"
+            class="btn-mythmatch-circle bg-red-400 text-stone-100"
             type="button"
           >
             <div v-html="DoorIcon"></div>
@@ -1109,12 +1109,12 @@ watch(
         </div>
         <div class="flex justify-center">
             <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
-              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Player 1</div>
+              <div class="text-2xl xs:text-3xl text-stone-100 font-mythmatch">Player 1</div>
               <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ p1.scores }}</div>
             </div>
             <div class="w-1 rounded-lg bg-mythmatch-200"></div>
             <div class="flex flex-col items-center gap-3 w-48 xs:w-64">
-              <div class="text-2xl xs:text-3xl text-white font-mythmatch">Player 2</div>
+              <div class="text-2xl xs:text-3xl text-stone-100 font-mythmatch">Player 2</div>
               <div class="text-4xl xs:text-6xl font-semibold text-mythmatch-100 font-mythmatch">{{ p2.scores }}</div>
             </div>
           </div>
@@ -1139,7 +1139,7 @@ watch(
         <div class="flex flex-col items-start gap-3 px-5">
           <div class="flex items-center gap-4">
             <label class="flex items-center gap-2">
-              <div class="text-sm text-white w-24">Music</div>
+              <div class="text-sm text-stone-100 w-24">Music</div>
               <input
                 @mouseover="cursor.hover()"
                 @mouseleave="cursor.unHover()"
@@ -1173,7 +1173,7 @@ watch(
           </div>
           <div class="flex items-center gap-4">
             <label class="flex items-center gap-2">
-              <div class="text-sm text-white w-24">Sound FX</div>
+              <div class="text-sm text-stone-100 w-24">Sound FX</div>
               <input
                 @mouseover="cursor.hover()"
                 @mouseleave="cursor.unHover()" 
@@ -1206,7 +1206,7 @@ watch(
             </button>
           </div>
           <div class="flex items-center gap-4">
-            <div class="text-sm text-white w-16">Quality</div>
+            <div class="text-sm text-stone-100 w-16">Quality</div>
             <label
               @mouseover="cursor.hover()"
               @mouseleave="cursor.unHover()"
@@ -1219,7 +1219,7 @@ watch(
                 value="low"
                 class="radio radio-xs radio-primary"
               />
-              <span class="text-white">low</span>
+              <span class="text-stone-100">low</span>
             </label>
             <label
               @mouseover="cursor.hover()"
@@ -1233,7 +1233,7 @@ watch(
                 value="medium"
                 class="radio radio-xs radio-primary"
               >
-              <span class="text-white">Medium</span>
+              <span class="text-stone-100">Medium</span>
             </label>
             <label
               @mouseover="cursor.hover()"
@@ -1247,7 +1247,7 @@ watch(
                 value="high"
                 class="radio radio-xs radio-primary"
               >
-              <span class="text-white">High</span>
+              <span class="text-stone-100">High</span>
             </label>
           </div>
         </div>
@@ -1256,7 +1256,7 @@ watch(
             @mouseover="cursor.hover()"
             @mouseleave="cursor.unHover()"
             @click="gameContext.setSettingOpenState(false)"
-            class="btn btn-sm btn-circle bg-gray-800 hover:bg-gray-700 text-white border-0">
+            class="btn btn-sm btn-circle bg-gray-800 hover:bg-gray-700 text-stone-100 border-0">
             <div>X</div>
           </button>
         </div>
@@ -1283,7 +1283,7 @@ watch(
               </button>
           </div>
         </div>
-        <article class="prose prose-sm xs:prose-base max-w-none">
+        <article class="prose prose-sm xs:prose-base prose-headings:text-mythmatch-100 prose-p:text-stone-100 prose-blockquote:text-slate-400 prose-li:marker:text-stone-100  prose-li:text-stone-100 prose-a:text-slate-200 prose-hr:bg-slate-600 max-w-none">
           <h1>Unleash Your Memory Magic: Mastering Memory Match!</h1>
           <p>Ready to test your memory and challenge your friends? Dive into the thrilling world of Memory Match! This guide will equip you with the knowledge to conquer both single-player and versus modes, turning you into a memory maestro.</p>
 
@@ -1293,9 +1293,9 @@ watch(
               <a
                 @mouseover="cursor.hover()"
                 @mouseleave="cursor.unHover()"
-                href="#endless"
+                href="#challenge"
               >
-                Endless Mode
+                Challenge Mode
               </a>
             </li>
             <ul>
@@ -1322,15 +1322,15 @@ watch(
 
           <hr />
 
-          <h2 id="endless">Endless Mode: A Memory Match Marathon! (Single player)</h2>
+          <h2 id="challenge">Challenge Mode: A Memory Match Marathon! (Single player)</h2>
           <ol>
             <li><b>Picture Perfect Grid:</b> The game starts with a grid of cards, all facing down, hiding various pictures.</li>
             <li><b>Memory Mayhem:</b> Click on two cards to reveal their hidden images. Remember, it's a race against time!</li>
-            <li><b>Match Made in Memory Heaven:</b> If the two cards are identical, they stay face up, and you score points (current level x combo*) and bonus time (+5 seconds). Your memory bank increases, and the excitement builds!</li>
+            <li><b>Match Made in Memory Heaven:</b> If the two cards are identical, they stay face up, and you score points (current level x <a href="#combo">combo</a>) and bonus time (+5 seconds).</li>
             <li><b>Memory Mishap:</b> Not an identical pair? No worries! Flip them back down and try again. Keep your focus sharp!</li>
             <li><b>Level Up!</b> Clear all pairs before time runs out, and you'll be whisked away to a new level, where your memory will be further challenged.</li>
             <li><b>Gridlock Alert!</b> If the board fills up (12 pairs), the tension rises with a red background. While you won't get extra time for correct matches, keep scoring those points!</li>
-            <li><b>Time's Up!</b> When the clock strikes zero, the game ends, showcasing your score and ranking on the leaderboard. Did you become the memory champion?</li>
+            <li><b>Time's Up!</b> When the clock strikes zero, the game ends, showcasing your score and ranking on the leader board. Did you become the memory champion?</li>
           </ol>
 
           <h3 id="combo">Combo Power-Up!</h3>
@@ -1341,7 +1341,7 @@ watch(
             <li><b>Streak Saver:</b> Keep the correct matches coming, and your combo keeps climbing. But remember, a wrong match resets your combo, so stay focused!</li>
           </ul>
 
-          <h2 id="versus">Versus Mode: Face-Off Fun! (Multiplayer)</h2>
+          <h2 id="versus">Versus Mode: Face-Off Fun! (Two player)</h2>
           <p>Ready to challenge your friends? Versus mode is your battleground!</p>
 
           <ol>
@@ -1351,7 +1351,7 @@ watch(
             <li><b>Memory Marathon:</b> Keep playing until all cards are flipped. The player with the highest score wins! But wait, there's a twist...</li>
             <li><b>Draw? No Problem!</b> If it's a tie, all cards flip back down, and the memory battle continues! The player with the most points after this second round is the ultimate memory champion.</li>
           </ol>
-          So, are you ready to embark on this exciting memory adventure? With these tips and tricks, you'll be a Memory Match master in no time!
+          <p>So, are you ready to embark on this exciting memory adventure? With these tips and tricks, you'll be a Memory Match master in no time!</p>
         </article>
       </div>
     </section>
@@ -1457,6 +1457,6 @@ watch(
 }
 
 .input-mythmatch {
-  @apply input text-white text-center bg-gray-800;
+  @apply input text-stone-100 text-center bg-gray-800;
 }
 </style>
