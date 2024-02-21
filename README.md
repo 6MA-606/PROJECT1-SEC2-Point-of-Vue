@@ -32,15 +32,15 @@
 
 </div>
 <div align="center">
-<img src="/ReadMeImg/screenshort/multiplayer.png" width="450px">
-
-</div>
-<div align="center">
 <img src="/ReadMeImg/screenshort/gameover.png" width="450px">
 
 </div>
 <div align="center">
 <img src="/ReadMeImg/screenshort/setting.png" width="450px">
+
+</div>
+<div align="center">
+<img src="/ReadMeImg/screenshort/multiplayer.png" width="450px">
 
 </div>
 </div>
