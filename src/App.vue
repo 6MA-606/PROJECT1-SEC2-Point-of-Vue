@@ -5,7 +5,6 @@ import BookIcon from './assets/book.svg?raw'
 import DoorIcon from'./assets/door-open.svg?raw'
 import SettingIcon from './assets/gear.svg?raw'
 import ArrowLeftIcon from './assets/arrow-left.svg?raw'
-import InfoIcon from './assets/info-circle.svg?raw'
 import BigArrow from './assets/big-arrow.svg?raw'
 import XIcon from './assets/x.svg?raw'
 import { gotoUrl } from './utils/helperFunction.js'
@@ -189,11 +188,7 @@ const multiplayerCardsClick = (card) => {
   }
   if(board.value.isAllCardRevealed()){
     if(p1.scores !== p2.scores){
-      if(p1.scores > p2.scores){
-        gameContext.winner = 1
-      } else {
-        gameContext.winner = 2
-      }
+      gameContext.winner = p1.scores > p2.scores ? 1 : 2
     } else {
       gameContext.pause()
       setTimeout(() => {
@@ -547,7 +542,6 @@ watch(
           @click="gameContext.mode = index + 1"
           class="hidden y-xs:lg:flex relative w-[15rem] y-xs:w-[20rem] h-[24rem] y-xs:lg:w-[22rem] px-5 py-10 flex-col justify-center items-center gap-4 bg-[#0007] backdrop-blur-sm border border-mythmatch-100 rounded-lg hover:shadow-lg hover:shadow-[#fff5]  transition-all duration-500 linear cursor-pointer"
         >
-          <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
           <div class="w-[7em] h-[7em] y-xs:w-[13rem] y-xs:h-[13rem] y-xs:lg:w-[13rem] y-xs:lg:h-[13rem]">
             <img
               :src="(
@@ -606,7 +600,6 @@ watch(
                   v-model="p1.name"
                   type="text"
                   placeholder="Your name"
-                  :class="pNameErrorMsg ? 'border border-red-500 bg-red-500' : ''"
                   class="input-mythmatch max-w-[13rem]"
                 />
               </label>
@@ -640,7 +633,6 @@ watch(
           @click="gameContext.mode = index + 1"
           class="flex y-xs:lg:hidden relative w-[15rem] y-xs:w-[20rem] px-5 py-10 flex-col justify-center items-center gap-4 border rounded-lg transition-all hover:shadow-lg hover:shadow-[#fff5] bg-mythpurple-800 border-mythmatch-100"
         >
-          <div v-html="InfoIcon" class="absolute top-4 right-4 scale-150"></div>
           <div class="w-[7em] h-[7em] y-xs:w-[13rem] y-xs:h-[13rem] y-xs:lg:w-[13rem] y-xs:lg:h-[13rem]">
             <img
               :src="mode.thumbnail + '.svg'"
@@ -653,17 +645,22 @@ watch(
             </div>
             <div class="text-center text-[0.875em] text-white opacity-50">{{ mode.description }}</div>
           </div>
-          <div v-show="gameContext.mode === index + 1" class="flex flex-col justify-center h-[40%] w-full items-center gap-3 absolute bottom-0 bg-mythpurple-800 rounded-lg">
+          <div v-show="gameContext.mode === index + 1" class="flex flex-col justify-center h-[50%] y-xs:h-[40%] w-full items-center gap-[0.45rem] absolute bottom-0 bg-mythpurple-800 rounded-lg">
             <div
               v-if="gameContext.mode === index + 1 && gameContext.mode === 1" 
-              class="flex flex-col items-center gap-2"
+              class="flex flex-col items-center gap-2 text-sm"
             >
-              <div>{{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}</div>
+              <div
+                :class="pNameErrorMsg ? 'text-red-400' : 'text-white'"
+                class="text-xs text-center"
+              >
+                {{pNameErrorMsg ? pNameErrorMsg : 'Enter your name (or play as guest)'}}
+              </div>
               <input
                 v-model="p1.name"
                 type="text"
                 placeholder="Your name"
-                class="input-mythmatch w-10/12"
+                class="w-10/12 h-[2rem] text-center bg-mythpurple-900 text-white rounded-lg"
               />
             </div>
             <button
