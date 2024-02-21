@@ -43,6 +43,14 @@
 <img src="/ReadMeImg/screenshort/multiplayer.png" width="450px">
 
 </div>
+<div align="center">
+<img src="/ReadMeImg/screenshort/gameover-multiplayer.png" width="450px">
+
+</div>
+<div align="center">
+<img src="/ReadMeImg/screenshort/localstorage.png" width ="450px">
+</div>
+
 </div>
 
 <h1 align = "center">Team Member</h1>
