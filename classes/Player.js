@@ -98,4 +98,17 @@ export default class Player {
             card.conceal()
         })
     }
+
+    isNameInvalid(){
+        if(this.name.length === 0 || this.name.length > 16){
+            return 'Player name must have 1-16 characters'
+        }
+        if(this.name.trim().length === 0){
+            return 'Player name can\'t be only whitespace'
+        }
+        if(/^\s/.test(this.name) || /\s$/.test(this.name)){
+            return 'Player name can\'t be start or end with whitespace'
+        }
+        return ''
+    }
 }
