@@ -3,9 +3,9 @@
   Team Point of Vue</h1>
 </div>
 
-<!-- <img width="100%" src="./ReadMeImg/team-tag.jpg" alt="my banner"> -->
+<!-- <img width="100%" src="./readme_src/team-tag.jpg" alt="my banner"> -->
 <div align="center">
-<img src = "./ReadMeImg/placeholder-final.png" style = "border-radius:25px">
+<img src = "./readme_src/placeholder-final.png" style = "border-radius:25px">
 
 
 </div>
@@ -19,31 +19,31 @@
 <a href="https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1"><img height="30px" src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" /></a>
 <div>
   <div align="center" >
-    <img src="/ReadMeImg/screenshort/home.png" width="450px">
+    <img src="/readme_src/screenshot/home.png" width="450px">
   </div>
   <div align="center" >
-    <img src="/ReadMeImg/screenshort/manual.png" width="450px">
+    <img src="/readme_src/screenshot/manual.png" width="450px">
   </div>
   <div align="center">
-    <img src="/ReadMeImg/screenshort/gamemode.png" width="450px">
+    <img src="/readme_src/screenshot/gamemode.png" width="450px">
   </div>
   <div align="center">
-    <img src="/ReadMeImg/screenshort/singeplayer.png" width="450px">
+    <img src="/readme_src/screenshot/singeplayer.png" width="450px">
   </div>
   <div align="center">
-    <img src="/ReadMeImg/screenshort/gameover.png" width="450px">
+    <img src="/readme_src/screenshot/gameover.png" width="450px">
   </div>
   <div align="center">
-    <img src="/ReadMeImg/screenshort/setting.png" width="450px">
+    <img src="/readme_src/screenshot/setting.png" width="450px">
   </div>
   <div align="center">
-    <img src="/ReadMeImg/screenshort/multiplayer.png" width="450px">
+    <img src="/readme_src/screenshot/multiplayer.png" width="450px">
   </div>
   <div align="center">
-    <img src="/ReadMeImg/screenshort/gameover-multiplayer.png" width="450px">
+    <img src="/readme_src/screenshot/gameover-multiplayer.png" width="450px">
   </div>
   <div align="center">
-    <img src="/ReadMeImg/screenshort/localstorage.png" width ="450px">
+    <img src="/readme_src/screenshot/localstorage.png" width ="450px">
   </div>
 </div>
 
@@ -62,27 +62,27 @@
 <tr>
 <td>65130500080</td>
 <td><h2>SIRIWAN HOSAREE</h2></td>
-<td><img src="/ReadMeImg/avatar/mook.png"></td>
+<td><img src="/readme_src/avatar/mook.png"></td>
 </tr>
 <tr>
 <td>65130500084</td>
 <td><h2>SITTHA MANITTAYAKUL</h2></td>
-<td><img src="/ReadMeImg//avatar/mink.png"></td>
+<td><img src="/readme_src//avatar/mink.png"></td>
 </tr>
 <tr>
 <td>65130500089</td>
 <td><h2>AKKARAWIT SITTIPRAKAN</h2></td>
-<td><img src="/ReadMeImg/avatar/title.png"> </td>
+<td><img src="/readme_src/avatar/title.png"> </td>
 </tr>
 <tr>
 <td>65130500108</td>
 <td><h2>BUNYAKORN PORNSOMBATPAIBOOL</h2></td>
-<td><img src="/ReadMeImg/avatar/goko.png"></td>
+<td><img src="/readme_src/avatar/goko.png"></td>
 </tr>
 <tr>
 <td>65130500114</td>
 <td><h2>METHUS DUMRONGMONGKHOLKUL</h2></td>
-<td><img src="/ReadMeImg/avatar/tae.png"></td>
+<td><img src="/readme_src/avatar/tae.png"></td>
 </tr>
 </tbody>
 </table>
@@ -171,7 +171,7 @@
 </tbody>
 </table>
 </div>
-<img src = "./ReadMeImg/group-final.png" style ="border-radius:16px">
+<img src = "./readme_src/group-final.png" style ="border-radius:16px">
 
 # References
 
