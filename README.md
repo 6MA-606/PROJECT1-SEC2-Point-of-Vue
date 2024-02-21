@@ -46,6 +46,7 @@
 <tr>
 <td>65130500089</td>
 <td>AKKARAWIT SITTIPRAKAN</td>
+<td><img src = "/ReadMeImg/avatar/title.png"> </td>
 </tr>
 <tr>
 <td>65130500108</td>
