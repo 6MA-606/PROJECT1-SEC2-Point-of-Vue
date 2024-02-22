@@ -1,3 +1,4 @@
+
 <div align="center">
   <h1 style="font-size:24px;">Section 2 <br>
   Team Point of Vue</h1>
@@ -9,14 +10,6 @@
 
 
 </div>
-
-<div align = "center">
-  <h2 style="font-size:24px;">See Progress</h2>
-  
-
-
-</div>
-<a href="https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1"><img height="30px" src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" /></a>
 
 <h1 align="center">Feature</h1>
 
@@ -100,6 +93,10 @@
 </tbody>
 </table>
 
+
+https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/c03034a0-7197-4514-b9e9-c93d4f0175ff
+
+
 <h1>Contribution</h1>
 
 <table>
@@ -154,7 +151,7 @@
 <li>Generate AI image</li>
 <li>Find sound assets</li>
 <li>Readme</li>
-<li>Misc.helper</li>
+<li>Misc. helper</li>
 </ul>
 </td>
 <td>AKKARAWIT SITTIPRAKAN</td>
@@ -165,7 +162,7 @@
 <ul>
 <li>Versus mode responsive UI</li>
 <li>Challenge mode player responsive UI</li>
-<li>Versus mode algorithm</li>
+<li>Versus mode algorithm: Timer</li>
 </ul>
 </td>
 <td>BUNYAKORN PORNSOMBATPAIBOOL</td>
@@ -187,6 +184,12 @@
 </table>
 </div>
 <img src = "./readme_src/group-final.png" style ="border-radius:16px">
+
+<hr>
+<div>
+See our design in 
+<a href="https://www.figma.com/file/MyTwZilN3k5pQ2qYkS5Fnz/%E0%B8%88%E0%B8%B1%E0%B8%9A%E0%B8%84%E0%B8%B9%E0%B9%88%E0%B8%A0%E0%B8%B2%E0%B8%9E?type=design&node-id=0%3A1&mode=design&t=nKgaOcYl7VrjEUzM-1"><img height="30px" src="https://img.shields.io/badge/Figma-F24E1E?style=for-the-badge&logo=figma&logoColor=white" /></a>
+</div>
 
 # References
 
