@@ -119,7 +119,7 @@
   <div align="center" >
     <img src="/readme_src/screenshot/home.png" width="100%">
   </div>
-
+  
   <h2>Manual</h2>
   <table align="center" >
     <tbody>
@@ -187,6 +187,27 @@
         <td>
           Versus mode will give oppotunity the player to challenge his/her friend or family to find the winner of memorization
         </td>
+      </tr>
+    </tbody>
+  </table>
+![]()
+![]()
+![]()
+
+  <h2>Responsive Design</h2>
+  <table align="center">
+    <tbody>
+      <tr>
+        <td align="center"><img src="https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/d578720f-f06d-492c-9ef1-5e5ccc66323a" height="200px"></td>
+        <td>PC and Tablet</td>
+      </tr>
+      <tr>
+        <td align="center"><img src="https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/0e2bf8cc-a96e-4c20-9412-35159a975e08" height="200px"></td>
+        <td>Mobile Horizontal</td>
+      </tr>
+      <tr>
+        <td align="center"><img src="https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/d91b5f13-7619-4a8d-ad91-67d7d2e9c5fe" height="200px"></td>
+        <td>Mobile Vertical</td>
       </tr>
     </tbody>
   </table>
