@@ -653,7 +653,7 @@ watch(
                 v-model="p1.name"
                 type="text"
                 placeholder="Your name"
-                class="w-10/12 h-[2rem] text-center bg-mythpurple-900 text-stone-100 rounded-lg"
+                class="w-10/12 h-[2rem] bg-slate-800 text-center bg-mythpurple-900 text-stone-100 rounded-lg"
               />
             </div>
             <button
@@ -1315,17 +1315,23 @@ watch(
           <hr />
 
           <h2 id="challenge">Challenge Mode: A Memory Match Marathon! (Single player)</h2>
+          <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306842484-5a168b2d-80c2-4680-97ae-67c51704179d.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240222%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240222T033722Z&X-Amz-Expires=300&X-Amz-Signature=c562ec69401d9f74de1a376db8b9ae44d6120fe83e06344e131ec780ad2a6045&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" alt="challenge">
           <ol>
             <li><b>Picture Perfect Grid:</b> The game starts with a grid of cards, all facing down, hiding various pictures.</li>
             <li><b>Memory Mayhem:</b> Click on two cards to reveal their hidden images. Remember, it's a race against time!</li>
             <li><b>Match Made in Memory Heaven:</b> If the two cards are identical, they stay face up, and you score points (current level x <a href="#combo">combo</a>) and bonus time (+5 seconds).</li>
             <li><b>Memory Mishap:</b> Not an identical pair? No worries! Flip them back down and try again. Keep your focus sharp!</li>
-            <li><b>Level Up!</b> Clear all pairs before time runs out, and you'll be whisked away to a new level, where your memory will be further challenged.</li>
-            <li><b>Gridlock Alert!</b> If the board fills up (12 pairs), the tension rises with a red background. While you won't get extra time for correct matches, keep scoring those points!</li>
+            <li><b>Level Up!</b> Clear all pairs before time runs out, and you'll be whisked away to a new level, where your memory will be further challenged.
+              <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306844831-e432284d-9942-44c5-9f1a-407832a75aaf.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240222%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240222T033803Z&X-Amz-Expires=300&X-Amz-Signature=804f40f649b02e7f607e8a407240059347ebdfc6cddc598600a05e2326bef26a&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" alt="level up">
+            </li>
+            <li><b>Gridlock Alert!</b> If the board fills up (12 pairs), the tension rises with a red background. While you won't get extra time for correct matches, keep scoring those points!
+              <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306844112-df92c1e9-81ae-4255-8285-bd266d19f323.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240222%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240222T033914Z&X-Amz-Expires=300&X-Amz-Signature=93252f7d9d835e7569aa075839fac7ac9be5358de254204a38ad16a700537719&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" alt="red">
+            </li>
             <li><b>Time's Up!</b> When the clock strikes zero, the game ends, showcasing your score and ranking on the leader board. Did you become the memory champion?</li>
           </ol>
 
           <h3 id="combo">Combo Power-Up!</h3>
+          <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306842712-41ac8372-0265-4899-b450-15acb5eb7ca6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240222%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240222T034032Z&X-Amz-Expires=300&X-Amz-Signature=f4b62089b3a61ecfce7d0ee24a86db4bc36bd9d9596aef0b2330a35ec2d48c9f&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" alt="combo">
           <p>The combo system is your secret weapon for racking up points. Here's how it works:</p>
 
           <ul>
@@ -1334,6 +1340,7 @@ watch(
           </ul>
 
           <h2 id="versus">Versus Mode: Face-Off Fun! (Two player)</h2>
+          <img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306843138-5da0d026-27d3-4cae-8a81-f7b781698456.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240222%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240222T034112Z&X-Amz-Expires=300&X-Amz-Signature=0df4acbf6c694ea2f3c15be60caa31f782b5e7562f4241c7ff52eef68c8cacb9&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" alt="versus">
           <p>Ready to challenge your friends? Versus mode is your battleground!</p>
 
           <ol>
