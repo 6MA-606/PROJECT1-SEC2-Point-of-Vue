@@ -190,23 +190,20 @@
       </tr>
     </tbody>
   </table>
-![]()
-![]()
-![]()
 
   <h2>Responsive Design</h2>
   <table align="center">
     <tbody>
       <tr>
-        <td align="center"><img src="https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/d578720f-f06d-492c-9ef1-5e5ccc66323a" height="200px"></td>
+        <td align="center"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306855658-d578720f-f06d-492c-9ef1-5e5ccc66323a.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191812Z&X-Amz-Expires=300&X-Amz-Signature=af8f8bd1ec79665587d34bde62cf99490287ba9298fd717839177855f6981a70&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" height="200px"></td>
         <td>PC and Tablet</td>
       </tr>
       <tr>
-        <td align="center"><img src="https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/0e2bf8cc-a96e-4c20-9412-35159a975e08" height="200px"></td>
+        <td align="center"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306855679-0e2bf8cc-a96e-4c20-9412-35159a975e08.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191828Z&X-Amz-Expires=300&X-Amz-Signature=f1a94e0aa198eb828dd9dd3ff721faab878ed6131d487a700bb552b2c3b3967a&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" height="200px"></td>
         <td>Mobile Horizontal</td>
       </tr>
       <tr>
-        <td align="center"><img src="https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/d91b5f13-7619-4a8d-ad91-67d7d2e9c5fe" height="200px"></td>
+        <td align="center"><img src="https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306855701-d91b5f13-7619-4a8d-ad91-67d7d2e9c5fe.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191838Z&X-Amz-Expires=300&X-Amz-Signature=dee111ba886153177e889b896776a04c2a1cb9020516f8e8a350d50869ae0eac&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228" height="200px"></td>
         <td>Mobile Vertical</td>
       </tr>
     </tbody>
@@ -248,7 +245,7 @@
 
 <h2 id="challenge">Challenge Mode: A Memory Match Marathon! (Single player)</h2>
 
-![challenge](https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/5a168b2d-80c2-4680-97ae-67c51704179d)
+![challenge](https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306842484-5a168b2d-80c2-4680-97ae-67c51704179d.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191856Z&X-Amz-Expires=300&X-Amz-Signature=5bcd7f7ea9bd1d59e87c47ee17d876189a45ff9b7d61a9e19552b32a2b85f6ff&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228)
 
 <ol>
   <li><b>Picture Perfect Grid:</b> The game starts with a grid of cards, all facing down, hiding various pictures.</li>
@@ -257,12 +254,12 @@
   <li><b>Memory Mishap:</b> Not an identical pair? No worries! Flip them back down and try again. Keep your focus sharp!</li>
   <li><b>Level Up!</b> Clear all pairs before time runs out, and you'll be whisked away to a new level, where your memory will be further challenged.
     
-  ![Level up](https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/e432284d-9942-44c5-9f1a-407832a75aaf)
+  ![Level up](https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306844831-e432284d-9942-44c5-9f1a-407832a75aaf.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191910Z&X-Amz-Expires=300&X-Amz-Signature=34d9c30f6fe5fd9cfdf6e34d932c0a008a82227f165ef28cceb801048334a912&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228)
   
   </li>
   <li><b>Gridlock Alert!</b> If the board fills up (12 pairs), the tension rises with a red background. While you won't get extra time for correct matches, keep scoring those points!
   
-  ![red](https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/df92c1e9-81ae-4255-8285-bd266d19f323)
+  ![red](https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306844112-df92c1e9-81ae-4255-8285-bd266d19f323.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191919Z&X-Amz-Expires=300&X-Amz-Signature=29a58196745d8bff09b4ef1bae4c7edd190643cdc57e616295dee6b58693aaff&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228)
   </li>
 
   <li><b>Time's Up!</b> When the clock strikes zero, the game ends, showcasing your score and ranking on the leader board. Did you become the memory champion?</li>
@@ -270,7 +267,7 @@
 
 <h3 id="combo">Combo Power-Up!</h3>
 
-![combo](https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/41ac8372-0265-4899-b450-15acb5eb7ca6)
+![combo](https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306842712-41ac8372-0265-4899-b450-15acb5eb7ca6.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191936Z&X-Amz-Expires=300&X-Amz-Signature=9746134fe9714df9b777ca462ffdafbc88e25f101cea8e1328625c04279c59e1&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228)
 
 <p>The combo system is your secret weapon for racking up points. Here's how it works:</p>
 
@@ -281,7 +278,7 @@
 
 <h2 id="versus">Versus Mode: Face-Off Fun! (Two player)</h2>
 
-![Screenshot 2024-02-22 101135](https://github.com/6MA-606/PROJECT1-SEC2-Point-of-Vue/assets/85861104/5da0d026-27d3-4cae-8a81-f7b781698456)
+![Screenshot 2024-02-22 101135](https://github-production-user-asset-6210df.s3.amazonaws.com/85861104/306843138-5da0d026-27d3-4cae-8a81-f7b781698456.png?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAVCODYLSA53PQK4ZA%2F20240223%2Fus-east-1%2Fs3%2Faws4_request&X-Amz-Date=20240223T191959Z&X-Amz-Expires=300&X-Amz-Signature=e6fe1691ddec9aae49b670b13adb183979f6ea850194b36c885d330a82985d34&X-Amz-SignedHeaders=host&actor_id=85861104&key_id=0&repo_id=745425228)
 
 <p>Ready to challenge your friends? Versus mode is your battleground!</p>
 <ol>
